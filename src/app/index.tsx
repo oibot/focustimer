@@ -2,7 +2,7 @@ import useTimer from "@/hooks/useTimer"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
 export default function Page() {
-  const { isRunning, remainingMs, toggleTimer } = useTimer({
+  const { isRunning, remainingMs, toggleTimer, cancelTimer } = useTimer({
     startingMs: 25 * 60 * 1000,
   })
 
@@ -11,6 +11,13 @@ export default function Page() {
       <Text style={styles.timer}>{formatMs(remainingMs)}</Text>
       <Pressable style={styles.button} onPress={toggleTimer}>
         <Text style={styles.buttonLabel}>{isRunning ? "Pause" : "Focus"}</Text>
+      </Pressable>
+      <Pressable
+        style={[styles.button, styles.cancelButton, !isRunning && styles.buttonDisabled]}
+        disabled={!isRunning}
+        onPress={cancelTimer}
+      >
+        <Text style={styles.buttonLabel}>Cancel</Text>
       </Pressable>
     </View>
   )
@@ -38,6 +45,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderColor: "black",
     borderWidth: 2,
+  },
+  cancelButton: {
+    marginTop: 12,
+  },
+  buttonDisabled: {
+    opacity: 0.4,
   },
   buttonLabel: {
     fontSize: 16,
