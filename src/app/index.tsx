@@ -2,13 +2,15 @@ import useTimer from "@/hooks/useTimer"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
 export default function Page() {
-  const { remainingMs, toggleTimer } = useTimer({ startingMs: 25 * 60 * 1000 })
+  const { isRunning, remainingMs, toggleTimer } = useTimer({
+    startingMs: 25 * 60 * 1000,
+  })
 
   return (
     <View style={styles.container}>
       <Text style={styles.timer}>{formatMs(remainingMs)}</Text>
       <Pressable style={styles.button} onPress={toggleTimer}>
-        <Text style={styles.buttonLabel}>Focus</Text>
+        <Text style={styles.buttonLabel}>{isRunning ? "Pause" : "Focus"}</Text>
       </Pressable>
     </View>
   )
