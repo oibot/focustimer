@@ -1,18 +1,18 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
-type HomeTimerProps = {
+type PomodoroTimerProps = {
   isRunning: boolean
   remainingMs: number
   onToggle: () => void
   onCancel: () => void
 }
 
-export default function HomeTimer({
+export default function PomodoroTimer({
   isRunning,
   remainingMs,
   onToggle,
   onCancel,
-}: HomeTimerProps) {
+}: PomodoroTimerProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.timer}>{formatMs(remainingMs)}</Text>

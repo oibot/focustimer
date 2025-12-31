@@ -1,4 +1,4 @@
-import HomeTimer from "@/components/home/HomeTimer"
+import PomodoroTimer from "@/components/home/PomodoroTimer"
 import useTimer from "@/hooks/useTimer"
 
 export default function Page() {
@@ -7,7 +7,7 @@ export default function Page() {
   })
 
   return (
-    <HomeTimer
+    <PomodoroTimer
       isRunning={isRunning}
       remainingMs={remainingMs}
       onToggle={toggleTimer}
