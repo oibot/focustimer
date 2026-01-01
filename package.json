@@ -7,7 +7,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "format": "bunx prettier --write src"
+    "format": "bunx prettier --write src",
+    "test": "bunx jest --watchAll=false"
   },
   "dependencies": {
     "expo": "~54.0.30",
@@ -21,9 +22,23 @@
     "react-native-screens": "~4.16.0"
   },
   "devDependencies": {
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^12.4.2",
+    "@types/jest": "29.5.14",
     "@types/react": "~19.1.0",
+    "jest": "~29.7.0",
+    "jest-expo": "~54.0.16",
     "prettier": "^3.7.4",
     "typescript": "~5.9.2"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/test/setupTests.ts"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   },
   "private": true
 }

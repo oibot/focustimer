@@ -16,13 +16,14 @@ export default function PomodoroTimer({
   return (
     <View style={styles.container}>
       <Text style={styles.timer}>{formatMs(remainingMs)}</Text>
-      <Pressable style={styles.button} onPress={onToggle}>
+      <Pressable style={styles.button} onPress={onToggle} testID="toggle-timer">
         <Text style={styles.buttonLabel}>{isRunning ? "Pause" : "Focus"}</Text>
       </Pressable>
       <Pressable
         style={[styles.button, styles.cancelButton, !isRunning && styles.buttonDisabled]}
         disabled={!isRunning}
         onPress={onCancel}
+        testID="cancel-timer"
       >
         <Text style={styles.buttonLabel}>Cancel</Text>
       </Pressable>
