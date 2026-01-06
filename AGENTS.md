@@ -2,6 +2,7 @@
 
 + use `bun` and `bunx` instead of `npm` and `npmx`
 + when you install packages use `bunx expo install ...`
++ unit tests: `bun run test`
 
 # Tools
 

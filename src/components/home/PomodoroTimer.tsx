@@ -1,29 +1,33 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
+import type { TimerStatus } from "@/hooks/useTimer"
+
 type PomodoroTimerProps = {
-  isRunning: boolean
   remainingMs: number
+  status: TimerStatus
   onToggle: () => void
   onCancel: () => void
 }
 
 export default function PomodoroTimer({
-  isRunning,
   remainingMs,
+  status,
   onToggle,
   onCancel,
 }: PomodoroTimerProps) {
+  const toggleLabel = status === "running" ? "Pause" : status === "paused" ? "Resume" : "Focus"
+  const canCancel = status === "running"
+
   return (
     <View style={styles.container}>
       <Text style={styles.timer}>{formatMs(remainingMs)}</Text>
-      <Pressable style={styles.button} onPress={onToggle} testID="toggle-timer">
-        <Text style={styles.buttonLabel}>{isRunning ? "Pause" : "Focus"}</Text>
+      <Pressable style={styles.button} onPress={onToggle}>
+        <Text style={styles.buttonLabel}>{toggleLabel}</Text>
       </Pressable>
       <Pressable
-        style={[styles.button, styles.cancelButton, !isRunning && styles.buttonDisabled]}
-        disabled={!isRunning}
+        style={[styles.button, styles.cancelButton, !canCancel && styles.buttonDisabled]}
+        disabled={!canCancel}
         onPress={onCancel}
-        testID="cancel-timer"
       >
         <Text style={styles.buttonLabel}>Cancel</Text>
       </Pressable>
