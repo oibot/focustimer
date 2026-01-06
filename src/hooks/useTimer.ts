@@ -1,9 +1,19 @@
 import { useEffect, useRef, useState } from "react"
 
+export type TimerStatus = "idle" | "running" | "paused" | "done"
+
 export default function useTimer({ startingMs }: { startingMs: number }) {
   const [isRunning, setIsRunning] = useState(false)
   const [remainingMs, setRemainingMs] = useState(startingMs)
   const endAtRef = useRef<number | null>(null)
+  const status: TimerStatus =
+    isRunning
+      ? "running"
+      : remainingMs === 0
+      ? "done"
+      : remainingMs === startingMs
+      ? "idle"
+      : "paused"
 
   useEffect(() => {
     setIsRunning(false)
@@ -41,5 +51,5 @@ export default function useTimer({ startingMs }: { startingMs: number }) {
     endAtRef.current = null
   }
 
-  return { isRunning, remainingMs, toggleTimer, cancelTimer }
+  return { remainingMs, status, toggleTimer, cancelTimer }
 }

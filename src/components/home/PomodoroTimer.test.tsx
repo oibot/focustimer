@@ -3,8 +3,8 @@ import { fireEvent, render } from "@testing-library/react-native"
 import PomodoroTimer from "@/components/home/PomodoroTimer"
 
 const baseProps = {
-  isRunning: false,
   remainingMs: 25 * 60 * 1000,
+  status: "idle" as const,
   onToggle: jest.fn(),
   onCancel: jest.fn(),
 }
@@ -22,39 +22,41 @@ describe("PomodoroTimer", () => {
     expect(getByText("00:00")).toBeTruthy()
   })
 
-  it("shows Focus when paused and Pause when running", () => {
+  it("shows Focus, Pause, and Resume labels", () => {
     const { getByText, rerender } = render(<PomodoroTimer {...baseProps} />)
     expect(getByText("Focus")).toBeTruthy()
-    rerender(<PomodoroTimer {...baseProps} isRunning />)
+    rerender(<PomodoroTimer {...baseProps} status="running" />)
     expect(getByText("Pause")).toBeTruthy()
+    rerender(<PomodoroTimer {...baseProps} status="paused" />)
+    expect(getByText("Resume")).toBeTruthy()
   })
 
   it("disables cancel when not running and enables when running", () => {
-    const { getByTestId, rerender } = render(<PomodoroTimer {...baseProps} />)
-    expect(getByTestId("cancel-timer")).toBeDisabled()
-    rerender(<PomodoroTimer {...baseProps} isRunning />)
-    expect(getByTestId("cancel-timer")).toBeEnabled()
+    const { getByText, rerender } = render(<PomodoroTimer {...baseProps} />)
+    expect(getByText("Cancel").parent!).toBeDisabled()
+    rerender(<PomodoroTimer {...baseProps} status="running" />)
+    expect(getByText("Cancel").parent!).toBeEnabled()
   })
 
   it("calls handlers on press", () => {
     const onToggle = jest.fn()
     const onCancel = jest.fn()
-    const { getByTestId, rerender } = render(
+    const { getByText, rerender } = render(
       <PomodoroTimer {...baseProps} onToggle={onToggle} onCancel={onCancel} />
     )
 
-    fireEvent.press(getByTestId("toggle-timer"))
+    fireEvent.press(getByText("Focus").parent!)
     expect(onToggle).toHaveBeenCalledTimes(1)
 
     rerender(
       <PomodoroTimer
         {...baseProps}
-        isRunning
+        status="running"
         onToggle={onToggle}
         onCancel={onCancel}
       />
     )
-    fireEvent.press(getByTestId("cancel-timer"))
+    fireEvent.press(getByText("Cancel").parent!)
     expect(onCancel).toHaveBeenCalledTimes(1)
   })
 })
