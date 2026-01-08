@@ -1,5 +1,6 @@
 import PomodoroTimer from "@/components/home/PomodoroTimer"
 import useTimer from "@/hooks/useTimer"
+import { View } from "react-native"
 
 export default function Page() {
   const { remainingMs, status, toggleTimer, cancelTimer } = useTimer({
@@ -7,11 +8,13 @@ export default function Page() {
   })
 
   return (
-    <PomodoroTimer
-      remainingMs={remainingMs}
-      status={status}
-      onToggle={toggleTimer}
-      onCancel={cancelTimer}
-    />
+    <View style={{ flex: 1 }}>
+      <PomodoroTimer
+        remainingMs={remainingMs}
+        status={status}
+        onToggle={toggleTimer}
+        onCancel={cancelTimer}
+      />
+    </View>
   )
 }
