@@ -1,4 +1,4 @@
-import PomodoroTimer from "@/components/home/PomodoroTimer"
+import Timer from "@/components/home/Timer"
 import useTimer from "@/hooks/useTimer"
 import { useRouter } from "expo-router"
 import { useEffect, useRef } from "react"
@@ -24,7 +24,7 @@ export default function Page() {
 
   return (
     <View style={{ flex: 1 }}>
-      <PomodoroTimer
+      <Timer
         remainingMs={remainingMs}
         status={status}
         onToggle={toggleTimer}
