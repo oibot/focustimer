@@ -16,5 +16,6 @@
 
 # Other
 + Don't put dependencies in the package.json yourself. Add them with `bunx expo install ` or `bunx expo install ... --dev` 
++ run tests regularly
 
 
