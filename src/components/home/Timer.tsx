@@ -2,20 +2,23 @@ import { Pressable, StyleSheet, Text, View } from "react-native"
 
 import type { TimerStatus } from "@/hooks/useTimer"
 
-type PomodoroTimerProps = {
+type TimerProps = {
   remainingMs: number
   status: TimerStatus
   onToggle: () => void
   onCancel: () => void
+  idleLabel?: string
 }
 
-export default function PomodoroTimer({
+export default function Timer({
   remainingMs,
   status,
   onToggle,
   onCancel,
-}: PomodoroTimerProps) {
-  const toggleLabel = status === "running" ? "Pause" : status === "paused" ? "Resume" : "Focus"
+  idleLabel = "Start",
+}: TimerProps) {
+  const toggleLabel =
+    status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
   const canCancel = status === "running"
 
   return (

@@ -8,7 +8,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "format": "bunx prettier --write src",
-    "test": "bunx jest --watchAll=false"
+    "test": "bunx jest --watchAll=false --watchman=false"
   },
   "dependencies": {
     "expo": "~54.0.30",

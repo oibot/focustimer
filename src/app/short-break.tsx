@@ -6,7 +6,7 @@ import { View } from "react-native"
 export default function Page() {
   const router = useRouter()
   const { remainingMs, status, toggleTimer, cancelTimer } = useTimerScene({
-    startingMs: 25 * 60 * 1000,
+    startingMs: 5 * 60 * 1000,
     onDone: () => router.push("/timer-done"),
   })
 
@@ -17,7 +17,6 @@ export default function Page() {
         status={status}
         onToggle={toggleTimer}
         onCancel={cancelTimer}
-        idleLabel="Focus"
       />
     </View>
   )
