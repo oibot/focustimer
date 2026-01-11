@@ -1,26 +1,14 @@
 import Timer from "@/components/home/Timer"
-import useTimer from "@/hooks/useTimer"
+import useTimerScene from "@/hooks/useTimerScene"
 import { useRouter } from "expo-router"
-import { useEffect, useRef } from "react"
 import { View } from "react-native"
 
 export default function Page() {
   const router = useRouter()
-  const hasShownDoneRef = useRef(false)
-  const { remainingMs, status, toggleTimer, cancelTimer } = useTimer({
+  const { remainingMs, status, toggleTimer, cancelTimer } = useTimerScene({
     startingMs: 25 * 60 * 1000,
+    onDone: () => router.push("/focus-done"),
   })
-
-  useEffect(() => {
-    if (status === "done" && !hasShownDoneRef.current) {
-      hasShownDoneRef.current = true
-      router.push("/focus-done")
-      return
-    }
-    if (status !== "done") {
-      hasShownDoneRef.current = false
-    }
-  }, [router, status])
 
   return (
     <View style={{ flex: 1 }}>
