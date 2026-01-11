@@ -7,6 +7,7 @@ type TimerProps = {
   status: TimerStatus
   onToggle: () => void
   onCancel: () => void
+  idleLabel?: string
 }
 
 export default function Timer({
@@ -14,8 +15,10 @@ export default function Timer({
   status,
   onToggle,
   onCancel,
+  idleLabel = "Start",
 }: TimerProps) {
-  const toggleLabel = status === "running" ? "Pause" : status === "paused" ? "Resume" : "Focus"
+  const toggleLabel =
+    status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
   const canCancel = status === "running"
 
   return (

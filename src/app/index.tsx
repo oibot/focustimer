@@ -17,6 +17,7 @@ export default function Page() {
         status={status}
         onToggle={toggleTimer}
         onCancel={cancelTimer}
+        idleLabel="Focus"
       />
     </View>
   )

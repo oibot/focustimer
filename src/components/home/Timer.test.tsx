@@ -20,9 +20,9 @@ describe("Timer", () => {
     expect(getByText("00:00")).toBeTruthy()
   })
 
-  it("shows Focus, Pause, and Resume labels", () => {
+  it("shows Start, Pause, and Resume labels", () => {
     const { getByText, rerender } = render(<Timer {...baseProps} />)
-    expect(getByText("Focus")).toBeTruthy()
+    expect(getByText("Start")).toBeTruthy()
     rerender(<Timer {...baseProps} status="running" />)
     expect(getByText("Pause")).toBeTruthy()
     rerender(<Timer {...baseProps} status="paused" />)
@@ -43,7 +43,7 @@ describe("Timer", () => {
       <Timer {...baseProps} onToggle={onToggle} onCancel={onCancel} />
     )
 
-    fireEvent.press(getByText("Focus").parent!)
+    fireEvent.press(getByText("Start").parent!)
     expect(onToggle).toHaveBeenCalledTimes(1)
 
     rerender(
@@ -56,5 +56,10 @@ describe("Timer", () => {
     )
     fireEvent.press(getByText("Cancel").parent!)
     expect(onCancel).toHaveBeenCalledTimes(1)
+  })
+
+  it("uses a custom idle label when provided", () => {
+    const { getByText } = render(<Timer {...baseProps} idleLabel="Focus" />)
+    expect(getByText("Focus")).toBeTruthy()
   })
 })
