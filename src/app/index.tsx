@@ -7,7 +7,7 @@ export default function Page() {
   const router = useRouter()
   const { remainingMs, status, toggleTimer, cancelTimer } = useTimerScene({
     startingMs: 25 * 60 * 1000,
-    onDone: () => router.push("/focus-done"),
+    onDone: () => router.push("/timer-done"),
   })
 
   return (

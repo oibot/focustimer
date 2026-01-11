@@ -5,7 +5,7 @@ export default function Layout() {
     <Stack>
       <Stack.Screen name="index" />
       <Stack.Screen
-        name="focus-done"
+        name="timer-done"
         options={{
           presentation: "formSheet",
           sheetAllowedDetents: [0.25, 1],
