@@ -1,5 +1,6 @@
 import Timer from "@/components/home/Timer"
 import useTimerScene from "@/hooks/useTimerScene"
+import { useKeepAwake } from "expo-keep-awake"
 import { View } from "react-native"
 
 const TIMER_MODES = {
@@ -25,6 +26,11 @@ type TimerSceneProps = {
   onDone: (nextMode: string) => void
 }
 
+function KeepAwakeWhileRunning() {
+  useKeepAwake()
+  return null
+}
+
 export default function TimerScene({ mode, onDone }: TimerSceneProps) {
   const timerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, idleLabel, nextMode } = TIMER_MODES[timerMode]
@@ -35,6 +41,7 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
 
   return (
     <View style={{ flex: 1 }}>
+      {status === "running" ? <KeepAwakeWhileRunning /> : null}
       <Timer
         remainingMs={remainingMs}
         status={status}

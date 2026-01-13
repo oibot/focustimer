@@ -2,8 +2,10 @@ import { act, render } from "@testing-library/react-native"
 
 import TimerScene from "@/components/home/TimerScene"
 import useTimerScene from "@/hooks/useTimerScene"
+import { useKeepAwake } from "expo-keep-awake"
 
 jest.mock("@/hooks/useTimerScene")
+jest.mock("expo-keep-awake", () => ({ useKeepAwake: jest.fn() }))
 
 const mockUseTimerScene = useTimerScene as jest.MockedFunction<
   typeof useTimerScene
@@ -23,6 +25,17 @@ describe("TimerScene", () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+  })
+
+  it("keeps the screen awake while running", () => {
+    mockUseTimerScene.mockImplementation(() => ({
+      ...baseHookState,
+      status: "running",
+    }))
+
+    render(<TimerScene mode="focus" onDone={jest.fn()} />)
+
+    expect(useKeepAwake).toHaveBeenCalledTimes(1)
   })
 
   it("renders focus mode with the Focus label", () => {
