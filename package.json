@@ -6,11 +6,11 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "ios:dev": "expo run:ios --device",
-    "ios:release": "expo run:ios --device --configuration Release",
+    "ios:dev": "APP_VARIANT=dev expo prebuild --clean --platform=ios && APP_VARIANT=dev expo run:ios --device",
+    "ios:release": "APP_VARIANT=test expo prebuild --clean --platform=ios && APP_VARIANT=test expo run:ios --device --configuration Release",
     "web": "expo start --web",
-    "format": "bunx prettier --write src",
-    "test": "bunx jest --watchAll=false --watchman=false"
+    "format": "prettier --write src",
+    "test": "jest --watchAll=false --watchman=false"
   },
   "dependencies": {
     "expo": "~54.0.30",
