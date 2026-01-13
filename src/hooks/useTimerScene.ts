@@ -7,8 +7,13 @@ type UseTimerSceneProps = {
   onDone: () => void
 }
 
-export default function useTimerScene({ startingMs, onDone }: UseTimerSceneProps) {
-  const { remainingMs, status, toggleTimer, cancelTimer } = useTimer({ startingMs })
+export default function useTimerScene({
+  startingMs,
+  onDone,
+}: UseTimerSceneProps) {
+  const { remainingMs, status, toggleTimer, cancelTimer } = useTimer({
+    startingMs,
+  })
   const hasShownDoneRef = useRef(false)
 
   useEffect(() => {

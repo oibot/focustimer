@@ -1,26 +1,16 @@
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import TimerDoneScene from "@/components/home/TimerDoneScene"
+import { useLocalSearchParams, useRouter } from "expo-router"
 
 export default function Page() {
-  return (
-    <View style={styles.container}>
-      <Pressable style={styles.button}>
-        <Text>Start Break</Text>
-      </Pressable>
-    </View>
-  )
-}
+  const router = useRouter()
+  const { next } = useLocalSearchParams<{ next?: string }>()
+  const nextMode = next === "short" ? next : "focus"
+  const handleStart = () => {
+    router.dismissTo({
+      pathname: "/",
+      params: { mode: nextMode },
+    })
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 30,
-    gap: 20,
-  },
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderWidth: 2,
-  },
-})
+  return <TimerDoneScene nextMode={nextMode} onStart={handleStart} />
+}

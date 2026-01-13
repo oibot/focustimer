@@ -1,24 +1,17 @@
-import Timer from "@/components/home/Timer"
-import useTimerScene from "@/hooks/useTimerScene"
-import { useRouter } from "expo-router"
-import { View } from "react-native"
+import TimerScene from "@/components/home/TimerScene"
+import { useLocalSearchParams, useRouter } from "expo-router"
 
 export default function Page() {
   const router = useRouter()
-  const { remainingMs, status, toggleTimer, cancelTimer } = useTimerScene({
-    startingMs: 25 * 60 * 1000,
-    onDone: () => router.push("/timer-done"),
-  })
+  const { mode } = useLocalSearchParams<{ mode?: string }>()
+  const modeParam = typeof mode === "string" ? mode : undefined
+  const handleDone = (nextMode: string) =>
+    router.push({
+      pathname: "/timer-done",
+      params: { next: nextMode },
+    })
 
   return (
-    <View style={{ flex: 1 }}>
-      <Timer
-        remainingMs={remainingMs}
-        status={status}
-        onToggle={toggleTimer}
-        onCancel={cancelTimer}
-        idleLabel="Focus"
-      />
-    </View>
+    <TimerScene key={modeParam ?? "focus"} mode={modeParam} onDone={handleDone} />
   )
 }
