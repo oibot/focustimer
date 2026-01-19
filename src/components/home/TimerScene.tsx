@@ -1,7 +1,9 @@
 import Timer from "@/components/home/Timer"
+import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import useTimerScene from "@/hooks/useTimerScene"
 import { useKeepAwake } from "expo-keep-awake"
 import { View } from "react-native"
+import { useAudioPlayer } from "expo-audio"
 
 const TIMER_MODES = {
   focus: {
@@ -32,12 +34,19 @@ function KeepAwakeWhileRunning() {
 }
 
 export default function TimerScene({ mode, onDone }: TimerSceneProps) {
+  const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, idleLabel, nextMode } = TIMER_MODES[timerMode]
   const { remainingMs, status, toggleTimer, cancelTimer } = useTimerScene({
     startingMs,
-    onDone: () => onDone(nextMode),
+    onDone: () => {
+      player.seekTo(0)
+      player.play()
+      onDone(nextMode)
+    },
   })
+
+  useBackgroundTimerNotifications({ status, remainingMs })
 
   return (
     <View style={{ flex: 1 }}>

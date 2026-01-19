@@ -28,7 +28,11 @@ export default function Timer({
         <Text style={styles.buttonLabel}>{toggleLabel}</Text>
       </Pressable>
       <Pressable
-        style={[styles.button, styles.cancelButton, !canCancel && styles.buttonDisabled]}
+        style={[
+          styles.button,
+          styles.cancelButton,
+          !canCancel && styles.buttonDisabled,
+        ]}
         disabled={!canCancel}
         onPress={onCancel}
       >

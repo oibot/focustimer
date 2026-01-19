@@ -15,10 +15,11 @@ describe("useTimerScene", () => {
   it("calls onDone once when the timer completes", () => {
     const onDone = jest.fn()
     const { result, rerender } = renderHook(
-      ({ startingMs, handler }) => useTimerScene({ startingMs, onDone: handler }),
+      ({ startingMs, handler }) =>
+        useTimerScene({ startingMs, onDone: handler }),
       {
         initialProps: { startingMs: 1000, handler: onDone },
-      }
+      },
     )
 
     act(() => result.current.toggleTimer())
@@ -33,7 +34,9 @@ describe("useTimerScene", () => {
 
   it("allows onDone again after reset", () => {
     const onDone = jest.fn()
-    const { result } = renderHook(() => useTimerScene({ startingMs: 1000, onDone }))
+    const { result } = renderHook(() =>
+      useTimerScene({ startingMs: 1000, onDone }),
+    )
 
     act(() => result.current.toggleTimer())
     act(() => jest.advanceTimersByTime(1000))

@@ -2,14 +2,25 @@ import { act, render } from "@testing-library/react-native"
 
 import TimerScene from "@/components/home/TimerScene"
 import useTimerScene from "@/hooks/useTimerScene"
+import { useAudioPlayer } from "expo-audio"
 import { useKeepAwake } from "expo-keep-awake"
 
 jest.mock("@/hooks/useTimerScene")
+jest.mock("expo-audio", () => ({ useAudioPlayer: jest.fn() }))
 jest.mock("expo-keep-awake", () => ({ useKeepAwake: jest.fn() }))
+jest.mock("expo-notifications", () => ({
+  cancelScheduledNotificationAsync: jest.fn(),
+  scheduleNotificationAsync: jest.fn(),
+  SchedulableTriggerInputTypes: {
+    DATE: "date",
+  },
+}))
 
 const mockUseTimerScene = useTimerScene as jest.MockedFunction<
   typeof useTimerScene
 >
+const playMock = jest.fn()
+const seekToMock = jest.fn()
 
 const baseHookState = {
   remainingMs: 1500,
@@ -21,6 +32,12 @@ const baseHookState = {
 describe("TimerScene", () => {
   beforeEach(() => {
     mockUseTimerScene.mockImplementation(() => baseHookState)
+    playMock.mockClear()
+    seekToMock.mockClear()
+    ;(useAudioPlayer as jest.Mock).mockReturnValue({
+      play: playMock,
+      seekTo: seekToMock,
+    })
   })
 
   afterEach(() => {
@@ -68,5 +85,7 @@ describe("TimerScene", () => {
 
     act(() => capturedOnDone?.())
     expect(onDone).toHaveBeenCalledWith("short")
+    expect(seekToMock).toHaveBeenCalledWith(0)
+    expect(playMock).toHaveBeenCalledTimes(1)
   })
 })

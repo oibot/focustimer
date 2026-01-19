@@ -5,6 +5,7 @@ export default function Page() {
   const router = useRouter()
   const { mode } = useLocalSearchParams<{ mode?: string }>()
   const modeParam = typeof mode === "string" ? mode : undefined
+
   const handleDone = (nextMode: string) =>
     router.push({
       pathname: "/timer-done",
@@ -12,6 +13,10 @@ export default function Page() {
     })
 
   return (
-    <TimerScene key={modeParam ?? "focus"} mode={modeParam} onDone={handleDone} />
+    <TimerScene
+      key={modeParam ?? "focus"}
+      mode={modeParam}
+      onDone={handleDone}
+    />
   )
 }

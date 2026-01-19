@@ -6,14 +6,13 @@ export default function useTimer({ startingMs }: { startingMs: number }) {
   const [isRunning, setIsRunning] = useState(false)
   const [remainingMs, setRemainingMs] = useState(startingMs)
   const endAtRef = useRef<number | null>(null)
-  const status: TimerStatus =
-    isRunning
-      ? "running"
-      : remainingMs === 0
+  const status: TimerStatus = isRunning
+    ? "running"
+    : remainingMs === 0
       ? "done"
       : remainingMs === startingMs
-      ? "idle"
-      : "paused"
+        ? "idle"
+        : "paused"
 
   useEffect(() => {
     setIsRunning(false)
@@ -34,11 +33,11 @@ export default function useTimer({ startingMs }: { startingMs: number }) {
 
   const toggleTimer = () => {
     if (isRunning) {
+      setIsRunning(false)
       if (endAtRef.current !== null) {
         const next = Math.max(0, endAtRef.current - Date.now())
         setRemainingMs(next)
       }
-      setIsRunning(false)
       return
     }
     endAtRef.current = Date.now() + remainingMs

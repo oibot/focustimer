@@ -40,7 +40,7 @@ describe("Timer", () => {
     const onToggle = jest.fn()
     const onCancel = jest.fn()
     const { getByText, rerender } = render(
-      <Timer {...baseProps} onToggle={onToggle} onCancel={onCancel} />
+      <Timer {...baseProps} onToggle={onToggle} onCancel={onCancel} />,
     )
 
     fireEvent.press(getByText("Start").parent!)
@@ -52,7 +52,7 @@ describe("Timer", () => {
         status="running"
         onToggle={onToggle}
         onCancel={onCancel}
-      />
+      />,
     )
     fireEvent.press(getByText("Cancel").parent!)
     expect(onCancel).toHaveBeenCalledTimes(1)
