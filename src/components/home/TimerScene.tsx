@@ -48,6 +48,7 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     })
 
   useBackgroundTimerNotifications({ status, remainingMs })
+  const canCancel = remainingMs !== startingMs
 
   const handleCancel = () => {
     switch (timerMode) {
@@ -69,6 +70,7 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
         onCancel={handleCancel}
         idleLabel={idleLabel}
         cancelLabel={timerMode === "short" ? "Stop" : "Cancel"}
+        canCancel={canCancel}
       />
     </View>
   )

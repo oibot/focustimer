@@ -29,10 +29,10 @@ describe("Timer", () => {
     expect(getByText("Resume")).toBeTruthy()
   })
 
-  it("disables cancel when not running and enables when running", () => {
+  it("disables cancel when cannot cancel and enables when allowed", () => {
     const { getByText, rerender } = render(<Timer {...baseProps} />)
     expect(getByText("Cancel").parent!).toBeDisabled()
-    rerender(<Timer {...baseProps} status="running" />)
+    rerender(<Timer {...baseProps} canCancel />)
     expect(getByText("Cancel").parent!).toBeEnabled()
   })
 
