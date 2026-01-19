@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 
-import useTimer from "@/hooks/useTimer"
+import useTimerStore from "@/hooks/useTimerStore"
 
 type UseTimerSceneProps = {
   startingMs: number
@@ -11,11 +11,13 @@ export default function useTimerScene({
   startingMs,
   onDone,
 }: UseTimerSceneProps) {
-  const { remainingMs, status, toggleTimer, cancelTimer, finishTimer } =
-    useTimer({
-      startingMs,
-    })
+  const { remainingMs, status, toggleTimer, cancelTimer, setStartingMs } =
+    useTimerStore()
   const hasShownDoneRef = useRef(false)
+
+  useLayoutEffect(() => {
+    setStartingMs(startingMs)
+  }, [setStartingMs, startingMs])
 
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
@@ -28,5 +30,5 @@ export default function useTimerScene({
     }
   }, [onDone, status])
 
-  return { remainingMs, status, toggleTimer, cancelTimer, finishTimer }
+  return { remainingMs, status, toggleTimer, cancelTimer }
 }

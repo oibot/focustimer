@@ -2,6 +2,8 @@ import { Stack } from "expo-router"
 import * as Notifications from "expo-notifications"
 import { useEffect } from "react"
 
+import { TimerStoreProvider } from "@/hooks/useTimerStore"
+
 export const unstable_settings = {
   anchor: "index",
 }
@@ -27,18 +29,20 @@ export default function Layout() {
   }, [])
 
   return (
-    <Stack>
-      <Stack.Screen name="index" />
-      <Stack.Screen
-        name="timer-done"
-        options={{
-          presentation: "formSheet",
-          sheetAllowedDetents: [0.25],
-          sheetInitialDetentIndex: 0,
-          sheetGrabberVisible: true,
-          headerShown: false,
-        }}
-      />
-    </Stack>
+    <TimerStoreProvider>
+      <Stack>
+        <Stack.Screen name="index" />
+        <Stack.Screen
+          name="timer-done"
+          options={{
+            presentation: "formSheet",
+            sheetAllowedDetents: [0.25],
+            sheetInitialDetentIndex: 0,
+            sheetGrabberVisible: true,
+            headerShown: false,
+          }}
+        />
+      </Stack>
+    </TimerStoreProvider>
   )
 }

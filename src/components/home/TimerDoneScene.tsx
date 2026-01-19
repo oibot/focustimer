@@ -3,11 +3,13 @@ import { Pressable, StyleSheet, Text, View } from "react-native"
 type TimerDoneSceneProps = {
   nextMode: "focus" | "short"
   onStart: () => void
+  onCancel?: () => void
 }
 
 export default function TimerDoneScene({
   nextMode,
   onStart,
+  onCancel,
 }: TimerDoneSceneProps) {
   const buttonLabel = nextMode === "focus" ? "Start Focus" : "Start Break"
 
@@ -15,6 +17,9 @@ export default function TimerDoneScene({
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={onStart}>
         <Text>{buttonLabel}</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={onCancel}>
+        <Text>Cancel</Text>
       </Pressable>
     </View>
   )

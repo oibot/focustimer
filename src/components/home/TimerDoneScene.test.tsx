@@ -28,4 +28,18 @@ describe("TimerDoneScene", () => {
     fireEvent.press(getByText("Start Focus").parent!)
     expect(onStart).toHaveBeenCalledTimes(1)
   })
+
+  it("fires onCancel when pressed", () => {
+    const onCancel = jest.fn()
+    const { getByText } = render(
+      <TimerDoneScene
+        nextMode="focus"
+        onStart={jest.fn()}
+        onCancel={onCancel}
+      />,
+    )
+
+    fireEvent.press(getByText("Cancel").parent!)
+    expect(onCancel).toHaveBeenCalledTimes(1)
+  })
 })
