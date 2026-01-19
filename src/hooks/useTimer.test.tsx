@@ -61,4 +61,15 @@ describe("useTimer", () => {
     expect(result.current.status).toBe("idle")
     expect(result.current.remainingMs).toBe(3000)
   })
+
+  it("finishes and marks done immediately", () => {
+    const { result } = renderHook(() => useTimer({ startingMs: 3000 }))
+
+    act(() => result.current.toggleTimer())
+    act(() => jest.advanceTimersByTime(1000))
+
+    act(() => result.current.finishTimer())
+    expect(result.current.status).toBe("done")
+    expect(result.current.remainingMs).toBe(0)
+  })
 })

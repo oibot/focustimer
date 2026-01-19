@@ -50,5 +50,11 @@ export default function useTimer({ startingMs }: { startingMs: number }) {
     endAtRef.current = null
   }
 
-  return { remainingMs, status, toggleTimer, cancelTimer }
+  const finishTimer = () => {
+    setIsRunning(false)
+    setRemainingMs(0)
+    endAtRef.current = null
+  }
+
+  return { remainingMs, status, toggleTimer, cancelTimer, finishTimer }
 }

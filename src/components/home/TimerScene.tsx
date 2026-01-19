@@ -7,12 +7,12 @@ import { useAudioPlayer } from "expo-audio"
 
 const TIMER_MODES = {
   focus: {
-    startingMs: 25 * 60 * 1000,
+    startingMs: 3000, //25 * 60 * 1000,
     idleLabel: "Focus",
     nextMode: "short",
   },
   short: {
-    startingMs: 5 * 60 * 1000,
+    startingMs: 2000, //5 * 60 * 1000,
     idleLabel: "Start",
     nextMode: "focus",
   },
@@ -37,16 +37,27 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, idleLabel, nextMode } = TIMER_MODES[timerMode]
-  const { remainingMs, status, toggleTimer, cancelTimer } = useTimerScene({
-    startingMs,
-    onDone: () => {
-      player.seekTo(0)
-      player.play()
-      onDone(nextMode)
-    },
-  })
+  const { remainingMs, status, toggleTimer, cancelTimer, finishTimer } =
+    useTimerScene({
+      startingMs,
+      onDone: () => {
+        player.seekTo(0)
+        player.play()
+        onDone(nextMode)
+      },
+    })
 
   useBackgroundTimerNotifications({ status, remainingMs })
+
+  const handleCancel = () => {
+    switch (timerMode) {
+      case "short":
+        finishTimer()
+        break
+      default:
+        cancelTimer()
+    }
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -55,8 +66,9 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
         remainingMs={remainingMs}
         status={status}
         onToggle={toggleTimer}
-        onCancel={cancelTimer}
+        onCancel={handleCancel}
         idleLabel={idleLabel}
+        cancelLabel={timerMode === "short" ? "Stop" : "Cancel"}
       />
     </View>
   )

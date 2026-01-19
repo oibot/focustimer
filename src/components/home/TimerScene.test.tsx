@@ -1,4 +1,4 @@
-import { act, render } from "@testing-library/react-native"
+import { act, fireEvent, render } from "@testing-library/react-native"
 
 import TimerScene from "@/components/home/TimerScene"
 import useTimerScene from "@/hooks/useTimerScene"
@@ -27,6 +27,7 @@ const baseHookState = {
   status: "idle" as const,
   toggleTimer: jest.fn(),
   cancelTimer: jest.fn(),
+  finishTimer: jest.fn(),
 }
 
 describe("TimerScene", () => {
@@ -71,6 +72,23 @@ describe("TimerScene", () => {
     const { getByText } = render(<TimerScene mode="long" onDone={jest.fn()} />)
 
     expect(getByText("Focus")).toBeTruthy()
+  })
+
+  it("uses stop to finish the timer in short mode", () => {
+    const finishTimer = jest.fn()
+    const cancelTimer = jest.fn()
+    mockUseTimerScene.mockImplementation(() => ({
+      ...baseHookState,
+      status: "running",
+      cancelTimer,
+      finishTimer,
+    }))
+
+    const { getByText } = render(<TimerScene mode="short" onDone={jest.fn()} />)
+
+    fireEvent.press(getByText("Stop"))
+    expect(finishTimer).toHaveBeenCalledTimes(1)
+    expect(cancelTimer).not.toHaveBeenCalled()
   })
 
   it("passes the next mode to onDone", () => {

@@ -8,6 +8,7 @@ type TimerProps = {
   onToggle: () => void
   onCancel: () => void
   idleLabel?: string
+  cancelLabel?: string
 }
 
 export default function Timer({
@@ -16,6 +17,7 @@ export default function Timer({
   onToggle,
   onCancel,
   idleLabel = "Start",
+  cancelLabel = "Cancel",
 }: TimerProps) {
   const toggleLabel =
     status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
@@ -36,7 +38,7 @@ export default function Timer({
         disabled={!canCancel}
         onPress={onCancel}
       >
-        <Text style={styles.buttonLabel}>Cancel</Text>
+        <Text style={styles.buttonLabel}>{cancelLabel}</Text>
       </Pressable>
     </View>
   )

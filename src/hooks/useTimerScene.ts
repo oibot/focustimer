@@ -11,9 +11,10 @@ export default function useTimerScene({
   startingMs,
   onDone,
 }: UseTimerSceneProps) {
-  const { remainingMs, status, toggleTimer, cancelTimer } = useTimer({
-    startingMs,
-  })
+  const { remainingMs, status, toggleTimer, cancelTimer, finishTimer } =
+    useTimer({
+      startingMs,
+    })
   const hasShownDoneRef = useRef(false)
 
   useEffect(() => {
@@ -27,5 +28,5 @@ export default function useTimerScene({
     }
   }, [onDone, status])
 
-  return { remainingMs, status, toggleTimer, cancelTimer }
+  return { remainingMs, status, toggleTimer, cancelTimer, finishTimer }
 }
