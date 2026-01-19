@@ -46,16 +46,17 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
         onDone(nextMode)
       },
     })
-
-  useBackgroundTimerNotifications({ status, remainingMs })
   const canCancel = remainingMs !== startingMs
 
+  useBackgroundTimerNotifications({ status, remainingMs })
+
+  // TODO: what happens when no default clause
   const handleCancel = () => {
     switch (timerMode) {
       case "short":
         finishTimer()
         break
-      default:
+      case "focus":
         cancelTimer()
     }
   }

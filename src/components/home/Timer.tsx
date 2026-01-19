@@ -45,6 +45,7 @@ export default function Timer({
   )
 }
 
+// TODO: create a shared utility file for this
 const formatMs = (ms: number) => {
   const totalSeconds = Math.max(0, Math.ceil(ms / 1000))
   const minutes = Math.floor(totalSeconds / 60)
