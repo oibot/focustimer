@@ -17,5 +17,7 @@
 # Other
 + Don't put dependencies in the package.json yourself. Add them with `bunx expo install ` or `bunx expo install ... --dev` 
 + run tests regularly
++ run `bun run format` after each edit.
++ run `bunx tsc --noEmit` after finishing some edits
 
 
