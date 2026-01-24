@@ -1,2 +1,1 @@
-export function useTimerDone() {
-}
+export function useTimerDone() {}

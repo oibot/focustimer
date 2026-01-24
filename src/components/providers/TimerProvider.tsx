@@ -7,11 +7,45 @@ import {
   useState,
 } from "react"
 
-export const TimerContext = createContext({ state: {}, actions: {} })
+export type TimerStatus = "idle" | "running" | "paused" | "done"
+
+export type TimerState = {
+  startingMs: number
+  remainingMs: number
+  isRunning: boolean
+  status: TimerStatus
+}
+
+export type TimerActions = {
+  toggleTimer: () => void
+  cancelTimer: () => void
+  finishTimer: () => void
+  setStartingMs: (ms: number) => void
+}
+
+export type TimerContextValue = {
+  state: TimerState
+  actions: TimerActions
+}
 
 const INITIAL_STATE = { startingMs: 4000 }
 
-export type TimerStatus = "idle" | "running" | "paused" | "done"
+const DEFAULT_CONTEXT: TimerContextValue = {
+  state: {
+    startingMs: INITIAL_STATE.startingMs,
+    remainingMs: INITIAL_STATE.startingMs,
+    isRunning: false,
+    status: "idle",
+  },
+  actions: {
+    toggleTimer: () => {},
+    cancelTimer: () => {},
+    finishTimer: () => {},
+    setStartingMs: () => {},
+  },
+}
+
+export const TimerContext = createContext<TimerContextValue>(DEFAULT_CONTEXT)
 
 export default function TimerProvider({
   children,
