@@ -1,9 +1,10 @@
 import Timer from "@/components/home/Timer"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
-import useTimerScene from "@/hooks/useTimerScene"
 import { useKeepAwake } from "expo-keep-awake"
 import { View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
+import { useEffect, useLayoutEffect, useRef } from "react"
+import { useTimer } from "@/hooks/useTimer"
 
 const TIMER_MODES = {
   focus: {
@@ -37,18 +38,38 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, idleLabel, nextMode } = TIMER_MODES[timerMode]
-  const { remainingMs, status, toggleTimer, cancelTimer, finishTimer } =
-    useTimerScene({
-      startingMs,
-      onDone: () => {
-        player.seekTo(0)
-        player.play()
-        onDone(nextMode)
-      },
-    })
-  const canCancel = remainingMs !== startingMs
+  const {
+    remainingMs,
+    status,
+    setStartingMs,
+    toggleTimer,
+    cancelTimer,
+    finishTimer,
+    canCancel,
+  } = useTimer()
+
+  const hasShownDoneRef = useRef(false)
 
   useBackgroundTimerNotifications({ status, remainingMs })
+
+  // TODO: should we sync the startingMs, or put this logic in the timer provider?
+  useLayoutEffect(() => {
+    setStartingMs(startingMs)
+  }, [startingMs])
+
+  useEffect(() => {
+    if (status === "done" && !hasShownDoneRef.current) {
+      hasShownDoneRef.current = true
+      player.seekTo(0)
+      player.play()
+      cancelTimer()
+      onDone(nextMode)
+      return
+    }
+    if (status !== "done") {
+      hasShownDoneRef.current = false
+    }
+  }, [cancelTimer, nextMode, onDone, player, status])
 
   // TODO: what happens when no default clause
   const handleCancel = () => {

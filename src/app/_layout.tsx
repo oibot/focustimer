@@ -1,8 +1,7 @@
 import { Stack } from "expo-router"
 import * as Notifications from "expo-notifications"
 import { useEffect } from "react"
-
-import { TimerStoreProvider } from "@/hooks/useTimerStore"
+import TimerProvider from "@/components/providers/TimerProvider"
 
 export const unstable_settings = {
   anchor: "index",
@@ -29,7 +28,7 @@ export default function Layout() {
   }, [])
 
   return (
-    <TimerStoreProvider>
+    <TimerProvider>
       <Stack>
         <Stack.Screen name="index" />
         <Stack.Screen
@@ -43,6 +42,6 @@ export default function Layout() {
           }}
         />
       </Stack>
-    </TimerStoreProvider>
+    </TimerProvider>
   )
 }

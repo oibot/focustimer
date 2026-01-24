@@ -1,4 +1,11 @@
-import { createContext, useEffect, useRef, useState } from "react"
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
 export const TimerContext = createContext({ state: {}, actions: {} })
 
@@ -24,12 +31,6 @@ export default function TimerProvider({
         : "paused"
 
   useEffect(() => {
-    setIsRunning(false)
-    setRemainingMs(startingMs)
-    endAtRef.current = null
-  }, [startingMs])
-
-  useEffect(() => {
     if (!isRunning) return
     const id = setInterval(() => {
       if (endAtRef.current === null) return
@@ -40,7 +41,14 @@ export default function TimerProvider({
     return () => clearInterval(id)
   }, [isRunning])
 
-  const toggleTimer = () => {
+  const setStartingMsAndReset = useCallback((ms: number) => {
+    setIsRunning(false)
+    setStartingMs(ms)
+    setRemainingMs(ms)
+    endAtRef.current = null
+  }, [])
+
+  const toggleTimer = useCallback(() => {
     if (isRunning) {
       setIsRunning(false)
       if (endAtRef.current !== null) {
@@ -51,24 +59,37 @@ export default function TimerProvider({
     }
     endAtRef.current = Date.now() + remainingMs
     setIsRunning(true)
-  }
+  }, [isRunning, remainingMs])
 
-  const cancelTimer = () => {
+  const cancelTimer = useCallback(() => {
     setIsRunning(false)
     setRemainingMs(startingMs)
     endAtRef.current = null
-  }
+  }, [startingMs])
 
-  const finishTimer = () => {
+  const finishTimer = useCallback(() => {
     setIsRunning(false)
     setRemainingMs(0)
     endAtRef.current = null
-  }
+  }, [])
 
-  const value = {
-    state: { startingMs, remainingMs, isRunning, status },
-    actions: { toggleTimer, cancelTimer, finishTimer, setStartingMs },
-  }
+  const actions = useMemo(
+    () => ({
+      toggleTimer,
+      cancelTimer,
+      finishTimer,
+      setStartingMs: setStartingMsAndReset,
+    }),
+    [toggleTimer, cancelTimer, finishTimer, setStartingMsAndReset],
+  )
+
+  const value = useMemo(
+    () => ({
+      state: { startingMs, remainingMs, isRunning, status },
+      actions,
+    }),
+    [startingMs, remainingMs, isRunning, status, actions],
+  )
 
   return <TimerContext value={value}>{children}</TimerContext>
 }

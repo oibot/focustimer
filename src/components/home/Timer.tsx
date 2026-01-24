@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
-import type { TimerStatus } from "@/hooks/useTimer"
+export type TimerStatus = "idle" | "running" | "paused" | "done"
 
 type TimerProps = {
   remainingMs: number
