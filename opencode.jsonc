@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "command": {
+    "doctor": {
+      "description": "Expo Doctor checks",
+      "template": "Run `bunx expo-doctor` and summarize the problems and exact fixes."
+    }
+  }
+}
