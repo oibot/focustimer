@@ -4,7 +4,11 @@
   "command": {
     "doctor": {
       "description": "Expo Doctor checks",
-      "template": "Run `bunx expo-doctor` and summarize the problems and exact fixes."
-    }
-  }
+      "template": "Run `bunx expo-doctor` and summarize the problems and exact fixes.",
+    },
+    "commit": {
+      "description": "Format, typecheck, test, then commit",
+      "template": "Run `bun run format`, `bunx tsc --noEmit`, and `bun run test`, then commit with the user-provided message.",
+    },
+  },
 }
