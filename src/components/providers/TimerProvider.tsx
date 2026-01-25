@@ -7,7 +7,7 @@ import {
   useState,
 } from "react"
 
-export type TimerStatus = "idle" | "running" | "paused" | "done"
+import type { TimerStatus } from "@/types/timer"
 
 export type TimerState = {
   startingMs: number

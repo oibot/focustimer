@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react"
 import { AppState } from "react-native"
 import * as Notifications from "expo-notifications"
 
-import type { TimerStatus } from "@/hooks/useTimer"
+import type { TimerStatus } from "@/types/timer"
 
 type UseBackgroundTimerNotificationsProps = {
   status: TimerStatus
