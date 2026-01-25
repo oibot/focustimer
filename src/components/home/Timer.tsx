@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
+import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
 
 type TimerProps = {
@@ -26,7 +27,7 @@ export default function Timer({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.timer}>{formatMs(remainingMs)}</Text>
+      <Text style={styles.timer}>{formatDuration(remainingMs)}</Text>
       <Pressable style={styles.button} onPress={onToggle}>
         <Text style={styles.buttonLabel}>{toggleLabel}</Text>
       </Pressable>
@@ -43,14 +44,6 @@ export default function Timer({
       </Pressable>
     </View>
   )
-}
-
-// TODO: create a shared utility file for this
-const formatMs = (ms: number) => {
-  const totalSeconds = Math.max(0, Math.ceil(ms / 1000))
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
 }
 
 const styles = StyleSheet.create({
