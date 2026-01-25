@@ -20,7 +20,7 @@ describe("useBackgroundTimerNotifications", () => {
     jest.useFakeTimers()
     jest.setSystemTime(new Date("2026-01-08T00:00:00Z"))
     appStateHandler = null
-    ;(AppState as { currentState?: string }).currentState = "active"
+    AppState.currentState = "active"
     jest
       .spyOn(AppState, "addEventListener")
       .mockImplementation((_type, handler) => {
@@ -72,7 +72,7 @@ describe("useBackgroundTimerNotifications", () => {
   })
 
   it("schedules immediately when already in background", async () => {
-    ;(AppState as { currentState?: string }).currentState = "background"
+    AppState.currentState = "background"
 
     renderHook(() =>
       useBackgroundTimerNotifications({
@@ -152,6 +152,97 @@ describe("useBackgroundTimerNotifications", () => {
       expect(
         Notifications.cancelScheduledNotificationAsync,
       ).toHaveBeenCalledWith("notif-3")
+    })
+  })
+
+  it.each(["idle", "paused", "done"] as TimerStatus[])(
+    "does not schedule when status is %s",
+    async (status) => {
+      renderHook(() =>
+        useBackgroundTimerNotifications({ status, remainingMs: 1000 }),
+      )
+
+      await waitFor(() => {
+        expect(appStateHandler).not.toBeNull()
+      })
+
+      act(() => appStateHandler?.("background"))
+
+      await waitFor(() => {
+        expect(Notifications.scheduleNotificationAsync).not.toHaveBeenCalled()
+      })
+    },
+  )
+
+  it("does not schedule when remainingMs is zero", async () => {
+    ;(AppState as { currentState?: string }).currentState = "background"
+
+    renderHook(() =>
+      useBackgroundTimerNotifications({ status: "running", remainingMs: 0 }),
+    )
+
+    await waitFor(() => {
+      expect(appStateHandler).not.toBeNull()
+    })
+
+    await waitFor(() => {
+      expect(Notifications.scheduleNotificationAsync).not.toHaveBeenCalled()
+    })
+  })
+
+  it("reschedules when background event fires again", async () => {
+    ;(Notifications.scheduleNotificationAsync as jest.Mock)
+      .mockResolvedValueOnce("notif-4")
+      .mockResolvedValueOnce("notif-5")
+
+    renderHook(() =>
+      useBackgroundTimerNotifications({ status: "running", remainingMs: 2000 }),
+    )
+
+    await waitFor(() => {
+      expect(appStateHandler).not.toBeNull()
+    })
+
+    act(() => appStateHandler?.("background"))
+
+    await waitFor(() => {
+      expect(Notifications.scheduleNotificationAsync).toHaveBeenCalledTimes(1)
+    })
+
+    act(() => appStateHandler?.("background"))
+
+    await waitFor(() => {
+      expect(
+        Notifications.cancelScheduledNotificationAsync,
+      ).toHaveBeenCalledWith("notif-4")
+      expect(Notifications.scheduleNotificationAsync).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  it("cancels when running stops while already background", async () => {
+    ;(AppState as { currentState?: string }).currentState = "background"
+    ;(
+      Notifications.scheduleNotificationAsync as jest.Mock
+    ).mockResolvedValueOnce("notif-6")
+
+    const { rerender } = renderHook(
+      ({ status, remainingMs }: { status: TimerStatus; remainingMs: number }) =>
+        useBackgroundTimerNotifications({ status, remainingMs }),
+      {
+        initialProps: { status: "running", remainingMs: 2000 },
+      },
+    )
+
+    await waitFor(() => {
+      expect(Notifications.scheduleNotificationAsync).toHaveBeenCalled()
+    })
+
+    rerender({ status: "paused", remainingMs: 2000 })
+
+    await waitFor(() => {
+      expect(
+        Notifications.cancelScheduledNotificationAsync,
+      ).toHaveBeenCalledWith("notif-6")
     })
   })
 })
