@@ -36,6 +36,11 @@ describe("Timer", () => {
     expect(getByText("Cancel").parent!).toBeEnabled()
   })
 
+  it("enables cancel by default while running", () => {
+    const { getByText } = render(<Timer {...baseProps} status="running" />)
+    expect(getByText("Cancel").parent!).toBeEnabled()
+  })
+
   it("calls handlers on press", () => {
     const onToggle = jest.fn()
     const onCancel = jest.fn()
@@ -61,5 +66,17 @@ describe("Timer", () => {
   it("uses a custom idle label when provided", () => {
     const { getByText } = render(<Timer {...baseProps} idleLabel="Focus" />)
     expect(getByText("Focus")).toBeTruthy()
+  })
+
+  it("uses a custom cancel label when provided", () => {
+    const { getByText } = render(
+      <Timer {...baseProps} cancelLabel="Reset" canCancel />,
+    )
+    expect(getByText("Reset")).toBeTruthy()
+  })
+
+  it("uses the idle label for the toggle button", () => {
+    const { getByText } = render(<Timer {...baseProps} idleLabel="Begin" />)
+    expect(getByText("Begin")).toBeTruthy()
   })
 })
