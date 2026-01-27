@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { createContext, useEffect, useRef, useState } from "react"
 
 import type { TimerStatus } from "@/types/timer"
 
@@ -73,14 +66,14 @@ export default function TimerProvider({
     return () => clearInterval(id)
   }, [isRunning])
 
-  const setStartingMsAndReset = useCallback((ms: number) => {
+  const setStartingMsAndReset = (ms: number) => {
     setIsRunning(false)
     setStartingMs(ms)
     setRemainingMs(ms)
     endAtRef.current = null
-  }, [])
+  }
 
-  const toggleTimer = useCallback(() => {
+  const toggleTimer = () => {
     if (isRunning) {
       setIsRunning(false)
       if (endAtRef.current !== null) {
@@ -91,30 +84,24 @@ export default function TimerProvider({
     }
     endAtRef.current = Date.now() + remainingMs
     setIsRunning(true)
-  }, [isRunning, remainingMs])
+  }
 
-  const cancelTimer = useCallback(() => {
+  const cancelTimer = () => {
     setIsRunning(false)
     setRemainingMs(startingMs)
     endAtRef.current = null
-  }, [startingMs])
+  }
 
-  const actions = useMemo(
-    () => ({
-      toggleTimer,
-      cancelTimer,
-      setStartingMs: setStartingMsAndReset,
-    }),
-    [toggleTimer, cancelTimer, setStartingMsAndReset],
-  )
+  const actions = {
+    toggleTimer,
+    cancelTimer,
+    setStartingMs: setStartingMsAndReset,
+  }
 
-  const value = useMemo(
-    () => ({
-      state: { startingMs, remainingMs, isRunning, status },
-      actions,
-    }),
-    [startingMs, remainingMs, isRunning, status, actions],
-  )
+  const value = {
+    state: { startingMs, remainingMs, isRunning, status },
+    actions,
+  }
 
   return <TimerContext value={value}>{children}</TimerContext>
 }

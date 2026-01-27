@@ -8,12 +8,12 @@ import { useTimer } from "@/hooks/useTimer"
 
 const TIMER_MODES = {
   focus: {
-    startingMs: 3000, //25 * 60 * 1000,
+    startingMs: 25 * 60 * 1000,
     idleLabel: "Focus",
     nextMode: "short",
   },
   short: {
-    startingMs: 2000, //5 * 60 * 1000,
+    startingMs: 5 * 60 * 1000,
     idleLabel: "Start",
     nextMode: "focus",
   },
