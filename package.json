@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "ios:dev": "APP_VARIANT=dev expo prebuild --clean --platform=ios && APP_VARIANT=dev expo run:ios --device",
-    "ios:release": "APP_VARIANT=test expo prebuild --clean --platform=ios && APP_VARIANT=test expo run:ios --device --configuration Release",
+    "ios:test": "APP_VARIANT=test expo prebuild --clean --platform=ios && APP_VARIANT=test expo run:ios --device --configuration Release",
     "web": "expo start --web",
     "format": "prettier --write src",
     "test": "jest --watchAll=false --watchman=false"

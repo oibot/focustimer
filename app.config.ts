@@ -8,7 +8,7 @@ const name =
       ? "pomodoro-test"
       : "pomodoro"
 
-const bundleBase = "com.tobio.pomodoro"
+const bundleBase = "de.totap.pomodoro"
 const bundleIdentifier =
   variant === "dev"
     ? `${bundleBase}.dev`
