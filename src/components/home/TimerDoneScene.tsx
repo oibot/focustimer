@@ -9,7 +9,7 @@ type TimerDoneSceneProps = {
 
 export default function TimerDoneScene({
   nextMode,
-  onStart, // TODO: rename
+  onStart,
   onCancel,
 }: TimerDoneSceneProps) {
   const buttonLabel = nextMode === "focus" ? "Start Focus" : "Start Break"

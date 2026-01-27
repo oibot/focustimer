@@ -27,7 +27,6 @@ const expectTimerState = (state: TimerContextValue["state"]) => {
 const expectTimerActions = (actions: TimerContextValue["actions"]) => {
   expectNonNil(actions.toggleTimer)
   expectNonNil(actions.cancelTimer)
-  expectNonNil(actions.finishTimer)
   expectNonNil(actions.setStartingMs)
 }
 
@@ -126,20 +125,6 @@ describe("TimerProvider", () => {
 
     expect(result.current.state.status).toBe("idle")
     expect(result.current.state.remainingMs).toBe(5000)
-    expectTimerActions(result.current.actions)
-  })
-
-  it("finishes immediately when requested", () => {
-    const { result } = renderHook(() => useTimerContext(), { wrapper })
-
-    act(() => result.current.actions.setStartingMs(4000))
-    act(() => result.current.actions.toggleTimer())
-    act(() => jest.advanceTimersByTime(1000))
-
-    act(() => result.current.actions.finishTimer())
-
-    expect(result.current.state.remainingMs).toBe(0)
-    expect(result.current.state.status).toBe("done")
     expectTimerActions(result.current.actions)
   })
 })

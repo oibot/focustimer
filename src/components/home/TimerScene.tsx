@@ -44,7 +44,6 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     setStartingMs,
     toggleTimer,
     cancelTimer,
-    finishTimer,
     canCancel,
   } = useTimer()
 
@@ -71,17 +70,6 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     }
   }, [cancelTimer, nextMode, onDone, player, status])
 
-  // TODO: what happens when no default clause
-  const handleCancel = () => {
-    switch (timerMode) {
-      case "short":
-        finishTimer()
-        break
-      case "focus":
-        cancelTimer()
-    }
-  }
-
   return (
     <View style={{ flex: 1 }}>
       {status === "running" ? <KeepAwakeWhileRunning /> : null}
@@ -89,7 +77,7 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
         remainingMs={remainingMs}
         status={status}
         onToggle={toggleTimer}
-        onCancel={handleCancel}
+        onCancel={cancelTimer}
         idleLabel={idleLabel}
         cancelLabel={timerMode === "short" ? "Stop" : "Cancel"}
         canCancel={canCancel}

@@ -19,7 +19,6 @@ export type TimerState = {
 export type TimerActions = {
   toggleTimer: () => void
   cancelTimer: () => void
-  finishTimer: () => void
   setStartingMs: (ms: number) => void
 }
 
@@ -40,7 +39,6 @@ const DEFAULT_CONTEXT: TimerContextValue = {
   actions: {
     toggleTimer: () => {},
     cancelTimer: () => {},
-    finishTimer: () => {},
     setStartingMs: () => {},
   },
 }
@@ -101,20 +99,13 @@ export default function TimerProvider({
     endAtRef.current = null
   }, [startingMs])
 
-  const finishTimer = useCallback(() => {
-    setIsRunning(false)
-    setRemainingMs(0)
-    endAtRef.current = null
-  }, [])
-
   const actions = useMemo(
     () => ({
       toggleTimer,
       cancelTimer,
-      finishTimer,
       setStartingMs: setStartingMsAndReset,
     }),
-    [toggleTimer, cancelTimer, finishTimer, setStartingMsAndReset],
+    [toggleTimer, cancelTimer, setStartingMsAndReset],
   )
 
   const value = useMemo(

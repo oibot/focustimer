@@ -1,10 +1,11 @@
-import { useTimerStore } from "@/hooks/useTimerStore"
+import { TimerContext } from "@/components/providers/TimerProvider"
+import { useContext } from "react"
 
 export function useTimer() {
   const {
     state: { startingMs, remainingMs, status },
-    actions: { setStartingMs, toggleTimer, cancelTimer, finishTimer },
-  } = useTimerStore()
+    actions: { setStartingMs, toggleTimer, cancelTimer },
+  } = useContext(TimerContext)
 
   const canCancel = remainingMs !== startingMs
 
@@ -12,7 +13,6 @@ export function useTimer() {
     remainingMs,
     status,
     cancelTimer,
-    finishTimer,
     setStartingMs,
     toggleTimer,
     canCancel,

@@ -23,7 +23,6 @@ const baseTimerState = {
   setStartingMs: jest.fn(),
   toggleTimer: jest.fn(),
   cancelTimer: jest.fn(),
-  finishTimer: jest.fn(),
   canCancel: true,
 }
 
@@ -83,21 +82,6 @@ describe("TimerScene", () => {
     expect(player.play).toHaveBeenCalledTimes(1)
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onDone).toHaveBeenCalledWith("short")
-  })
-
-  it("finishes the timer when stopping a short break", () => {
-    const finishTimer = jest.fn()
-
-    mockUseTimer.mockReturnValue({
-      ...baseTimerState,
-      finishTimer,
-    })
-
-    const { getByText } = render(<TimerScene mode="short" onDone={jest.fn()} />)
-
-    fireEvent.press(getByText("Stop").parent!)
-
-    expect(finishTimer).toHaveBeenCalledTimes(1)
   })
 
   it("cancels the timer when canceling focus", () => {
