@@ -45,7 +45,7 @@ const config: ExpoConfig = {
   web: {
     favicon: "./assets/favicon.png",
   },
-  plugins: ["expo-router", "expo-audio"],
+  plugins: ["expo-router", "expo-audio", "expo-asset"],
 }
 
 export default config
