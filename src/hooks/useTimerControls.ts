@@ -8,6 +8,8 @@ type UseTimerControlsParams = {
   timerMode: "focus" | "short"
 }
 
+export const TIMER_CONTROLS_TAP_GESTURE_ID = "timer-controls-tap"
+
 export default function useTimerControls({
   status,
   timerMode,
@@ -18,6 +20,7 @@ export default function useTimerControls({
   const tapGesture = useMemo(
     () =>
       Gesture.Tap()
+        .withTestId(TIMER_CONTROLS_TAP_GESTURE_ID)
         .runOnJS(true)
         .onStart(() => {
           if (timerMode !== "focus") return

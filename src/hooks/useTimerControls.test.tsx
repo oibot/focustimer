@@ -1,106 +1,102 @@
-import { act, renderHook, waitFor } from "@testing-library/react-native"
-import { Gesture } from "react-native-gesture-handler"
+import { act, render, waitFor } from "@testing-library/react-native"
+import { Text, View } from "react-native"
+import { GestureDetector, State } from "react-native-gesture-handler"
+import {
+  fireGestureHandler,
+  getByGestureTestId,
+} from "react-native-gesture-handler/jest-utils"
 
-import useTimerControls from "@/hooks/useTimerControls"
+import useTimerControls, {
+  TIMER_CONTROLS_TAP_GESTURE_ID,
+} from "@/hooks/useTimerControls"
 import type { TimerStatus } from "@/types/timer"
 
-jest.mock("react-native-gesture-handler", () => ({
-  Gesture: {
-    Tap: jest.fn(),
-  },
-}))
+type HarnessProps = {
+  status: TimerStatus
+  timerMode: "focus" | "short"
+}
 
-const mockTap = jest.mocked(Gesture.Tap)
+const Harness = ({ status, timerMode }: HarnessProps) => {
+  const { showControls, tapGesture } = useTimerControls({ status, timerMode })
 
-let onStartHandler: (() => void) | null = null
-
-const setupGestureMock = () => {
-  let mockGesture: { runOnJS: jest.Mock; onStart: jest.Mock }
-
-  mockGesture = {
-    runOnJS: jest.fn(() => mockGesture),
-    onStart: jest.fn((handler: () => void) => {
-      onStartHandler = handler
-      return mockGesture
-    }),
-  }
-
-  mockTap.mockReturnValue(
-    mockGesture as unknown as ReturnType<typeof Gesture.Tap>,
+  return (
+    <GestureDetector gesture={tapGesture}>
+      <View>{showControls ? <Text>controls</Text> : null}</View>
+    </GestureDetector>
   )
 }
 
-describe("useTimerControls", () => {
-  beforeEach(() => {
-    onStartHandler = null
-    setupGestureMock()
-  })
+const fireTapGesture = () => {
+  fireGestureHandler(getByGestureTestId(TIMER_CONTROLS_TAP_GESTURE_ID), [
+    { state: State.BEGAN },
+    { state: State.END },
+  ])
+}
 
+describe("useTimerControls", () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
 
   it("hides controls when focus timer starts running", async () => {
-    const { result } = renderHook(() =>
-      useTimerControls({ status: "running", timerMode: "focus" }),
+    const { queryByText } = render(
+      <Harness status="running" timerMode="focus" />,
     )
 
     await waitFor(() => {
-      expect(result.current.showControls).toBe(false)
+      expect(queryByText("controls")).toBeNull()
     })
   })
 
   it("shows controls on tap while running", async () => {
-    const { result } = renderHook(() =>
-      useTimerControls({ status: "running", timerMode: "focus" }),
+    const { queryByText } = render(
+      <Harness status="running" timerMode="focus" />,
     )
 
     await waitFor(() => {
-      expect(result.current.showControls).toBe(false)
+      expect(queryByText("controls")).toBeNull()
     })
 
     act(() => {
-      onStartHandler?.()
+      fireTapGesture()
     })
 
     await waitFor(() => {
-      expect(result.current.showControls).toBe(true)
+      expect(queryByText("controls")).toBeTruthy()
     })
   })
 
   it("keeps controls visible in short mode", async () => {
-    const { result } = renderHook(() =>
-      useTimerControls({ status: "running", timerMode: "short" }),
+    const { queryByText } = render(
+      <Harness status="running" timerMode="short" />,
     )
 
     await waitFor(() => {
-      expect(result.current.showControls).toBe(true)
+      expect(queryByText("controls")).toBeTruthy()
     })
 
     act(() => {
-      onStartHandler?.()
+      fireTapGesture()
     })
 
     await waitFor(() => {
-      expect(result.current.showControls).toBe(true)
+      expect(queryByText("controls")).toBeTruthy()
     })
   })
 
   it("shows controls when focus timer pauses", async () => {
-    const { result, rerender } = renderHook(
-      ({ status }: { status: TimerStatus }) =>
-        useTimerControls({ status, timerMode: "focus" }),
-      { initialProps: { status: "running" } },
+    const { queryByText, rerender } = render(
+      <Harness status="running" timerMode="focus" />,
     )
 
     await waitFor(() => {
-      expect(result.current.showControls).toBe(false)
+      expect(queryByText("controls")).toBeNull()
     })
 
-    rerender({ status: "paused" })
+    rerender(<Harness status="paused" timerMode="focus" />)
 
     await waitFor(() => {
-      expect(result.current.showControls).toBe(true)
+      expect(queryByText("controls")).toBeTruthy()
     })
   })
 })
