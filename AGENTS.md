@@ -13,6 +13,7 @@ This Project implements a pomodoro timer for iOS using React Native with expo an
 + run `bunx tsc --noEmit` after finishing some edits
 + The pages in the app directory only are responsible for routing. They should build the UI from components in the components directory.
 + The components are organized by feature. For example /components/home contains all components related to the home feature.
++ This project uses React 19 with the new compiler enabled
 
 # Knowledge
 

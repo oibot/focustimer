@@ -14,10 +14,15 @@ import type { TimerMode, TimerStatus } from "@/types/timer"
 type HarnessProps = {
   status: TimerStatus
   timerMode: TimerMode
+  autoHideDelay?: number
 }
 
-const Harness = ({ status, timerMode }: HarnessProps) => {
-  const { showControls, tapGesture } = useTimerControls({ status, timerMode })
+const Harness = ({ status, timerMode, autoHideDelay }: HarnessProps) => {
+  const { showControls, tapGesture } = useTimerControls({
+    status,
+    timerMode,
+    autoHideDelay,
+  })
 
   return (
     <GestureDetector gesture={tapGesture}>
@@ -34,8 +39,13 @@ const fireTapGesture = () => {
 }
 
 describe("useTimerControls", () => {
+  beforeEach(() => {
+    jest.useFakeTimers()
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
+    jest.useRealTimers()
   })
 
   it("hides controls when focus timer starts running", async () => {
@@ -48,21 +58,75 @@ describe("useTimerControls", () => {
     })
   })
 
-  it("shows controls on tap while running", async () => {
+  it("toggles controls on tap while running", async () => {
     const { queryByText } = render(
-      <Harness status="running" timerMode="focus" />,
+      <Harness status="running" timerMode="focus" autoHideDelay={5000} />,
     )
 
     await waitFor(() => {
       expect(queryByText("controls")).toBeNull()
     })
 
+    // First tap shows controls
     act(() => {
       fireTapGesture()
     })
 
     await waitFor(() => {
       expect(queryByText("controls")).toBeTruthy()
+    })
+
+    // Second tap hides controls
+    act(() => {
+      fireTapGesture()
+    })
+
+    await waitFor(() => {
+      expect(queryByText("controls")).toBeNull()
+    })
+
+    // Third tap shows controls again
+    act(() => {
+      fireTapGesture()
+    })
+
+    await waitFor(() => {
+      expect(queryByText("controls")).toBeTruthy()
+    })
+  })
+
+  it("auto-hides controls after delay while running", async () => {
+    const { queryByText } = render(
+      <Harness status="running" timerMode="focus" autoHideDelay={1000} />,
+    )
+
+    await waitFor(() => {
+      expect(queryByText("controls")).toBeNull()
+    })
+
+    // Tap to show controls
+    act(() => {
+      fireTapGesture()
+    })
+
+    await waitFor(() => {
+      expect(queryByText("controls")).toBeTruthy()
+    })
+
+    // Advance time but not enough to trigger auto-hide
+    act(() => {
+      jest.advanceTimersByTime(500)
+    })
+
+    expect(queryByText("controls")).toBeTruthy()
+
+    // Advance time to trigger auto-hide
+    act(() => {
+      jest.advanceTimersByTime(600)
+    })
+
+    await waitFor(() => {
+      expect(queryByText("controls")).toBeNull()
     })
   })
 
