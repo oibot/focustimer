@@ -36,6 +36,14 @@ describe("Timer", () => {
     expect(getByText("Cancel").parent!).toBeEnabled()
   })
 
+  it("hides controls when requested", () => {
+    const { queryByText } = render(
+      <Timer {...baseProps} showControls={false} />,
+    )
+    expect(queryByText("Start")).toBeNull()
+    expect(queryByText("Cancel")).toBeNull()
+  })
+
   it("enables cancel by default while running", () => {
     const { getByText } = render(<Timer {...baseProps} status="running" />)
     expect(getByText("Cancel").parent!).toBeEnabled()

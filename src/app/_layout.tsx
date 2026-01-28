@@ -30,21 +30,21 @@ export default function Layout() {
 
   return (
     <GestureHandlerRootView>
-    <TimerProvider>
-      <Stack>
-        <Stack.Screen name="index" />
-        <Stack.Screen
-          name="timer-done"
-          options={{
-            presentation: "formSheet",
-            sheetAllowedDetents: [0.25],
-            sheetInitialDetentIndex: 0,
-            sheetGrabberVisible: true,
-            headerShown: false,
-          }}
-        />
-      </Stack>
-    </TimerProvider>
+      <TimerProvider>
+        <Stack>
+          <Stack.Screen name="index" />
+          <Stack.Screen
+            name="timer-done"
+            options={{
+              presentation: "formSheet",
+              sheetAllowedDetents: [0.25],
+              sheetInitialDetentIndex: 0,
+              sheetGrabberVisible: true,
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </TimerProvider>
     </GestureHandlerRootView>
   )
 }

@@ -11,6 +11,7 @@ type TimerProps = {
   idleLabel?: string
   cancelLabel?: string
   canCancel?: boolean
+  showControls?: boolean
 }
 
 export default function Timer({
@@ -21,6 +22,7 @@ export default function Timer({
   idleLabel = "Start",
   cancelLabel = "Cancel",
   canCancel = status === "running",
+  showControls = true,
 }: TimerProps) {
   const toggleLabel =
     status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
@@ -28,20 +30,24 @@ export default function Timer({
   return (
     <View style={styles.container}>
       <Text style={styles.timer}>{formatDuration(remainingMs)}</Text>
-      <Pressable style={styles.button} onPress={onToggle}>
-        <Text style={styles.buttonLabel}>{toggleLabel}</Text>
-      </Pressable>
-      <Pressable
-        style={[
-          styles.button,
-          styles.cancelButton,
-          !canCancel && styles.buttonDisabled,
-        ]}
-        disabled={!canCancel}
-        onPress={onCancel}
-      >
-        <Text style={styles.buttonLabel}>{cancelLabel}</Text>
-      </Pressable>
+      {showControls ? (
+        <View style={styles.controls}>
+          <Pressable style={styles.button} onPress={onToggle}>
+            <Text style={styles.buttonLabel}>{toggleLabel}</Text>
+          </Pressable>
+          <Pressable
+            style={[
+              styles.button,
+              styles.cancelButton,
+              !canCancel && styles.buttonDisabled,
+            ]}
+            disabled={!canCancel}
+            onPress={onCancel}
+          >
+            <Text style={styles.buttonLabel}>{cancelLabel}</Text>
+          </Pressable>
+        </View>
+      ) : null}
     </View>
   )
 }
@@ -57,6 +63,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     fontVariant: ["tabular-nums"],
+  },
+  controls: {
+    alignItems: "center",
   },
   button: {
     paddingVertical: 12,

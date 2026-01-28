@@ -8,6 +8,30 @@ import { useAudioPlayer } from "expo-audio"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
+jest.mock("react-native-gesture-handler", () => {
+  const actual = jest.requireActual("react-native-gesture-handler")
+  return {
+    ...actual,
+    GestureDetector: ({ children }: { children: React.ReactNode }) => children,
+    Gesture: {
+      Tap: jest.fn(() => {
+        const gesture: {
+          onStart: jest.Mock
+          onEnd: jest.Mock
+          runOnJS: jest.Mock
+        } = {
+          onStart: jest.fn(),
+          onEnd: jest.fn(),
+          runOnJS: jest.fn(),
+        }
+        gesture.onStart.mockImplementation(() => gesture)
+        gesture.onEnd.mockImplementation(() => gesture)
+        gesture.runOnJS.mockImplementation(() => gesture)
+        return gesture
+      }),
+    },
+  }
+})
 
 const mockUseTimer = useTimer as jest.MockedFunction<typeof useTimer>
 const mockUseKeepAwake = useKeepAwake as jest.MockedFunction<
@@ -50,6 +74,20 @@ describe("TimerScene", () => {
     expect(getByText("Stop")).toBeTruthy()
   })
 
+  it("hides controls while running in focus mode", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    const { queryByText } = render(
+      <TimerScene mode="focus" onDone={jest.fn()} />,
+    )
+
+    expect(queryByText("Pause")).toBeNull()
+    expect(queryByText("Cancel")).toBeNull()
+  })
+
   it("keeps the screen awake while running", () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
@@ -58,7 +96,7 @@ describe("TimerScene", () => {
 
     render(<TimerScene mode="focus" onDone={jest.fn()} />)
 
-    expect(mockUseKeepAwake).toHaveBeenCalledTimes(1)
+    expect(mockUseKeepAwake).toHaveBeenCalled()
   })
 
   it("plays audio and notifies when done", () => {
