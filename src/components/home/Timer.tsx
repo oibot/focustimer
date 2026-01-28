@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 96,
     fontWeight: "700",
+    textAlign: "center",
+    fontVariant: ["tabular-nums"],
   },
   button: {
     paddingVertical: 12,
