@@ -9,11 +9,11 @@ import {
 import useTimerControls, {
   TIMER_CONTROLS_TAP_GESTURE_ID,
 } from "@/hooks/useTimerControls"
-import type { TimerStatus } from "@/types/timer"
+import type { TimerMode, TimerStatus } from "@/types/timer"
 
 type HarnessProps = {
   status: TimerStatus
-  timerMode: "focus" | "short"
+  timerMode: TimerMode
 }
 
 const Harness = ({ status, timerMode }: HarnessProps) => {

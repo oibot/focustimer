@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Gesture } from "react-native-gesture-handler"
 
-import type { TimerStatus } from "@/types/timer"
+import type { TimerMode, TimerStatus } from "@/types/timer"
 
 type UseTimerControlsParams = {
   status: TimerStatus
-  timerMode: "focus" | "short"
+  timerMode: TimerMode
 }
 
 export const TIMER_CONTROLS_TAP_GESTURE_ID = "timer-controls-tap"

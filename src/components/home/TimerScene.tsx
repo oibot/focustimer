@@ -5,6 +5,7 @@ import { View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
 import { useEffect, useLayoutEffect, useRef } from "react"
 import { useTimer } from "@/hooks/useTimer"
+import { isTimerMode, TimerMode } from "@/types/timer"
 import { GestureDetector } from "react-native-gesture-handler"
 import useTimerControls from "@/hooks/useTimerControls"
 
@@ -21,11 +22,6 @@ const TIMER_MODES = {
   },
 } as const
 
-type TimerMode = keyof typeof TIMER_MODES
-
-const isTimerMode = (value?: string): value is TimerMode =>
-  value === "focus" || value === "short"
-
 type TimerSceneProps = {
   mode?: string
   onDone: (nextMode: string) => void
@@ -38,7 +34,7 @@ function KeepAwakeWhileRunning() {
 
 export default function TimerScene({ mode, onDone }: TimerSceneProps) {
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
-  const timerMode = isTimerMode(mode) ? mode : "focus"
+  const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, idleLabel, nextMode } = TIMER_MODES[timerMode]
   const {
     remainingMs,
