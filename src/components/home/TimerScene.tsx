@@ -3,9 +3,10 @@ import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotificat
 import { useKeepAwake } from "expo-keep-awake"
 import { View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 import { useTimer } from "@/hooks/useTimer"
-import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { GestureDetector } from "react-native-gesture-handler"
+import useTimerControls from "@/hooks/useTimerControls"
 
 const TIMER_MODES = {
   focus: {
@@ -48,15 +49,10 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     canCancel,
   } = useTimer()
 
-  const [showControls, setShowControls] = useState(true)
-  const wasRunningRef = useRef(false)
-
-  const tap = Gesture.Tap()
-    .runOnJS(true)
-    .onStart(() => {
-      if (timerMode !== "focus") return
-      setShowControls(true)
-    })
+  const { showControls, tapGesture } = useTimerControls({
+    status,
+    timerMode,
+  })
 
   const hasShownDoneRef = useRef(false)
 
@@ -81,27 +77,8 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     }
   }, [cancelTimer, nextMode, onDone, player, status])
 
-  useEffect(() => {
-    if (timerMode !== "focus") {
-      setShowControls(true)
-      wasRunningRef.current = status === "running"
-      return
-    }
-
-    if (status === "running" && !wasRunningRef.current) {
-      setShowControls(false)
-    }
-    if (status === "idle") {
-      setShowControls(true)
-    }
-    if (status === "paused") {
-      setShowControls(true)
-    }
-    wasRunningRef.current = status === "running"
-  }, [status, timerMode])
-
   return (
-    <GestureDetector gesture={tap}>
+    <GestureDetector gesture={tapGesture}>
       <View style={{ flex: 1 }}>
         {status === "running" ? <KeepAwakeWhileRunning /> : null}
         <Timer

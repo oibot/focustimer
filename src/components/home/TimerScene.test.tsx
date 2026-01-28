@@ -8,30 +8,6 @@ import { useAudioPlayer } from "expo-audio"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
-jest.mock("react-native-gesture-handler", () => {
-  const actual = jest.requireActual("react-native-gesture-handler")
-  return {
-    ...actual,
-    GestureDetector: ({ children }: { children: React.ReactNode }) => children,
-    Gesture: {
-      Tap: jest.fn(() => {
-        const gesture: {
-          onStart: jest.Mock
-          onEnd: jest.Mock
-          runOnJS: jest.Mock
-        } = {
-          onStart: jest.fn(),
-          onEnd: jest.fn(),
-          runOnJS: jest.fn(),
-        }
-        gesture.onStart.mockImplementation(() => gesture)
-        gesture.onEnd.mockImplementation(() => gesture)
-        gesture.runOnJS.mockImplementation(() => gesture)
-        return gesture
-      }),
-    },
-  }
-})
 
 const mockUseTimer = useTimer as jest.MockedFunction<typeof useTimer>
 const mockUseKeepAwake = useKeepAwake as jest.MockedFunction<
