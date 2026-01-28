@@ -2,6 +2,7 @@ import { Stack } from "expo-router"
 import * as Notifications from "expo-notifications"
 import { useEffect } from "react"
 import TimerProvider from "@/components/providers/TimerProvider"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 export const unstable_settings = {
   anchor: "index",
@@ -28,6 +29,7 @@ export default function Layout() {
   }, [])
 
   return (
+    <GestureHandlerRootView>
     <TimerProvider>
       <Stack>
         <Stack.Screen name="index" />
@@ -43,5 +45,6 @@ export default function Layout() {
         />
       </Stack>
     </TimerProvider>
+    </GestureHandlerRootView>
   )
 }

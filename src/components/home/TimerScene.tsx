@@ -5,6 +5,7 @@ import { View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
 import { useEffect, useLayoutEffect, useRef } from "react"
 import { useTimer } from "@/hooks/useTimer"
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
 
 const TIMER_MODES = {
   focus: {
@@ -47,6 +48,10 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     canCancel,
   } = useTimer()
 
+  const tap = Gesture.Tap().onEnd(() => {
+    console.log("tap detected")
+  })
+
   const hasShownDoneRef = useRef(false)
 
   useBackgroundTimerNotifications({ status, remainingMs })
@@ -71,17 +76,19 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
   }, [cancelTimer, nextMode, onDone, player, status])
 
   return (
-    <View style={{ flex: 1 }}>
-      {status === "running" ? <KeepAwakeWhileRunning /> : null}
-      <Timer
-        remainingMs={remainingMs}
-        status={status}
-        onToggle={toggleTimer}
-        onCancel={cancelTimer}
-        idleLabel={idleLabel}
-        cancelLabel={timerMode === "short" ? "Stop" : "Cancel"}
-        canCancel={canCancel}
-      />
-    </View>
+    <GestureDetector gesture={tap}>
+      <View style={{ flex: 1 }}>
+        {status === "running" ? <KeepAwakeWhileRunning /> : null}
+        <Timer
+          remainingMs={remainingMs}
+          status={status}
+          onToggle={toggleTimer}
+          onCancel={cancelTimer}
+          idleLabel={idleLabel}
+          cancelLabel={timerMode === "short" ? "Stop" : "Cancel"}
+          canCancel={canCancel}
+        />
+      </View>
+    </GestureDetector>
   )
 }
