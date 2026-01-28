@@ -59,11 +59,15 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     setStartingMs(startingMs)
   }, [startingMs])
 
+  const playDoneSound = () => {
+    player.seekTo(0)
+    player.play()
+  }
+
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
-      player.seekTo(0)
-      player.play()
+      playDoneSound()
       cancelTimer()
       onDone(nextMode)
       return
@@ -73,6 +77,14 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     }
   }, [cancelTimer, nextMode, onDone, player, status])
 
+  const handleCancel = () => {
+    cancelTimer()
+    if (timerMode === "short") {
+      playDoneSound()
+      onDone(nextMode)
+    }
+  }
+
   return (
     <GestureDetector gesture={tapGesture}>
       <View style={{ flex: 1 }}>
@@ -81,7 +93,7 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
           remainingMs={remainingMs}
           status={status}
           onToggle={toggleTimer}
-          onCancel={cancelTimer}
+          onCancel={handleCancel}
           idleLabel={idleLabel}
           cancelLabel={timerMode === "short" ? "Stop" : "Cancel"}
           canCancel={canCancel}

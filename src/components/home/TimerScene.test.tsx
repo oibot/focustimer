@@ -113,6 +113,30 @@ describe("TimerScene", () => {
     expect(cancelTimer).toHaveBeenCalledTimes(1)
   })
 
+  it("cancels and finishes the timer when stopping short mode", () => {
+    const cancelTimer = jest.fn()
+    const onDone = jest.fn()
+
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      cancelTimer,
+    })
+
+    const { getByText } = render(<TimerScene mode="short" onDone={onDone} />)
+
+    const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
+      play: jest.Mock
+      seekTo: jest.Mock
+    }
+
+    fireEvent.press(getByText("Stop").parent!)
+
+    expect(cancelTimer).toHaveBeenCalledTimes(1)
+    expect(onDone).toHaveBeenCalledWith("focus")
+    expect(player.seekTo).toHaveBeenCalledWith(0)
+    expect(player.play).toHaveBeenCalledTimes(1)
+  })
+
   it("wires background notifications", () => {
     const mockNotifications =
       useBackgroundTimerNotifications as jest.MockedFunction<
