@@ -3,6 +3,8 @@ import * as Notifications from "expo-notifications"
 import { useEffect } from "react"
 import TimerProvider from "@/components/providers/TimerProvider"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { useColorScheme } from "react-native"
+import { StatusBar } from "expo-status-bar"
 
 export const unstable_settings = {
   anchor: "index",
@@ -28,9 +30,12 @@ export default function Layout() {
     void ensurePermissions()
   }, [])
 
+  const colorScheme = useColorScheme()
+
   return (
     <GestureHandlerRootView>
       <TimerProvider>
+        <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         <Stack>
           <Stack.Screen name="index" />
           <Stack.Screen

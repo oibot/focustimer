@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Pressable, Text, View } from "react-native"
+import { StyleSheet } from "react-native-unistyles"
 
 import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
@@ -29,7 +30,7 @@ export default function Timer({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.timer}>{formatDuration(remainingMs)}</Text>
+      <Text style={styles.timerText}>{formatDuration(remainingMs)}</Text>
       {showControls ? (
         <View style={styles.controls}>
           <Pressable style={styles.button} onPress={onToggle}>
@@ -52,17 +53,19 @@ export default function Timer({
   )
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create( (theme) => ({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: theme.colors.background,
   },
-  timer: {
+  timerText: {
     fontSize: 96,
     fontWeight: "700",
     textAlign: "center",
     fontVariant: ["tabular-nums"],
+    color: theme.colors.primary,
   },
   controls: {
     alignItems: "center",
@@ -84,4 +87,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.4,
   },
-})
+  }))
