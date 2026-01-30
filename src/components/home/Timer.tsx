@@ -53,7 +53,7 @@ export default function Timer({
   )
 }
 
-const styles = StyleSheet.create( (theme) => ({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
     alignItems: "center",
@@ -87,4 +87,4 @@ const styles = StyleSheet.create( (theme) => ({
     fontWeight: "600",
     letterSpacing: 0.4,
   },
-  }))
+}))

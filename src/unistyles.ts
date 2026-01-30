@@ -4,24 +4,24 @@ const lightTheme = {
   colors: {
     primary: "#000000FF",
     secondary: "rgba(60, 60, 67, 0.6)",
-    background: "#F2F2F7"
-  }
+    background: "#F2F2F7",
+  },
 }
 const darkTheme = {
   colors: {
     primary: "#FFFFFFFF",
     secondary: "rgba(235, 235, 245, 0.60)",
-    background: "#1C1C1E"
-  }
+    background: "#1C1C1E",
+  },
 }
 
 const settings = {
-  adaptiveThemes: true
+  adaptiveThemes: true,
 }
 
 const appTheme = {
   themes: { light: lightTheme, dark: darkTheme },
-  settings
+  settings,
 }
 
 StyleSheet.configure(appTheme)
