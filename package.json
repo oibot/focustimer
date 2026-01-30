@@ -10,7 +10,9 @@
     "ios:test": "APP_VARIANT=test expo prebuild --clean --platform=ios && APP_VARIANT=test expo run:ios --device --configuration Release",
     "web": "expo start --web",
     "format": "prettier --write src",
-    "test": "jest --watchAll=false --watchman=false"
+    "test": "jest --watchAll=false --watchman=false",
+    "format:changed": "bash -lc 'files=$(git diff --name-only --diff-filter=ACMRTUXB HEAD -- \"src\" | tr \"\\n\" \" \"); if [ -z \"$files\" ]; then echo \"No changed files in src\"; exit 0; fi; bunx prettier --write $files'",
+    "test:changed": "jest --watchAll=false --watchman=false --onlyChanged"
   },
   "dependencies": {
     "expo": "^54.0.32",
