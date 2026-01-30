@@ -20,3 +20,9 @@ jest.mock("expo-audio", () => ({
     seekTo: jest.fn(),
   })),
 }))
+
+jest.mock("react-native-unistyles", () => ({
+  StyleSheet: {
+    create: (styles: any) => styles,
+  },
+}))

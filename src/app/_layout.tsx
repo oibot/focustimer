@@ -36,7 +36,7 @@ export default function Layout() {
     <GestureHandlerRootView>
       <TimerProvider>
         <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-        <Stack>
+        <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Screen
             name="timer-done"
@@ -46,6 +46,7 @@ export default function Layout() {
               sheetInitialDetentIndex: 0,
               sheetGrabberVisible: true,
               headerShown: false,
+              contentStyle: { backgroundColor: "transparent" },
             }}
           />
         </Stack>
