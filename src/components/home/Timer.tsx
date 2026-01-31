@@ -31,18 +31,23 @@ export default function Timer({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.timerText}>{formatDuration(remainingMs)}</Text>
-      {showControls ? (
-        <View style={styles.controls}>
+      <View style={styles.timerContainer}>
+        <Text style={styles.timerText}>{formatDuration(remainingMs)}</Text>
+      </View>
+      <View
+        testID="timer-controls"
+        style={[styles.controls, !showControls && styles.controlsHidden]}
+        pointerEvents={showControls ? "auto" : "none"}
+      >
+        <View style={styles.buttons}>
           <Button label={toggleLabel} onPress={onToggle} />
           <Button
-            variant="cancel"
             label={cancelLabel}
             disabled={!canCancel}
             onPress={onCancel}
           />
         </View>
-      ) : null}
+      </View>
     </View>
   )
 }
@@ -54,6 +59,10 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: "center",
     backgroundColor: theme.colors.background,
   },
+  timerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   timerText: {
     fontSize: 96,
     fontWeight: "700",
@@ -62,6 +71,14 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.primary,
   },
   controls: {
+    marginTop: 40,
     alignItems: "center",
+    opacity: 1,
+  },
+  controlsHidden: {
+    opacity: 0,
+  },
+  buttons: {
+    gap: 12,
   },
 }))

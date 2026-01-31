@@ -56,12 +56,14 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    const { queryByText } = render(
+    const { getByText, getByTestId } = render(
       <TimerScene mode="focus" onDone={jest.fn()} />,
     )
 
-    expect(queryByText("Pause")).toBeNull()
-    expect(queryByText("Cancel")).toBeNull()
+    expect(getByText("Pause")).toBeTruthy()
+    expect(getByText("Cancel")).toBeTruthy()
+    const controls = getByTestId("timer-controls")
+    expect(controls.props.pointerEvents).toBe("none")
   })
 
   it("keeps the screen awake while running", () => {

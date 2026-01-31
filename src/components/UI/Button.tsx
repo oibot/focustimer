@@ -1,15 +1,11 @@
 import { Pressable, Text, type PressableProps } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
-type ButtonVariant = "primary" | "cancel"
-
 type ButtonProps = PressableProps & {
-  variant?: ButtonVariant
   label: string
 }
 
 export default function Button({
-  variant = "primary",
   label,
   disabled,
   ...pressableProps
@@ -18,7 +14,6 @@ export default function Button({
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        variant === "cancel" && styles.cancelButton,
         disabled && styles.buttonDisabled,
         pressed && styles.buttonPressed,
       ]}
@@ -37,9 +32,6 @@ const styles = StyleSheet.create((theme) => ({
     borderColor: theme.colors.primary,
     borderWidth: 2,
     backgroundColor: theme.colors.background,
-  },
-  cancelButton: {
-    marginTop: 12,
   },
   buttonDisabled: {
     opacity: 0.4,
