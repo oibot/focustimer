@@ -20,7 +20,7 @@ const config: ExpoConfig = {
   name,
   slug: "pomodoro",
   scheme: "pomodoro",
-  version: "1.0.0",
+  version: "0.1.0",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
   icon: "./assets/icon.png",
