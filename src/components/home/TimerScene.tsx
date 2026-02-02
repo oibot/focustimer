@@ -3,11 +3,13 @@ import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotificat
 import { useKeepAwake } from "expo-keep-awake"
 import { View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
-import { useEffect, useLayoutEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useTimer } from "@/hooks/useTimer"
 import { isTimerMode, TimerMode } from "@/types/timer"
 import { GestureDetector } from "react-native-gesture-handler"
 import useTimerControls from "@/hooks/useTimerControls"
+import { Host, Picker } from "@expo/ui/swift-ui"
+import { StyleSheet } from "react-native-unistyles"
 
 const TIMER_MODES = {
   focus: {
@@ -85,10 +87,30 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     }
   }
 
+  const [selectedModeIndex, setSelectedModeIndex] = useState(0)
+
   return (
-    <GestureDetector gesture={tapGesture}>
-      <View style={{ flex: 1 }}>
-        {status === "running" ? <KeepAwakeWhileRunning /> : null}
+    <View style={styles.container}>
+      <GestureDetector gesture={tapGesture}>
+        <View style={styles.background} />
+      </GestureDetector>
+
+      {status === "running" ? <KeepAwakeWhileRunning /> : null}
+
+      <View style={styles.pickerContainer}>
+        <Host style={styles.pickerHost}>
+          <Picker
+            options={["Focus", "Break"]}
+            selectedIndex={selectedModeIndex}
+            onOptionSelected={({ nativeEvent: { index } }) =>
+              setSelectedModeIndex(index)
+            }
+            variant="segmented"
+          />
+        </Host>
+      </View>
+
+      <View style={styles.timerContainer} pointerEvents="box-none">
         <Timer
           remainingMs={remainingMs}
           status={status}
@@ -100,6 +122,37 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
           showControls={timerMode !== "focus" || showControls}
         />
       </View>
-    </GestureDetector>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  background: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  pickerContainer: {
+    alignItems: "center",
+    paddingTop: 16,
+    paddingHorizontal: 16,
+  },
+  pickerHost: {
+    width: 200,
+    height: 100,
+  },
+  timerContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+})

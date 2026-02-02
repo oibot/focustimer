@@ -30,7 +30,7 @@ export default function Timer({
     status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents="box-none">
       <View style={styles.timerContainer}>
         <Text style={styles.timerText}>{formatDuration(remainingMs)}</Text>
       </View>
@@ -54,7 +54,6 @@ export default function Timer({
 
 const styles = StyleSheet.create((theme) => ({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.colors.background,
