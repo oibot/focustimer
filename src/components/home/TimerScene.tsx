@@ -1,14 +1,14 @@
 import Timer from "@/components/home/Timer"
+import TimerModePicker from "@/components/home/TimerModePicker"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import { useKeepAwake } from "expo-keep-awake"
 import { View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 import { useTimer } from "@/hooks/useTimer"
 import { isTimerMode, TimerMode } from "@/types/timer"
 import { GestureDetector } from "react-native-gesture-handler"
 import useTimerControls from "@/hooks/useTimerControls"
-import { Host, Picker } from "@expo/ui/swift-ui"
 import { StyleSheet } from "react-native-unistyles"
 
 const TIMER_MODES = {
@@ -87,8 +87,6 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     }
   }
 
-  const [selectedModeIndex, setSelectedModeIndex] = useState(0)
-
   return (
     <View style={styles.container}>
       <GestureDetector gesture={tapGesture}>
@@ -98,16 +96,7 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
       {status === "running" ? <KeepAwakeWhileRunning /> : null}
 
       <View style={styles.pickerContainer}>
-        <Host style={styles.pickerHost}>
-          <Picker
-            options={["Focus", "Break"]}
-            selectedIndex={selectedModeIndex}
-            onOptionSelected={({ nativeEvent: { index } }) =>
-              setSelectedModeIndex(index)
-            }
-            variant="segmented"
-          />
-        </Host>
+        <TimerModePicker options={["Focus", "Break"]} />
       </View>
 
       <View style={styles.timerContainer} pointerEvents="box-none">
@@ -141,10 +130,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 16,
     paddingHorizontal: 16,
-  },
-  pickerHost: {
-    width: 200,
-    height: 100,
   },
   timerContainer: {
     position: "absolute",
