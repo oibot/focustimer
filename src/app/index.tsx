@@ -12,11 +12,16 @@ export default function Page() {
       params: { next: nextMode },
     })
 
+  const handleModeChange = (nextMode: string) => {
+    router.setParams({ mode: nextMode })
+  }
+
   return (
     <TimerScene
       key={modeParam ?? "focus"}
       mode={modeParam}
       onDone={handleDone}
+      onModeChange={handleModeChange}
     />
   )
 }

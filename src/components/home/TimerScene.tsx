@@ -27,6 +27,7 @@ const TIMER_MODES = {
 type TimerSceneProps = {
   mode?: string
   onDone: (nextMode: string) => void
+  onModeChange: (nextMode: string) => void
 }
 
 function KeepAwakeWhileRunning() {
@@ -34,10 +35,15 @@ function KeepAwakeWhileRunning() {
   return null
 }
 
-export default function TimerScene({ mode, onDone }: TimerSceneProps) {
+export default function TimerScene({
+  mode,
+  onDone,
+  onModeChange,
+}: TimerSceneProps) {
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, idleLabel, nextMode } = TIMER_MODES[timerMode]
+  const activeIndex = timerMode === "focus" ? 0 : 1
   const {
     remainingMs,
     status,
@@ -51,6 +57,12 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
     status,
     timerMode,
   })
+
+  const handleModeChange = (index: number) => {
+    if (index === activeIndex) return
+    const nextMode = index === 0 ? "focus" : "short"
+    onModeChange(nextMode)
+  }
 
   const hasShownDoneRef = useRef(false)
 
@@ -96,7 +108,12 @@ export default function TimerScene({ mode, onDone }: TimerSceneProps) {
       {status === "running" ? <KeepAwakeWhileRunning /> : null}
 
       <View style={styles.pickerContainer}>
-        <TimerModePicker options={["Focus", "Break"]} />
+        <TimerModePicker
+          options={["Focus", "Break"]}
+          activeIndex={activeIndex}
+          disabled={status === "running"}
+          onModeChange={handleModeChange}
+        />
       </View>
 
       <View style={styles.timerContainer} pointerEvents="box-none">

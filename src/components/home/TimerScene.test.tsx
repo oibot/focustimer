@@ -8,6 +8,43 @@ import { useAudioPlayer } from "expo-audio"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
+jest.mock("@/components/home/TimerModePicker", () => {
+  const React = require("react")
+  const { View, Text, Pressable } = require("react-native")
+
+  return function MockTimerModePicker({
+    onModeChange,
+    disabled,
+    activeIndex,
+  }: {
+    onModeChange?: (index: number) => void
+    disabled?: boolean
+    activeIndex: number
+  }) {
+    return (
+      <View>
+        <Text testID="mode-picker-active">{activeIndex}</Text>
+        <Text testID="mode-picker-disabled">
+          {disabled ? "disabled" : "enabled"}
+        </Text>
+        <Pressable
+          testID="mode-picker-focus"
+          onPress={() => onModeChange?.(0)}
+          disabled={disabled}
+        >
+          <Text>PickerFocus</Text>
+        </Pressable>
+        <Pressable
+          testID="mode-picker-break"
+          onPress={() => onModeChange?.(1)}
+          disabled={disabled}
+        >
+          <Text>PickerBreak</Text>
+        </Pressable>
+      </View>
+    )
+  }
+})
 
 const mockUseTimer = useTimer as jest.MockedFunction<typeof useTimer>
 const mockUseKeepAwake = useKeepAwake as jest.MockedFunction<
@@ -37,14 +74,16 @@ describe("TimerScene", () => {
 
   it("defaults to focus mode when mode is invalid", () => {
     const { getByText } = render(
-      <TimerScene mode="unknown" onDone={jest.fn()} />,
+      <TimerScene mode="unknown" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
     expect(getByText("Focus")).toBeTruthy()
   })
 
   it("uses the short mode labels and stop button", () => {
-    const { getByText } = render(<TimerScene mode="short" onDone={jest.fn()} />)
+    const { getByText } = render(
+      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
 
     expect(getByText("Start")).toBeTruthy()
     expect(getByText("Stop")).toBeTruthy()
@@ -57,7 +96,7 @@ describe("TimerScene", () => {
     })
 
     const { getByText, getByTestId } = render(
-      <TimerScene mode="focus" onDone={jest.fn()} />,
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
     expect(getByText("Pause")).toBeTruthy()
@@ -72,7 +111,9 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    render(<TimerScene mode="focus" onDone={jest.fn()} />)
+    render(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
 
     expect(mockUseKeepAwake).toHaveBeenCalled()
   })
@@ -87,7 +128,7 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    render(<TimerScene mode="focus" onDone={onDone} />)
+    render(<TimerScene mode="focus" onDone={onDone} onModeChange={jest.fn()} />)
 
     const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
       play: jest.Mock
@@ -108,7 +149,9 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    const { getByText } = render(<TimerScene mode="focus" onDone={jest.fn()} />)
+    const { getByText } = render(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
 
     fireEvent.press(getByText("Cancel").parent!)
 
@@ -124,7 +167,9 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    const { getByText } = render(<TimerScene mode="short" onDone={onDone} />)
+    const { getByText } = render(
+      <TimerScene mode="short" onDone={onDone} onModeChange={jest.fn()} />,
+    )
 
     const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
       play: jest.Mock
@@ -145,11 +190,112 @@ describe("TimerScene", () => {
         typeof useBackgroundTimerNotifications
       >
 
-    render(<TimerScene mode="focus" onDone={jest.fn()} />)
+    render(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
 
     expect(mockNotifications).toHaveBeenCalledWith({
       status: baseTimerState.status,
       remainingMs: baseTimerState.remainingMs,
     })
+  })
+
+  it("calls onModeChange with focus when selecting focus mode", () => {
+    const onModeChange = jest.fn()
+
+    const { getByTestId } = render(
+      <TimerScene
+        mode="short"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    fireEvent.press(getByTestId("mode-picker-focus"))
+
+    expect(onModeChange).toHaveBeenCalledWith("focus")
+  })
+
+  it("calls onModeChange with short when selecting break mode", () => {
+    const onModeChange = jest.fn()
+
+    const { getByTestId } = render(
+      <TimerScene
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    fireEvent.press(getByTestId("mode-picker-break"))
+
+    expect(onModeChange).toHaveBeenCalledWith("short")
+  })
+
+  it("does not call onModeChange when selecting the current mode", () => {
+    const onModeChange = jest.fn()
+
+    const { getByTestId } = render(
+      <TimerScene
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    fireEvent.press(getByTestId("mode-picker-focus"))
+
+    expect(onModeChange).not.toHaveBeenCalled()
+  })
+
+  it("disables mode picker when timer is running", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    const onModeChange = jest.fn()
+
+    const { getByTestId } = render(
+      <TimerScene
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    expect(getByTestId("mode-picker-disabled").children[0]).toBe("disabled")
+
+    fireEvent.press(getByTestId("mode-picker-break"))
+
+    expect(onModeChange).not.toHaveBeenCalled()
+  })
+
+  it("enables mode picker when timer is idle", () => {
+    const onModeChange = jest.fn()
+
+    const { getByTestId } = render(
+      <TimerScene
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    expect(getByTestId("mode-picker-disabled").children[0]).toBe("enabled")
+  })
+
+  it("passes correct activeIndex to mode picker", () => {
+    const { getByTestId: getByTestIdFocus } = render(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(getByTestIdFocus("mode-picker-active").children[0]).toBe("0")
+
+    const { getByTestId: getByTestIdShort } = render(
+      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(getByTestIdShort("mode-picker-active").children[0]).toBe("1")
   })
 })
