@@ -132,9 +132,10 @@ export default function TimerScene({
   )
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
+    backgroundColor: theme.colors.background,
   },
   background: {
     position: "absolute",
@@ -157,4 +158,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-})
+}))
