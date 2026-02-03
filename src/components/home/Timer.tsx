@@ -1,7 +1,8 @@
-import { Text, View } from "react-native"
+import { View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 import { DestructiveButton } from "@/components/UI/Button"
+import TimerNumericText from "@/components/home/TimerNumericText"
 import IconPrimaryButton from "@/components/UI/IconPrimaryButton"
 import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
@@ -35,7 +36,7 @@ export default function Timer({
   return (
     <View style={styles.container} pointerEvents="box-none">
       <View style={styles.timerContainer}>
-        <Text style={styles.timerText}>{formatDuration(remainingMs)}</Text>
+        <TimerNumericText value={formatDuration(remainingMs)} countsDown />
       </View>
       <View
         testID="timer-controls"
@@ -73,13 +74,6 @@ const styles = StyleSheet.create((theme) => ({
   timerContainer: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  timerText: {
-    fontSize: 96,
-    fontWeight: "600",
-    textAlign: "center",
-    fontVariant: ["tabular-nums"],
-    color: theme.colors.primary,
   },
   controls: {
     alignItems: "center",

@@ -11,13 +11,13 @@ const baseProps = {
 
 describe("Timer", () => {
   it("shows minutes and seconds", () => {
-    const { getByText } = render(<Timer {...baseProps} />)
-    expect(getByText("25:00")).toBeTruthy()
+    const { getByLabelText } = render(<Timer {...baseProps} />)
+    expect(getByLabelText("25:00")).toBeTruthy()
   })
 
   it("shows 00:00 when remainingMs is 0", () => {
-    const { getByText } = render(<Timer {...baseProps} remainingMs={0} />)
-    expect(getByText("00:00")).toBeTruthy()
+    const { getByLabelText } = render(<Timer {...baseProps} remainingMs={0} />)
+    expect(getByLabelText("00:00")).toBeTruthy()
   })
 
   it("shows Start, Pause, and Resume labels", () => {
