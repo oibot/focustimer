@@ -1,4 +1,4 @@
-import Button from "@/components/UI/Button"
+import { DestructiveButton, PrimaryButton } from "@/components/UI/Button"
 import { useTimer } from "@/hooks/useTimer"
 import { StyleSheet, View } from "react-native"
 
@@ -23,8 +23,8 @@ export default function TimerDoneScene({
 
   return (
     <View style={styles.container}>
-      <Button label={buttonLabel} onPress={onStart} />
-      <Button label="Cancel" onPress={handleCancel} />
+      <PrimaryButton label={buttonLabel} onPress={onStart} />
+      <DestructiveButton label="Cancel" onPress={handleCancel} />
     </View>
   )
 }

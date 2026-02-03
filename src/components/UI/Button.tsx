@@ -5,33 +5,69 @@ type ButtonProps = PressableProps & {
   label: string
 }
 
-export default function Button({
+type BaseButtonProps = ButtonProps & {
+  buttonStyle: object
+  labelStyle: object
+}
+
+function BaseButton({
   label,
+  buttonStyle,
+  labelStyle,
   disabled,
+  style,
   ...pressableProps
-}: ButtonProps) {
+}: BaseButtonProps) {
   return (
     <Pressable
-      style={({ pressed }) => [
+      style={(state) => [
         styles.button,
+        buttonStyle,
         disabled && styles.buttonDisabled,
-        pressed && styles.buttonPressed,
+        state.pressed && styles.buttonPressed,
+        typeof style === "function" ? style(state) : style,
       ]}
       disabled={disabled}
       {...pressableProps}
     >
-      <Text style={styles.buttonLabel}>{label}</Text>
+      <Text style={[styles.buttonLabel, labelStyle]}>{label}</Text>
     </Pressable>
+  )
+}
+
+export function PrimaryButton(props: ButtonProps) {
+  return (
+    <BaseButton
+      {...props}
+      buttonStyle={styles.primary}
+      labelStyle={styles.primaryLabel}
+    />
+  )
+}
+
+export function DestructiveButton(props: ButtonProps) {
+  return (
+    <BaseButton
+      {...props}
+      buttonStyle={styles.destructive}
+      labelStyle={styles.destructiveLabel}
+    />
   )
 }
 
 const styles = StyleSheet.create((theme) => ({
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderColor: theme.colors.primary,
-    borderWidth: 2,
-    backgroundColor: theme.colors.background,
+    width: 200,
+    height: 48,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  primary: {
+    borderRadius: 999,
+    backgroundColor: `${theme.colors.accent}20`,
+  },
+  destructive: {
+    backgroundColor: "transparent",
   },
   buttonDisabled: {
     opacity: 0.4,
@@ -40,9 +76,15 @@ const styles = StyleSheet.create((theme) => ({
     opacity: 0.8,
   },
   buttonLabel: {
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: "600",
     letterSpacing: 0.4,
-    color: theme.colors.primary,
+  },
+  primaryLabel: {
+    color: theme.colors.accent,
+  },
+  destructiveLabel: {
+    fontSize: 16,
+    color: theme.colors.secondary,
   },
 }))

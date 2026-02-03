@@ -1,7 +1,7 @@
 import { Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
-import Button from "@/components/UI/Button"
+import { DestructiveButton, PrimaryButton } from "@/components/UI/Button"
 import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
 
@@ -40,8 +40,8 @@ export default function Timer({
         pointerEvents={showControls ? "auto" : "none"}
       >
         <View style={styles.buttons}>
-          <Button label={toggleLabel} onPress={onToggle} />
-          <Button
+          <PrimaryButton label={toggleLabel} onPress={onToggle} />
+          <DestructiveButton
             label={cancelLabel}
             disabled={!canCancel}
             onPress={onCancel}
@@ -64,7 +64,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   timerText: {
     fontSize: 96,
-    fontWeight: "700",
+    fontWeight: "600",
     textAlign: "center",
     fontVariant: ["tabular-nums"],
     color: theme.colors.primary,
