@@ -1,7 +1,8 @@
 import { Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
-import { DestructiveButton, IconPrimaryButton } from "@/components/UI/Button"
+import { DestructiveButton } from "@/components/UI/Button"
+import IconPrimaryButton from "@/components/UI/IconPrimaryButton"
 import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
 

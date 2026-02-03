@@ -1,15 +1,8 @@
 import { Pressable, Text, type PressableProps } from "react-native"
-import { Host, Image, type ImageProps } from "@expo/ui/swift-ui"
-import { StyleSheet, useUnistyles } from "react-native-unistyles"
+import { StyleSheet } from "react-native-unistyles"
 
 type ButtonProps = PressableProps & {
   label: string
-}
-
-type IconPrimaryButtonProps = PressableProps & {
-  label: string
-  symbolName: ImageProps["systemName"]
-  size?: number
 }
 
 type BaseButtonProps = ButtonProps & {
@@ -52,43 +45,6 @@ export function PrimaryButton(props: ButtonProps) {
   )
 }
 
-export function IconPrimaryButton({
-  label,
-  symbolName,
-  size = 36,
-  disabled,
-  style,
-  ...pressableProps
-}: IconPrimaryButtonProps) {
-  const { theme, rt } = useUnistyles()
-  const isDark = rt.colorScheme === "dark"
-
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      style={(state) => [
-        styles.button,
-        styles.iconButton,
-        isDark && styles.iconButtonDark,
-        disabled && styles.buttonDisabled,
-        state.pressed && styles.buttonPressed,
-        typeof style === "function" ? style(state) : style,
-      ]}
-      disabled={disabled}
-      {...pressableProps}
-    >
-      <Host matchContents>
-        <Image
-          systemName={symbolName}
-          size={size}
-          color={theme.colors.background}
-        />
-      </Host>
-    </Pressable>
-  )
-}
-
 export function DestructiveButton(props: ButtonProps) {
   return (
     <BaseButton
@@ -109,24 +65,6 @@ const styles = StyleSheet.create((theme) => ({
   primary: {
     borderRadius: 999,
     backgroundColor: theme.colors.primary,
-  },
-  iconButton: {
-    width: 80,
-    height: 80,
-    borderRadius: 14,
-    backgroundColor: theme.colors.primary,
-    shadowColor: theme.colors.primary,
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 6 },
-  },
-  iconButtonDark: {
-    shadowColor: "#000000",
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 8 },
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.18)",
   },
   destructive: {
     borderRadius: 999,
