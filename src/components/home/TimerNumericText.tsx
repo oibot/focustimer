@@ -71,7 +71,12 @@ function RollingDigit({ value, countsDown }: RollingDigitProps) {
         style={[styles.digitColumn, { transform: [{ translateY }] }]}
       >
         {DIGIT_SEQUENCE.map((digit, index) => (
-          <Text key={`${digit}-${index}`} style={styles.digit}>
+          <Text
+            key={`${digit}-${index}`}
+            style={styles.digit}
+            allowFontScaling={false}
+            maxFontSizeMultiplier={1}
+          >
             {digit}
           </Text>
         ))}
@@ -94,7 +99,12 @@ export default function TimerNumericText({
     >
       {chars.map((char, index) =>
         char === ":" ? (
-          <Text key={`sep-${index}`} style={styles.separator}>
+          <Text
+            key={`sep-${index}`}
+            style={styles.separator}
+            allowFontScaling={false}
+            maxFontSizeMultiplier={1}
+          >
             {char}
           </Text>
         ) : (
