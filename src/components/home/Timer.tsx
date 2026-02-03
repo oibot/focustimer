@@ -1,9 +1,10 @@
-import { View } from "react-native"
+import { Animated, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 import { DestructiveButton } from "@/components/UI/Button"
 import TimerNumericText from "@/components/home/TimerNumericText"
 import IconPrimaryButton from "@/components/UI/IconPrimaryButton"
+import useTimerControlsAnimation from "@/hooks/useTimerControlsAnimation"
 import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
 
@@ -32,15 +33,23 @@ export default function Timer({
     status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
   const toggleSymbol = status === "running" ? "pause.fill" : "play.fill"
   const showCancel = status === "running"
+  const { opacity: controlsOpacity, translateY: controlsTranslateY } =
+    useTimerControlsAnimation({ visible: showControls })
 
   return (
     <View style={styles.container} pointerEvents="box-none">
       <View style={styles.timerContainer}>
         <TimerNumericText value={formatDuration(remainingMs)} countsDown />
       </View>
-      <View
+      <Animated.View
         testID="timer-controls"
-        style={[styles.controls, !showControls && styles.controlsHidden]}
+        style={[
+          styles.controls,
+          {
+            opacity: controlsOpacity,
+            transform: [{ translateY: controlsTranslateY }],
+          },
+        ]}
         pointerEvents={showControls ? "auto" : "none"}
       >
         <IconPrimaryButton
@@ -59,7 +68,7 @@ export default function Timer({
             showCancel ? "auto" : "no-hide-descendants"
           }
         />
-      </View>
+      </Animated.View>
     </View>
   )
 }
@@ -79,9 +88,6 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: "center",
     opacity: 1,
     gap: 16,
-  },
-  controlsHidden: {
-    opacity: 0,
   },
   cancelHidden: {
     opacity: 0,
