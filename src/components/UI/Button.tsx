@@ -129,6 +129,9 @@ const styles = StyleSheet.create((theme) => ({
     borderColor: "rgba(255, 255, 255, 0.18)",
   },
   destructive: {
+    borderRadius: 999,
+    borderWidth: 2,
+    borderColor: theme.colors.primary,
     backgroundColor: "transparent",
   },
   buttonDisabled: {
@@ -146,7 +149,9 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.accent,
   },
   destructiveLabel: {
-    fontSize: 16,
-    color: theme.colors.secondary,
+    fontSize: 18,
+    fontWeight: "600",
+    letterSpacing: 0.2,
+    color: theme.colors.primary,
   },
 }))
