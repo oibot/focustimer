@@ -108,7 +108,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   primary: {
     borderRadius: 999,
-    backgroundColor: `${theme.colors.accent}20`,
+    backgroundColor: theme.colors.primary,
   },
   iconButton: {
     width: 80,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: 0.4,
   },
   primaryLabel: {
-    color: theme.colors.accent,
+    color: theme.colors.background,
   },
   destructiveLabel: {
     fontSize: 18,

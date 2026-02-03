@@ -43,7 +43,6 @@ jest.mock("react-native-unistyles", () => ({
   useUnistyles: () => ({
     theme: {
       colors: {
-        accent: "#ff6b00",
         background: "#ffffff",
         primary: "#111111",
         secondary: "#666666",
