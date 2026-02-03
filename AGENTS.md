@@ -2,7 +2,7 @@
 
 ## Project
 
-This Project implements a pomodoro timer for iOS using React Native with expo and Typescript. The project uses bun for package management.
+This Project implements a focus timer for iOS using React Native with expo and Typescript. The project uses bun for package management.
 
 ## Quick Commands
 + all tests: `bun run test`
@@ -30,3 +30,4 @@ This Project implements a pomodoro timer for iOS using React Native with expo an
 + Always plan your edits.
 + After each task/feature do a type check, test of changed files and format of changed files.
 + Before each commit do a type check, test of all files, and format of all files.
++ use context7 for third party dependencies
