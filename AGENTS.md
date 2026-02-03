@@ -1,26 +1,32 @@
 # Pomodoro
 
+## Project
+
 This Project implements a pomodoro timer for iOS using React Native with expo and Typescript. The project uses bun for package management.
 
-# Code Standards
+## Quick Commands
++ all tests: `bun run test`
++ format all files: `bun run format`
++ type check: `bunx tsc --noEmit`
++ test changed files: `bun run test:changed`
++ format changed files: `bun run format:changed`
++ install dependencies: `bunx expo install`
 
-+ use `bun` and `bunx` instead of `npm` and `npmx`
-+ when you install packages use `bunx expo install ...`
-+ unit tests: `bun run test`
-+ Don't put dependencies in the package.json yourself. Add them with `bunx expo install ` or `bunx expo install ... --dev` 
-+ run tests regularly
-+ run `bun run format` after each edit.
-+ run `bunx tsc --noEmit` after finishing some edits
-+ The pages in the app directory only are responsible for routing. They should build the UI from components in the components directory.
-+ The components are organized by feature. For example /components/home contains all components related to the home feature.
-+ This project uses React 19 with the new compiler enabled
+## Repo Layout
++ All source files are in *src/*.
++ *src/app* contains files for routing with expo-router.
++ *src/hooks* contains all hooks.
++ *src/components* contains all scenes and components, ordered by the overall scene in the app (for example *src/components/home* for the home view).
++ Test file live alongside their implementation.
 
-# Knowledge
+## Coding Conventions
++ The responsibility of file in *src/app* are only routing and showing a *scene*
++ The scene builds itself from components.
++ Components should be mostly dumb, that is no own state. They are controlled by the scene.
++ We are using React 19 with the new compiler enabled.
++ We are using Unistyles for styling.
 
-+ expo-router: https://docs.expo.dev/router/introduction/
-+ unit tests: https://docs.expo.dev/develop/unit-testing/
-
-
-
-
-
+## Workflow
++ Always plan your edits.
++ After each task/feature do a type check, test of changed files and format of changed files.
++ Before each commit do a type check, test of all files, and format of all files.
