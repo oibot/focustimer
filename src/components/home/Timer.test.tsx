@@ -29,18 +29,25 @@ describe("Timer", () => {
     expect(getByLabelText("Resume")).toBeTruthy()
   })
 
-  it("disables cancel when cannot cancel and enables when allowed", () => {
-    const { getByText, rerender } = render(<Timer {...baseProps} />)
+  it("shows cancel only while running", () => {
+    const { queryByText, rerender } = render(<Timer {...baseProps} />)
+    expect(queryByText("Cancel")).toBeNull()
+    rerender(<Timer {...baseProps} status="running" />)
+    expect(queryByText("Cancel")).toBeTruthy()
+  })
+
+  it("disables cancel when running and cannot cancel", () => {
+    const { getByText } = render(
+      <Timer {...baseProps} status="running" canCancel={false} />,
+    )
     expect(getByText("Cancel").parent!).toBeDisabled()
-    rerender(<Timer {...baseProps} canCancel />)
-    expect(getByText("Cancel").parent!).toBeEnabled()
   })
 
   it("hides controls when requested", () => {
     const { getByLabelText, getByText, getByTestId } = render(
-      <Timer {...baseProps} showControls={false} />,
+      <Timer {...baseProps} status="running" showControls={false} />,
     )
-    expect(getByLabelText("Start")).toBeTruthy()
+    expect(getByLabelText("Pause")).toBeTruthy()
     expect(getByText("Cancel")).toBeTruthy()
     const controls = getByTestId("timer-controls")
     expect(controls.props.pointerEvents).toBe("none")
@@ -82,7 +89,7 @@ describe("Timer", () => {
 
   it("uses a custom cancel label when provided", () => {
     const { getByText } = render(
-      <Timer {...baseProps} cancelLabel="Reset" canCancel />,
+      <Timer {...baseProps} status="running" cancelLabel="Reset" canCancel />,
     )
     expect(getByText("Reset")).toBeTruthy()
   })

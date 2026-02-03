@@ -30,6 +30,7 @@ export default function Timer({
   const toggleLabel =
     status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
   const toggleSymbol = status === "running" ? "pause.fill" : "play.fill"
+  const showCancel = status === "running"
 
   return (
     <View style={styles.container} pointerEvents="box-none">
@@ -48,8 +49,14 @@ export default function Timer({
         />
         <DestructiveButton
           label={cancelLabel}
-          disabled={!canCancel}
+          disabled={!canCancel || !showCancel}
           onPress={onCancel}
+          style={!showCancel && styles.cancelHidden}
+          pointerEvents={showCancel ? "auto" : "none"}
+          accessibilityElementsHidden={!showCancel}
+          importantForAccessibility={
+            showCancel ? "auto" : "no-hide-descendants"
+          }
         />
       </View>
     </View>
@@ -80,6 +87,9 @@ const styles = StyleSheet.create((theme) => ({
     gap: 16,
   },
   controlsHidden: {
+    opacity: 0,
+  },
+  cancelHidden: {
     opacity: 0,
   },
 }))

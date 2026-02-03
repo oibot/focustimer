@@ -2,9 +2,11 @@ import { fireEvent, render } from "@testing-library/react-native"
 
 import TimerScene from "@/components/home/TimerScene"
 import { useTimer } from "@/hooks/useTimer"
+import * as useTimerControlsModule from "@/hooks/useTimerControls"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import { useKeepAwake } from "expo-keep-awake"
 import { useAudioPlayer } from "expo-audio"
+import { Gesture } from "react-native-gesture-handler"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
@@ -70,6 +72,7 @@ describe("TimerScene", () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 
   it("defaults to focus mode when mode is invalid", () => {
@@ -80,12 +83,26 @@ describe("TimerScene", () => {
     expect(getByLabelText("Focus")).toBeTruthy()
   })
 
-  it("uses the short mode labels and stop button", () => {
-    const { getByLabelText, getByText } = render(
+  it("uses the short mode labels without stop button while idle", () => {
+    const { getByLabelText, queryByText } = render(
       <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
     expect(getByLabelText("Start")).toBeTruthy()
+    expect(queryByText("Stop")).toBeNull()
+  })
+
+  it("shows the stop button when short mode is running", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    const { getByLabelText, getByText } = render(
+      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(getByLabelText("Pause")).toBeTruthy()
     expect(getByText("Stop")).toBeTruthy()
   })
 
@@ -143,9 +160,15 @@ describe("TimerScene", () => {
 
   it("cancels the timer when canceling focus", () => {
     const cancelTimer = jest.fn()
+    const useTimerControlsSpy = jest.spyOn(useTimerControlsModule, "default")
+    useTimerControlsSpy.mockReturnValue({
+      showControls: true,
+      tapGesture: Gesture.Tap(),
+    })
 
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
+      status: "running",
       cancelTimer,
     })
 
@@ -164,6 +187,7 @@ describe("TimerScene", () => {
 
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
+      status: "running",
       cancelTimer,
     })
 
