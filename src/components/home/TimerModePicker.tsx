@@ -1,4 +1,5 @@
 import { Host, Picker } from "@expo/ui/swift-ui"
+import { disabled as disabledModifier } from "@expo/ui/swift-ui/modifiers"
 import { StyleSheet } from "react-native-unistyles"
 import { useEffect, useState } from "react"
 
@@ -33,12 +34,13 @@ export default function TimerModePicker({
   }
 
   return (
-    <Host style={[styles.host, disabled && styles.disabled]}>
+    <Host style={styles.host}>
       <Picker
         options={options}
         selectedIndex={selectedIndex}
         onOptionSelected={handleOptionSelected}
         variant="segmented"
+        modifiers={[disabledModifier(disabled)]}
       />
     </Host>
   )
@@ -48,8 +50,5 @@ const styles = StyleSheet.create({
   host: {
     width: 200,
     height: 100,
-  },
-  disabled: {
-    opacity: 0.5,
   },
 })
