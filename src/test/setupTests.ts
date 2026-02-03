@@ -21,8 +21,34 @@ jest.mock("expo-audio", () => ({
   })),
 }))
 
+jest.mock("@expo/ui/swift-ui", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+
+  const MockView = ({ children, ...props }: any) =>
+    React.createElement(View, props, children)
+
+  return new Proxy(
+    {},
+    {
+      get: (_, prop) => (prop === "__esModule" ? true : MockView),
+    },
+  )
+})
+
 jest.mock("react-native-unistyles", () => ({
   StyleSheet: {
     create: (styles: any) => styles,
   },
+  useUnistyles: () => ({
+    theme: {
+      colors: {
+        accent: "#ff6b00",
+        background: "#ffffff",
+        primary: "#111111",
+        secondary: "#666666",
+      },
+    },
+    rt: { colorScheme: "light" },
+  }),
 }))

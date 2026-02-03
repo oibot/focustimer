@@ -73,19 +73,19 @@ describe("TimerScene", () => {
   })
 
   it("defaults to focus mode when mode is invalid", () => {
-    const { getByText } = render(
+    const { getByLabelText } = render(
       <TimerScene mode="unknown" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
-    expect(getByText("Focus")).toBeTruthy()
+    expect(getByLabelText("Focus")).toBeTruthy()
   })
 
   it("uses the short mode labels and stop button", () => {
-    const { getByText } = render(
+    const { getByLabelText, getByText } = render(
       <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
-    expect(getByText("Start")).toBeTruthy()
+    expect(getByLabelText("Start")).toBeTruthy()
     expect(getByText("Stop")).toBeTruthy()
   })
 
@@ -95,11 +95,11 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    const { getByText, getByTestId } = render(
+    const { getByLabelText, getByText, getByTestId } = render(
       <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
-    expect(getByText("Pause")).toBeTruthy()
+    expect(getByLabelText("Pause")).toBeTruthy()
     expect(getByText("Cancel")).toBeTruthy()
     const controls = getByTestId("timer-controls")
     expect(controls.props.pointerEvents).toBe("none")

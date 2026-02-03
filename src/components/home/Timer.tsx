@@ -1,7 +1,7 @@
 import { Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
-import { DestructiveButton, PrimaryButton } from "@/components/UI/Button"
+import { DestructiveButton, IconPrimaryButton } from "@/components/UI/Button"
 import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
 
@@ -28,6 +28,7 @@ export default function Timer({
 }: TimerProps) {
   const toggleLabel =
     status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
+  const toggleSymbol = status === "running" ? "pause.fill" : "play.fill"
 
   return (
     <View style={styles.container} pointerEvents="box-none">
@@ -39,14 +40,16 @@ export default function Timer({
         style={[styles.controls, !showControls && styles.controlsHidden]}
         pointerEvents={showControls ? "auto" : "none"}
       >
-        <View style={styles.buttons}>
-          <PrimaryButton label={toggleLabel} onPress={onToggle} />
-          <DestructiveButton
-            label={cancelLabel}
-            disabled={!canCancel}
-            onPress={onCancel}
-          />
-        </View>
+        <IconPrimaryButton
+          label={toggleLabel}
+          symbolName={toggleSymbol}
+          onPress={onToggle}
+        />
+        <DestructiveButton
+          label={cancelLabel}
+          disabled={!canCancel}
+          onPress={onCancel}
+        />
       </View>
     </View>
   )
@@ -57,6 +60,7 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.colors.background,
+    gap: 20,
   },
   timerContainer: {
     alignItems: "center",
@@ -70,14 +74,11 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.primary,
   },
   controls: {
-    marginTop: 40,
     alignItems: "center",
     opacity: 1,
+    gap: 16,
   },
   controlsHidden: {
     opacity: 0,
-  },
-  buttons: {
-    gap: 12,
   },
 }))

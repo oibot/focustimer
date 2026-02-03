@@ -21,12 +21,12 @@ describe("Timer", () => {
   })
 
   it("shows Start, Pause, and Resume labels", () => {
-    const { getByText, rerender } = render(<Timer {...baseProps} />)
-    expect(getByText("Start")).toBeTruthy()
+    const { getByLabelText, rerender } = render(<Timer {...baseProps} />)
+    expect(getByLabelText("Start")).toBeTruthy()
     rerender(<Timer {...baseProps} status="running" />)
-    expect(getByText("Pause")).toBeTruthy()
+    expect(getByLabelText("Pause")).toBeTruthy()
     rerender(<Timer {...baseProps} status="paused" />)
-    expect(getByText("Resume")).toBeTruthy()
+    expect(getByLabelText("Resume")).toBeTruthy()
   })
 
   it("disables cancel when cannot cancel and enables when allowed", () => {
@@ -37,10 +37,10 @@ describe("Timer", () => {
   })
 
   it("hides controls when requested", () => {
-    const { getByText, getByTestId } = render(
+    const { getByLabelText, getByText, getByTestId } = render(
       <Timer {...baseProps} showControls={false} />,
     )
-    expect(getByText("Start")).toBeTruthy()
+    expect(getByLabelText("Start")).toBeTruthy()
     expect(getByText("Cancel")).toBeTruthy()
     const controls = getByTestId("timer-controls")
     expect(controls.props.pointerEvents).toBe("none")
@@ -54,11 +54,11 @@ describe("Timer", () => {
   it("calls handlers on press", () => {
     const onToggle = jest.fn()
     const onCancel = jest.fn()
-    const { getByText, rerender } = render(
+    const { getByLabelText, getByText, rerender } = render(
       <Timer {...baseProps} onToggle={onToggle} onCancel={onCancel} />,
     )
 
-    fireEvent.press(getByText("Start").parent!)
+    fireEvent.press(getByLabelText("Start"))
     expect(onToggle).toHaveBeenCalledTimes(1)
 
     rerender(
@@ -74,8 +74,10 @@ describe("Timer", () => {
   })
 
   it("uses a custom idle label when provided", () => {
-    const { getByText } = render(<Timer {...baseProps} idleLabel="Focus" />)
-    expect(getByText("Focus")).toBeTruthy()
+    const { getByLabelText } = render(
+      <Timer {...baseProps} idleLabel="Focus" />,
+    )
+    expect(getByLabelText("Focus")).toBeTruthy()
   })
 
   it("uses a custom cancel label when provided", () => {
@@ -86,7 +88,9 @@ describe("Timer", () => {
   })
 
   it("uses the idle label for the toggle button", () => {
-    const { getByText } = render(<Timer {...baseProps} idleLabel="Begin" />)
-    expect(getByText("Begin")).toBeTruthy()
+    const { getByLabelText } = render(
+      <Timer {...baseProps} idleLabel="Begin" />,
+    )
+    expect(getByLabelText("Begin")).toBeTruthy()
   })
 })
