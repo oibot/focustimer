@@ -10,7 +10,7 @@ type UseTimerControlsParams = {
 }
 
 export const TIMER_CONTROLS_TAP_GESTURE_ID = "timer-controls-tap"
-const DEFAULT_AUTO_HIDE_DELAY = 3000
+const DEFAULT_AUTO_HIDE_DELAY = 5000
 
 export default function useTimerControls({
   status,
