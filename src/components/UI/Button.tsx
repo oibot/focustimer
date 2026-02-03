@@ -130,8 +130,6 @@ const styles = StyleSheet.create((theme) => ({
   },
   destructive: {
     borderRadius: 999,
-    borderWidth: 2,
-    borderColor: theme.colors.primary,
     backgroundColor: "transparent",
   },
   buttonDisabled: {
