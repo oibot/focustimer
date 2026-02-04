@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react"
 import { AppState } from "react-native"
 import * as Notifications from "expo-notifications"
+import * as Sentry from "@sentry/react-native"
 
 import type { TimerStatus } from "@/types/timer"
 
@@ -23,11 +24,10 @@ export default function useBackgroundTimerNotifications({
     const existingId = notificationIdRef.current
     if (!existingId) return
     notificationIdRef.current = null
+    Sentry.logger.info("Cancelling scheduled notification", { id: existingId })
     await Notifications.cancelScheduledNotificationAsync(existingId).catch(
       (error) => {
-        if (__DEV__) {
-          console.warn("Cancel notification failed", error)
-        }
+        Sentry.captureException(error)
       },
     )
   }, [])
@@ -49,11 +49,10 @@ export default function useBackgroundTimerNotifications({
           },
         })
         notificationIdRef.current = id
+        Sentry.logger.info("Scheduled notification", { endAt, id })
       } catch (error) {
         notificationIdRef.current = null
-        if (__DEV__) {
-          console.warn("Schedule notification failed", error)
-        }
+        Sentry.captureException(error)
       }
     },
     [cancelScheduled],
