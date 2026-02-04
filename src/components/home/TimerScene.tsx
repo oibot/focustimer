@@ -2,7 +2,7 @@ import Timer from "@/components/home/Timer"
 import TimerModePicker from "@/components/home/TimerModePicker"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import { useKeepAwake } from "expo-keep-awake"
-import { View } from "react-native"
+import { Alert, View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
 import { useEffect, useLayoutEffect, useRef } from "react"
 import { useTimer } from "@/hooks/useTimer"
@@ -92,11 +92,21 @@ export default function TimerScene({
   }, [cancelTimer, nextMode, onDone, player, status])
 
   const handleCancel = () => {
-    cancelTimer()
-    if (timerMode === "short") {
-      playDoneSound()
-      onDone(nextMode)
+    if (timerMode === "focus") {
+      Alert.alert(
+        "Cancel focus session?",
+        "Your current focus timer will reset.",
+        [
+          { text: "Keep going", style: "cancel" },
+          { text: "Cancel", style: "destructive", onPress: cancelTimer },
+        ],
+      )
+      return
     }
+
+    cancelTimer()
+    playDoneSound()
+    onDone(nextMode)
   }
 
   return (

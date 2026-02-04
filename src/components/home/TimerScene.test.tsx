@@ -7,6 +7,7 @@ import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotificat
 import { useKeepAwake } from "expo-keep-awake"
 import { useAudioPlayer } from "expo-audio"
 import { Gesture } from "react-native-gesture-handler"
+import { Alert } from "react-native"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
@@ -165,6 +166,7 @@ describe("TimerScene", () => {
       showControls: true,
       tapGesture: Gesture.Tap(),
     })
+    const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => {})
 
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
@@ -177,6 +179,13 @@ describe("TimerScene", () => {
     )
 
     fireEvent.press(getByText("Cancel").parent!)
+
+    expect(alertSpy).toHaveBeenCalledTimes(1)
+    const buttons = alertSpy.mock.calls[0]?.[2]
+    const confirm = Array.isArray(buttons)
+      ? buttons.find((button) => button.style === "destructive")
+      : undefined
+    confirm?.onPress?.()
 
     expect(cancelTimer).toHaveBeenCalledTimes(1)
   })
