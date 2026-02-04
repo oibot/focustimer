@@ -5,6 +5,7 @@ import TimerProvider from "@/components/providers/TimerProvider"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { useColorScheme } from "react-native"
 import { StatusBar } from "expo-status-bar"
+import * as Sentry from "@sentry/react-native"
 
 export const unstable_settings = {
   anchor: "index",
@@ -19,7 +20,21 @@ Notifications.setNotificationHandler({
   }),
 })
 
-export default function Layout() {
+Sentry.init({
+  dsn: "https://c9186b3f36f62fb78c6138f1bf6a2a5f@o4510827175870464.ingest.de.sentry.io/4510827270766672",
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Enable Logs
+  enableLogs: true,
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+})
+
+function Layout() {
   useEffect(() => {
     const ensurePermissions = async () => {
       const { status } = await Notifications.getPermissionsAsync()
@@ -54,3 +69,5 @@ export default function Layout() {
     </GestureHandlerRootView>
   )
 }
+
+export default Sentry.wrap(Layout)

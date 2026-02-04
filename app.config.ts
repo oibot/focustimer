@@ -46,7 +46,19 @@ const config: ExpoConfig = {
   web: {
     favicon: "./assets/favicon.png",
   },
-  plugins: ["expo-router", "expo-audio", "expo-asset"],
+  plugins: [
+    "expo-router",
+    "expo-audio",
+    "expo-asset",
+    [
+      "@sentry/react-native/expo",
+      {
+        url: "https://sentry.io/",
+        project: "focus-timer",
+        organization: "totap",
+      },
+    ],
+  ],
 }
 
 export default config
