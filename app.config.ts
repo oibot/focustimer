@@ -3,12 +3,12 @@ import type { ExpoConfig } from "expo/config"
 const variant = process.env.APP_VARIANT
 const name =
   variant === "dev"
-    ? "pomodoro-dev"
+    ? "Focus Only Dev"
     : variant === "test"
-      ? "pomodoro-test"
-      : "pomodoro"
+      ? "Focus Only Test"
+      : "Focus Only"
 
-const bundleBase = "de.totap.pomodoro"
+const bundleBase = "de.totap.focusonly"
 const bundleIdentifier =
   variant === "dev"
     ? `${bundleBase}.dev`
@@ -18,8 +18,8 @@ const bundleIdentifier =
 
 const config: ExpoConfig = {
   name,
-  slug: "pomodoro",
-  scheme: "pomodoro",
+  slug: "focusonly",
+  scheme: "focusonly",
   version: "0.1.0",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
