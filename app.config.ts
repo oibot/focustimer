@@ -8,7 +8,7 @@ const name =
       ? "Focus Only Test"
       : "Focus Only"
 
-const bundleBase = "de.totap.focusonly"
+const bundleBase = "de.totap.focustimer"
 const bundleIdentifier =
   variant === "dev"
     ? `${bundleBase}.dev`
@@ -28,6 +28,9 @@ const config: ExpoConfig = {
   ios: {
     supportsTablet: true,
     bundleIdentifier,
+    config: {
+      usesNonExemptEncryption: false,
+    },
     icon: "./assets/icon/Hourglass.icon",
     splash: {
       image: "./assets/splash/splash-icon-light.png",
@@ -57,7 +60,7 @@ const config: ExpoConfig = {
     "expo-audio",
     "expo-asset",
     [
-      "@sentry/react-native/expo",
+      "@sentry/react-native",
       {
         url: "https://sentry.io/",
         project: "focus-timer",
