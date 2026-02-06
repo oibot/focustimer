@@ -33,7 +33,7 @@ const config: ExpoConfig = {
   ios: {
     supportsTablet: true,
     bundleIdentifier,
-    icon: "./assets/icon/FocusOnly.icon",
+    icon: "./assets/icon/Hourglass.icon",
   },
   android: {
     package: bundleIdentifier,
