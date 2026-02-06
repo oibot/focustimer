@@ -9,7 +9,7 @@ type UseTimerControlsAnimationOptions = {
 
 export default function useTimerControlsAnimation({
   visible,
-  durationMs = 220,
+  durationMs = 1000,
   offsetY = 8,
 }: UseTimerControlsAnimationOptions) {
   const opacity = useRef(new Animated.Value(visible ? 1 : 0)).current

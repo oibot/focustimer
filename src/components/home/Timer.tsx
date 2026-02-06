@@ -1,12 +1,11 @@
-import { Animated, View } from "react-native"
-import { StyleSheet } from "react-native-unistyles"
-
-import { DestructiveButton } from "@/components/UI/Button"
 import TimerNumericText from "@/components/home/TimerNumericText"
+import { DestructiveButton } from "@/components/UI/Button"
 import IconPrimaryButton from "@/components/UI/IconPrimaryButton"
 import useTimerControlsAnimation from "@/hooks/useTimerControlsAnimation"
-import { formatDuration } from "@/utils/time"
 import type { TimerStatus } from "@/types/timer"
+import { formatDuration } from "@/utils/time"
+import { Animated, View } from "react-native"
+import { StyleSheet } from "react-native-unistyles"
 
 type TimerProps = {
   remainingMs: number
