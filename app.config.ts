@@ -23,6 +23,7 @@ const config: ExpoConfig = {
   version: "0.1.0",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
+  owner: "tobio",
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
@@ -64,6 +65,11 @@ const config: ExpoConfig = {
       },
     ],
   ],
+  extra: {
+    eas: {
+      projectId: "7db1fae9-e214-4dab-b8e0-5be5136c2455",
+    },
+  },
 }
 
 export default config
