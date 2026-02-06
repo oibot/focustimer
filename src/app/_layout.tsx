@@ -1,15 +1,21 @@
-import { Stack } from "expo-router"
-import * as Notifications from "expo-notifications"
-import { useEffect } from "react"
 import TimerProvider from "@/components/providers/TimerProvider"
-import { GestureHandlerRootView } from "react-native-gesture-handler"
-import { useColorScheme } from "react-native"
-import { StatusBar } from "expo-status-bar"
 import * as Sentry from "@sentry/react-native"
+import * as Notifications from "expo-notifications"
+import { Stack } from "expo-router"
+import * as SplashScreen from "expo-splash-screen"
+import { StatusBar } from "expo-status-bar"
+import { useEffect } from "react"
+import { useColorScheme } from "react-native"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 export const unstable_settings = {
   anchor: "index",
 }
+
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+})
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

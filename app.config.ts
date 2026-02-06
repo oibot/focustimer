@@ -23,17 +23,21 @@ const config: ExpoConfig = {
   version: "0.1.0",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
-  icon: "./assets/icon.png",
   newArchEnabled: true,
-  splash: {
-    image: "./assets/splash-icon.png",
-    resizeMode: "contain",
-    backgroundColor: "#ffffff",
-  },
   ios: {
     supportsTablet: true,
     bundleIdentifier,
     icon: "./assets/icon/Hourglass.icon",
+    splash: {
+      image: "./assets/splash/splash-icon-light.png",
+      resizeMode: "contain",
+      backgroundColor: "#F2F2F7",
+      dark: {
+        image: "./assets/splash/splash-icon-dark.png",
+        resizeMode: "contain",
+        backgroundColor: "#1C1C1E",
+      },
+    },
   },
   android: {
     package: bundleIdentifier,
