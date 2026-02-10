@@ -65,6 +65,14 @@ const config: ExpoConfig = {
     "expo-audio",
     "expo-asset",
     [
+      "expo-build-properties",
+      {
+        ios: {
+          deploymentTarget: "26.0",
+        },
+      },
+    ],
+    [
       "@sentry/react-native",
       {
         url: "https://sentry.io/",
