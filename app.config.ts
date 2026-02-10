@@ -42,6 +42,10 @@ const config: ExpoConfig = {
         backgroundColor: "#1C1C1E",
       },
     },
+    appleTeamId: "DCY46V87K7",
+    entitlements: {
+      "com.apple.security.application-groups": [`group.${bundleBase}`],
+    },
   },
   android: {
     package: bundleIdentifier,
@@ -56,6 +60,7 @@ const config: ExpoConfig = {
     favicon: "./assets/favicon.png",
   },
   plugins: [
+    "@bacons/apple-targets",
     "expo-router",
     "expo-audio",
     "expo-asset",
