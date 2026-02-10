@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "live-activities-controller": ["../src/index"],
+      "live-activities-controller/*": ["../src/*"]
+    }
+  }
+}
