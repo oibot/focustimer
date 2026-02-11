@@ -14,7 +14,7 @@ struct FocusOnlyLiveActivity: Widget {
     } dynamicIsland: { context in
       DynamicIsland {
         DynamicIslandExpandedRegion(.leading) {
-          Text("\(context.state.secondsRemaining)")
+          Text("")
         }
         DynamicIslandExpandedRegion(.trailing) {
           Text("\(context.attributes.title)")
@@ -23,16 +23,37 @@ struct FocusOnlyLiveActivity: Widget {
           Text("Bottom")
         }
       } compactLeading: {
-        Text("\(context.state.secondsRemaining)")
+        Text("\(formatMMSS(context.state.secondsRemaining))")
+          .monospaced()
       } compactTrailing: {
-        Text("\(context.attributes.title)")
+        Image(.icon)
+          .resizable()
+          .scaledToFit()
+          .frame(width: 24, height: 24)
       } minimal: {
-        Text("\(context.state.secondsRemaining)")
+        Image(.icon)
+          .resizable()
+          .scaledToFit()
+          .frame(width: 24, height: 24)
       }
       .widgetURL(URL(string: "https://www.expo.dev"))
       .keylineTint(Color.red)
     }
   }
+
+  private func formatMMSS(_ seconds: Int) -> String {
+    TimeFormatters.mmss.string(from: TimeInterval(seconds)) ?? "0:00"
+  }
+}
+
+enum TimeFormatters {
+  static let mmss: DateComponentsFormatter = {
+    let f = DateComponentsFormatter()
+    f.allowedUnits = [.minute, .second]
+    f.unitsStyle = .positional
+    f.zeroFormattingBehavior = [.pad]
+    return f
+  }()
 }
 
 extension FocusOnlyAttributes {

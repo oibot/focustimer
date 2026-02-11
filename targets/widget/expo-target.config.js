@@ -4,8 +4,8 @@ module.exports = (config) => ({
   name: "FocusOnlyWidget",
   displayName: "Focus Only Widget",
   icon: "https://github.com/expo.png",
-  entitlements: {
-    /* Add entitlements */
-  },
   deploymentTarget: "26.0",
+  images: {
+    icon: "../../assets/widgets/icon.png",
+  },
 })
