@@ -7,4 +7,5 @@ module.exports = (config) => ({
   entitlements: {
     /* Add entitlements */
   },
+  deploymentTarget: "26.0",
 })

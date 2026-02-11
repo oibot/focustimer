@@ -1,6 +1,10 @@
 import TimerScene from "@/components/home/TimerScene"
 import { useLocalSearchParams, useRouter } from "expo-router"
-import { areActivitiesEnabled } from "local:live-activities-controller"
+import {
+  areActivitiesEnabled,
+  startActivity,
+} from "local:live-activities-controller"
+import { useEffect } from "react"
 
 export default function Page() {
   const router = useRouter()
@@ -8,6 +12,11 @@ export default function Page() {
   const modeParam = typeof mode === "string" ? mode : undefined
 
   console.log("Are activities enabled?", areActivitiesEnabled())
+
+  useEffect(() => {
+    console.log("Starting activity...")
+    startActivity("Focus Only", 25 * 60)
+  })
 
   const handleDone = (nextMode: string) =>
     router.push({

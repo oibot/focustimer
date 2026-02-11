@@ -46,6 +46,9 @@ const config: ExpoConfig = {
     entitlements: {
       "com.apple.security.application-groups": [`group.${bundleBase}`],
     },
+    infoPlist: {
+      NSSupportsLiveActivities: true,
+    },
   },
   android: {
     package: bundleIdentifier,
