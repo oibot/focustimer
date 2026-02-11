@@ -1,6 +1,7 @@
 import Timer from "@/components/home/Timer"
 import TimerModePicker from "@/components/home/TimerModePicker"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
+import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import { useKeepAwake } from "expo-keep-awake"
 import { Alert, View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
@@ -67,6 +68,11 @@ export default function TimerScene({
   const hasShownDoneRef = useRef(false)
 
   useBackgroundTimerNotifications({ status, remainingMs })
+  useTimerLiveActivity({
+    title: timerMode === "focus" ? "Focus" : "Break",
+    status,
+    remainingMs,
+  })
 
   // TODO: should we sync the startingMs, or put this logic in the timer provider?
   useLayoutEffect(() => {

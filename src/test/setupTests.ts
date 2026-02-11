@@ -21,6 +21,24 @@ jest.mock("expo-audio", () => ({
   })),
 }))
 
+jest.mock("@sentry/react-native", () => ({
+  captureException: jest.fn(),
+  logger: {
+    info: jest.fn(),
+  },
+}))
+
+jest.mock(
+  "local:live-activities-controller",
+  () => ({
+    areActivitiesEnabled: jest.fn(() => false),
+    startActivity: jest.fn(() => null),
+    updateActivity: jest.fn(async () => {}),
+    endActivity: jest.fn(async () => {}),
+  }),
+  { virtual: true },
+)
+
 jest.mock("@expo/ui/swift-ui", () => {
   const React = require("react")
   const { View } = require("react-native")

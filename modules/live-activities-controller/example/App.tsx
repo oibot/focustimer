@@ -1,41 +1,51 @@
-import { useEvent } from 'expo';
-import LiveActivitiesController, { LiveActivitiesControllerView } from 'live-activities-controller';
-import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import {
+  areActivitiesEnabled,
+  endActivity,
+  startActivity,
+  updateActivity,
+} from "../src"
+import { Button, SafeAreaView, ScrollView, Text, View } from "react-native"
+import { useState } from "react"
 
 export default function App() {
-  const onChangePayload = useEvent(LiveActivitiesController, 'onChange');
+  const [activityId, setActivityId] = useState<string | null>(null)
+  const enabled = areActivitiesEnabled()
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Module API Example</Text>
         <Group name="Constants">
-          <Text>{LiveActivitiesController.PI}</Text>
+          <Text>Enabled: {String(enabled)}</Text>
         </Group>
         <Group name="Functions">
-          <Text>{LiveActivitiesController.hello()}</Text>
+          <Text>Activity ID: {activityId ?? "none"}</Text>
         </Group>
         <Group name="Async functions">
           <Button
-            title="Set value"
+            title="Start activity"
             onPress={async () => {
-              await LiveActivitiesController.setValueAsync('Hello from JS!');
+              const id = startActivity("Focus Only", 25 * 60)
+              setActivityId(id)
             }}
           />
-        </Group>
-        <Group name="Events">
-          <Text>{onChangePayload?.value}</Text>
-        </Group>
-        <Group name="Views">
-          <LiveActivitiesControllerView
-            url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
-            style={styles.view}
+          <Button
+            title="Update activity"
+            onPress={async () => {
+              await updateActivity(20 * 60, true)
+            }}
+          />
+          <Button
+            title="End activity"
+            onPress={async () => {
+              await endActivity(0, false)
+              setActivityId(null)
+            }}
           />
         </Group>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 function Group(props: { name: string; children: React.ReactNode }) {
@@ -44,7 +54,7 @@ function Group(props: { name: string; children: React.ReactNode }) {
       <Text style={styles.groupHeader}>{props.name}</Text>
       {props.children}
     </View>
-  );
+  )
 }
 
 const styles = {
@@ -58,16 +68,12 @@ const styles = {
   },
   group: {
     margin: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
   },
   container: {
     flex: 1,
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
   },
-  view: {
-    flex: 1,
-    height: 200,
-  },
-};
+}
