@@ -1,9 +1,14 @@
 import ActivityKit
 import ExpoModulesCore
+import os
 
 public class LiveActivitiesControllerModule: Module {
 
-  //private var current: Activity<FocusOnlyAttributes>?
+  private var current: Activity<FocusOnlyAttributes>?
+  private let logger = Logger(
+    subsystem: Bundle.main.bundleIdentifier ?? "LiveActivitiesController",
+    category: "LiveActivitiesController"
+  )
 
   public func definition() -> ModuleDefinition {
     Name("LiveActivitiesController")
@@ -17,15 +22,49 @@ public class LiveActivitiesControllerModule: Module {
     }
 
     Function("startActivity") { (title: String, secondsRemaining: Int) -> String? in
-      //guard ActivityAuthorizationInfo().areActivitiesEnabled else { return nil }
+      guard ActivityAuthorizationInfo().areActivitiesEnabled else { return nil }
 
-      let attributes = FocusOnlyAttributes(title: title)
-      let state = FocusOnlyAttributes.ContentState(
-        secondsRemaining: secondsRemaining,
-        isRunning: true
+      do {
+        self.current = try Activity.request(
+          attributes: FocusOnlyAttributes(title: title),
+          content: ActivityContent(
+            state: FocusOnlyAttributes.ContentState(
+              secondsRemaining: secondsRemaining,
+              isRunning: true
+            ),
+            staleDate: nil
+          )
+        )
+      } catch {
+        logger.error("startActivity failed: \(String(describing: error), privacy: .public)")
+      }
+
+      return current?.id
+    }
+
+    AsyncFunction("updateActivity") { (secondsRemaining: Int, isRunning: Bool) async -> Void in
+      guard let current = self.current else { return }
+      let content = ActivityContent(
+        state: FocusOnlyAttributes.ContentState(
+          secondsRemaining: secondsRemaining,
+          isRunning: isRunning
+        ),
+        staleDate: nil
       )
+      await current.update(content)
+    }
 
-      return nil
+    AsyncFunction("endActivity") { (secondsRemaining: Int, isRunning: Bool) async -> Void in
+      guard let current = self.current else { return }
+      let content = ActivityContent(
+        state: FocusOnlyAttributes.ContentState(
+          secondsRemaining: secondsRemaining,
+          isRunning: isRunning
+        ),
+        staleDate: nil
+      )
+      await current.end(content, dismissalPolicy: .immediate)
+      self.current = nil
     }
   }
 }
