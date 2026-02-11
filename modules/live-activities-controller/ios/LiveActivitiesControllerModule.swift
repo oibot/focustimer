@@ -14,11 +14,7 @@ public class LiveActivitiesControllerModule: Module {
     Name("LiveActivitiesController")
 
     Function("areActivitiesEnabled") { () -> Bool in
-      if #available(iOS 16.1, *) {
-        return ActivityAuthorizationInfo().areActivitiesEnabled
-      } else {
-        return false
-      }
+      return ActivityAuthorizationInfo().areActivitiesEnabled
     }
 
     Function("startActivity") { (title: String, secondsRemaining: Int) -> String? in
