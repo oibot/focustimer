@@ -1,5 +1,6 @@
 import { DestructiveButton, PrimaryButton } from "@/components/UI/Button"
 import { useTimer } from "@/hooks/useTimer"
+import { useLingui } from "@lingui/react/macro"
 import { StyleSheet, View } from "react-native"
 
 type TimerDoneSceneProps = {
@@ -13,7 +14,8 @@ export default function TimerDoneScene({
   onStart,
   onCancel,
 }: TimerDoneSceneProps) {
-  const buttonLabel = nextMode === "focus" ? "Start Focus" : "Start Break"
+  const { t } = useLingui()
+  const buttonLabel = nextMode === "focus" ? t`Start Focus` : t`Start Break`
   const { cancelTimer } = useTimer()
 
   const handleCancel = () => {
@@ -24,7 +26,7 @@ export default function TimerDoneScene({
   return (
     <View style={styles.container}>
       <PrimaryButton label={buttonLabel} onPress={onStart} />
-      <DestructiveButton label="Cancel" onPress={handleCancel} />
+      <DestructiveButton label={t`Cancel`} onPress={handleCancel} />
     </View>
   )
 }

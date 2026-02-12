@@ -2,6 +2,7 @@ import Timer from "@/components/home/Timer"
 import TimerModePicker from "@/components/home/TimerModePicker"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
+import { useLingui } from "@lingui/react/macro"
 import { useKeepAwake } from "expo-keep-awake"
 import { Alert, View } from "react-native"
 import { useAudioPlayer } from "expo-audio"
@@ -15,12 +16,10 @@ import { StyleSheet } from "react-native-unistyles"
 const TIMER_MODES = {
   focus: {
     startingMs: 25 * 60 * 1000,
-    idleLabel: "Focus",
     nextMode: "short",
   },
   short: {
     startingMs: 5 * 60 * 1000,
-    idleLabel: "Start",
     nextMode: "focus",
   },
 } as const
@@ -41,9 +40,16 @@ export default function TimerScene({
   onDone,
   onModeChange,
 }: TimerSceneProps) {
+  const { t } = useLingui()
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
-  const { startingMs, idleLabel, nextMode } = TIMER_MODES[timerMode]
+  const { startingMs, nextMode } = TIMER_MODES[timerMode]
+  const idleLabel = timerMode === "focus" ? t`Focus` : t`Start`
+  const pauseLabel = t`Pause`
+  const resumeLabel = t`Resume`
+  const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
+  const focusLabel = t`Focus`
+  const breakLabel = t`Break`
   const activeIndex = timerMode === "focus" ? 0 : 1
   const {
     remainingMs,
@@ -69,7 +75,7 @@ export default function TimerScene({
 
   useBackgroundTimerNotifications({ status, remainingMs })
   useTimerLiveActivity({
-    title: timerMode === "focus" ? "Focus" : "Break",
+    title: timerMode === "focus" ? focusLabel : breakLabel,
     status,
     remainingMs,
   })
@@ -100,11 +106,11 @@ export default function TimerScene({
   const handleCancel = () => {
     if (timerMode === "focus") {
       Alert.alert(
-        "Cancel focus session?",
-        "Your current focus timer will reset.",
+        t`Cancel focus session?`,
+        t`Your current focus timer will reset.`,
         [
-          { text: "Keep going", style: "cancel" },
-          { text: "Cancel", style: "destructive", onPress: cancelTimer },
+          { text: t`Keep going`, style: "cancel" },
+          { text: cancelLabel, style: "destructive", onPress: cancelTimer },
         ],
       )
       return
@@ -125,7 +131,7 @@ export default function TimerScene({
 
       <View style={styles.pickerContainer}>
         <TimerModePicker
-          options={["Focus", "Break"]}
+          options={[focusLabel, breakLabel]}
           activeIndex={activeIndex}
           disabled={status === "running"}
           onModeChange={handleModeChange}
@@ -139,7 +145,9 @@ export default function TimerScene({
           onToggle={toggleTimer}
           onCancel={handleCancel}
           idleLabel={idleLabel}
-          cancelLabel={timerMode === "short" ? "Stop" : "Cancel"}
+          pauseLabel={pauseLabel}
+          resumeLabel={resumeLabel}
+          cancelLabel={cancelLabel}
           canCancel={canCancel}
           showControls={timerMode !== "focus" || showControls}
         />

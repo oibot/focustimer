@@ -12,11 +12,15 @@
     "format": "prettier --write src",
     "test": "jest --watchAll=false --watchman=false",
     "format:changed": "bash -lc 'files=$(git diff --name-only --diff-filter=ACMRTUXB HEAD -- \"src\" | tr \"\\n\" \" \"); if [ -z \"$files\" ]; then echo \"No changed files in src\"; exit 0; fi; bunx prettier --write $files'",
-    "test:changed": "jest --watchAll=false --watchman=false --onlyChanged"
+    "test:changed": "jest --watchAll=false --watchman=false --onlyChanged",
+    "extract": "lingui extract",
+    "compile": "lingui compile --typescript"
   },
   "dependencies": {
     "@bacons/apple-targets": "^4.0.0",
     "@expo/ui": "~0.2.0-beta.9",
+    "@lingui/core": "^5.9.1",
+    "@lingui/react": "^5.9.1",
     "@sentry/react-native": "~7.2.0",
     "expo": "~54.0.33",
     "expo-asset": "~12.0.12",
@@ -26,6 +30,7 @@
     "expo-glass-effect": "~0.1.8",
     "expo-keep-awake": "~15.0.8",
     "expo-linking": "~8.0.11",
+    "expo-localization": "^17.0.8",
     "expo-notifications": "~0.32.16",
     "expo-router": "~6.0.23",
     "expo-splash-screen": "~31.0.13",
@@ -41,6 +46,8 @@
     "react-native-unistyles": "^3.0.22"
   },
   "devDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "^5.9.1",
+    "@lingui/cli": "^5.9.1",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.4.2",
     "@types/jest": "29.5.14",

@@ -13,6 +13,8 @@ type TimerProps = {
   onToggle: () => void
   onCancel: () => void
   idleLabel?: string
+  pauseLabel?: string
+  resumeLabel?: string
   cancelLabel?: string
   canCancel?: boolean
   showControls?: boolean
@@ -24,12 +26,18 @@ export default function Timer({
   onToggle,
   onCancel,
   idleLabel = "Start",
+  pauseLabel = "Pause",
+  resumeLabel = "Resume",
   cancelLabel = "Cancel",
   canCancel = status === "running",
   showControls = true,
 }: TimerProps) {
   const toggleLabel =
-    status === "running" ? "Pause" : status === "paused" ? "Resume" : idleLabel
+    status === "running"
+      ? pauseLabel
+      : status === "paused"
+        ? resumeLabel
+        : idleLabel
   const toggleSymbol = status === "running" ? "pause.fill" : "play.fill"
   const showCancel = status === "running"
   const { opacity: controlsOpacity, translateY: controlsTranslateY } =

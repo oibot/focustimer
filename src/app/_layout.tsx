@@ -1,4 +1,7 @@
 import TimerProvider from "@/components/providers/TimerProvider"
+import { initI18n } from "@/i18n"
+import { i18n } from "@lingui/core"
+import { I18nProvider } from "@lingui/react"
 import * as Sentry from "@sentry/react-native"
 import * as Notifications from "expo-notifications"
 import { Stack } from "expo-router"
@@ -40,6 +43,8 @@ Sentry.init({
   // spotlight: __DEV__,
 })
 
+initI18n()
+
 function Layout() {
   useEffect(() => {
     const ensurePermissions = async () => {
@@ -55,23 +60,25 @@ function Layout() {
 
   return (
     <GestureHandlerRootView>
-      <TimerProvider>
-        <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen
-            name="timer-done"
-            options={{
-              presentation: "formSheet",
-              sheetAllowedDetents: [0.25],
-              sheetInitialDetentIndex: 0,
-              sheetGrabberVisible: true,
-              headerShown: false,
-              contentStyle: { backgroundColor: "transparent" },
-            }}
-          />
-        </Stack>
-      </TimerProvider>
+      <I18nProvider i18n={i18n}>
+        <TimerProvider>
+          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" />
+            <Stack.Screen
+              name="timer-done"
+              options={{
+                presentation: "formSheet",
+                sheetAllowedDetents: [0.25],
+                sheetInitialDetentIndex: 0,
+                sheetGrabberVisible: true,
+                headerShown: false,
+                contentStyle: { backgroundColor: "transparent" },
+              }}
+            />
+          </Stack>
+        </TimerProvider>
+      </I18nProvider>
     </GestureHandlerRootView>
   )
 }

@@ -2,12 +2,24 @@ import { fireEvent, render } from "@testing-library/react-native"
 
 import TimerDoneScene from "@/components/home/TimerDoneScene"
 import { useTimer } from "@/hooks/useTimer"
+import { i18n } from "@lingui/core"
+import { I18nProvider } from "@lingui/react"
+import { messages as enMessages } from "@/locales/en/messages"
+import type { ReactElement } from "react"
 
 jest.mock("@/hooks/useTimer")
 
 const mockUseTimer = useTimer as jest.MockedFunction<typeof useTimer>
 
+const renderWithI18n = (ui: ReactElement) =>
+  render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>)
+
 describe("TimerDoneScene", () => {
+  beforeAll(() => {
+    i18n.load({ en: enMessages })
+    i18n.activate("en")
+  })
+
   beforeEach(() => {
     mockUseTimer.mockReturnValue({
       remainingMs: 0,
@@ -24,7 +36,7 @@ describe("TimerDoneScene", () => {
   })
 
   it("shows focus label when next mode is focus", () => {
-    const { getByText } = render(
+    const { getByText } = renderWithI18n(
       <TimerDoneScene
         nextMode="focus"
         onStart={jest.fn()}
@@ -36,7 +48,7 @@ describe("TimerDoneScene", () => {
   })
 
   it("shows break label when next mode is short", () => {
-    const { getByText } = render(
+    const { getByText } = renderWithI18n(
       <TimerDoneScene
         nextMode="short"
         onStart={jest.fn()}
@@ -49,7 +61,7 @@ describe("TimerDoneScene", () => {
 
   it("calls onStart when the start button is pressed", () => {
     const onStart = jest.fn()
-    const { getByText } = render(
+    const { getByText } = renderWithI18n(
       <TimerDoneScene
         nextMode="focus"
         onStart={onStart}
@@ -75,7 +87,7 @@ describe("TimerDoneScene", () => {
       canCancel: true,
     })
 
-    const { getByText } = render(
+    const { getByText } = renderWithI18n(
       <TimerDoneScene
         nextMode="focus"
         onStart={jest.fn()}
