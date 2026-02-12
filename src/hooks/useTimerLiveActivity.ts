@@ -23,6 +23,9 @@ export default function useTimerLiveActivity({
 }: UseTimerLiveActivityParams) {
   const prevStatusRef = useRef<TimerStatus>(status)
   const hasActivityRef = useRef(false)
+  const remainingMsRef = useRef(remainingMs)
+
+  remainingMsRef.current = remainingMs
 
   useEffect(() => {
     if (Platform.OS !== "ios") return
@@ -52,4 +55,13 @@ export default function useTimerLiveActivity({
     if (status !== "running" || !hasActivityRef.current) return
     void updateActivity(toSeconds(remainingMs), true)
   }, [remainingMs, status])
+
+  useEffect(() => {
+    if (Platform.OS !== "ios") return
+    return () => {
+      if (!hasActivityRef.current) return
+      void endActivity(toSeconds(remainingMsRef.current), false)
+      hasActivityRef.current = false
+    }
+  }, [])
 }

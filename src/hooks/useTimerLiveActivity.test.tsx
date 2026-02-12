@@ -29,12 +29,15 @@ const renderLiveActivityHook = (props: {
   )
 
 describe("useTimerLiveActivity", () => {
-  const areActivitiesEnabledMock =
-    areActivitiesEnabled as jest.MockedFunction<typeof areActivitiesEnabled>
-  const startActivityMock =
-    startActivity as jest.MockedFunction<typeof startActivity>
-  const updateActivityMock =
-    updateActivity as jest.MockedFunction<typeof updateActivity>
+  const areActivitiesEnabledMock = areActivitiesEnabled as jest.MockedFunction<
+    typeof areActivitiesEnabled
+  >
+  const startActivityMock = startActivity as jest.MockedFunction<
+    typeof startActivity
+  >
+  const updateActivityMock = updateActivity as jest.MockedFunction<
+    typeof updateActivity
+  >
   const endActivityMock = endActivity as jest.MockedFunction<typeof endActivity>
 
   beforeEach(() => {
@@ -83,6 +86,25 @@ describe("useTimerLiveActivity", () => {
 
     await waitFor(() => {
       expect(endActivityMock).toHaveBeenCalledWith(3, false)
+    })
+  })
+
+  it("ends when unmounting with an active activity", async () => {
+    const { rerender, unmount } = renderLiveActivityHook({
+      status: "idle",
+      remainingMs: 5000,
+    })
+
+    rerender({ status: "running", remainingMs: 5000 })
+
+    await waitFor(() => {
+      expect(startActivityMock).toHaveBeenCalled()
+    })
+
+    unmount()
+
+    await waitFor(() => {
+      expect(endActivityMock).toHaveBeenCalledWith(5, false)
     })
   })
 
