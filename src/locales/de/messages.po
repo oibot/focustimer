@@ -15,50 +15,50 @@ msgstr ""
 
 #: src/components/home/TimerScene.tsx:52
 msgid "Break"
-msgstr ""
+msgstr "Pause"
 
 #: src/components/home/TimerDoneScene.tsx:29
 #: src/components/home/TimerScene.tsx:50
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: src/components/home/TimerScene.tsx:109
 msgid "Cancel focus session?"
-msgstr ""
+msgstr "Fokussitzung abbrechen?"
 
 #: src/components/home/TimerScene.tsx:47
 #: src/components/home/TimerScene.tsx:51
 msgid "Focus"
-msgstr ""
+msgstr "Fokus"
 
 #: src/components/home/TimerScene.tsx:112
 msgid "Keep going"
-msgstr ""
+msgstr "Weitermachen"
 
 #: src/components/home/TimerScene.tsx:48
 msgid "Pause"
-msgstr ""
+msgstr "Pausieren"
 
 #: src/components/home/TimerScene.tsx:49
 msgid "Resume"
-msgstr ""
+msgstr "Fortsetzen"
 
 #: src/components/home/TimerScene.tsx:47
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 #: src/components/home/TimerDoneScene.tsx:18
 msgid "Start Break"
-msgstr ""
+msgstr "Pause starten"
 
 #: src/components/home/TimerDoneScene.tsx:18
 msgid "Start Focus"
-msgstr ""
+msgstr "Fokus starten"
 
 #: src/components/home/TimerScene.tsx:50
 msgid "Stop"
-msgstr ""
+msgstr "Stoppen"
 
 #: src/components/home/TimerScene.tsx:110
 msgid "Your current focus timer will reset."
-msgstr ""
+msgstr "Der aktuelle Fokus-Timer wird zurückgesetzt."
