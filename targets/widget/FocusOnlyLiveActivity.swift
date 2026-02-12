@@ -16,7 +16,7 @@ struct FocusOnlyLiveActivity: Widget {
           AppIconView(size: 28, padded: true)
         }
         DynamicIslandExpandedRegion(.center) {
-          Text(context.attributes.title)
+          Text(context.attributes.strings.title)
             .font(.headline)
             .lineLimit(1)
         }
@@ -28,7 +28,10 @@ struct FocusOnlyLiveActivity: Widget {
           )
         }
         DynamicIslandExpandedRegion(.bottom) {
-          FocusOnlyExpandedBottomView(isRunning: context.state.isRunning)
+          FocusOnlyExpandedBottomView(
+            isRunning: context.state.isRunning,
+            strings: context.attributes.strings
+          )
         }
       } compactLeading: {
         TimerText(
@@ -73,11 +76,14 @@ private struct FocusOnlyLockScreenView: View {
   var body: some View {
     HStack(alignment: .center, spacing: Layout.rowSpacing) {
       AppIconView(size: Layout.iconSize, padded: true)
-      Text(context.attributes.title)
+      Text(context.attributes.strings.title)
         .font(.headline)
         .lineLimit(1)
         .truncationMode(.tail)
-      StatusPill(isRunning: context.state.isRunning)
+      StatusPill(
+        isRunning: context.state.isRunning,
+        strings: context.attributes.strings
+      )
       Spacer(minLength: 8)
       TimerText(
         seconds: context.state.secondsRemaining,
@@ -91,11 +97,12 @@ private struct FocusOnlyLockScreenView: View {
 
 private struct FocusOnlyExpandedBottomView: View {
   let isRunning: Bool
+  let strings: FocusOnlyAttributes.Strings
 
   var body: some View {
     HStack(spacing: 8) {
-      StatusPill(isRunning: isRunning)
-      Text(isRunning ? "Stay focused" : "Session paused")
+      StatusPill(isRunning: isRunning, strings: strings)
+      Text(isRunning ? strings.subtitleRunning : strings.subtitlePaused)
         .font(.caption)
         .foregroundStyle(.secondary)
       Spacer(minLength: 0)
@@ -118,9 +125,13 @@ private struct TimerText: View {
 
 private struct StatusPill: View {
   let isRunning: Bool
+  let strings: FocusOnlyAttributes.Strings
 
   var body: some View {
-    Label(isRunning ? "Running" : "Paused", systemImage: isRunning ? "play.fill" : "pause.fill")
+    Label(
+      isRunning ? strings.statusRunning : strings.statusPaused,
+      systemImage: isRunning ? "play.fill" : "pause.fill"
+    )
       .font(.caption2)
       .foregroundStyle(.primary)
       .padding(.horizontal, 8)
@@ -163,7 +174,15 @@ private enum ActivityColors {
 
 extension FocusOnlyAttributes {
     fileprivate static var preview: Self {
-      FocusOnlyAttributes(title: "FO")
+      FocusOnlyAttributes(
+        strings: FocusOnlyAttributes.Strings(
+          title: "FO",
+          statusRunning: "Running",
+          statusPaused: "Paused",
+          subtitleRunning: "Stay focused",
+          subtitlePaused: "Session paused"
+        )
+      )
     }
 }
 

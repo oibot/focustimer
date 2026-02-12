@@ -1,11 +1,17 @@
 import LiveActivitiesControllerModule from "./LiveActivitiesControllerModule"
+import type { LiveActivityStrings } from "./LiveActivitiesController.type"
+
+export type { LiveActivityStrings }
 
 export function areActivitiesEnabled(): boolean {
   return LiveActivitiesControllerModule.areActivitiesEnabled()
 }
 
-export function startActivity(title: string, secondsRemaining: number): string | null {
-  return LiveActivitiesControllerModule.startActivity(title, secondsRemaining)
+export function startActivity(
+  strings: LiveActivityStrings,
+  secondsRemaining: number,
+): string | null {
+  return LiveActivitiesControllerModule.startActivity(strings, secondsRemaining)
 }
 
 export async function updateActivity(

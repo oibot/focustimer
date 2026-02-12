@@ -6,10 +6,11 @@ import {
   endActivity,
   startActivity,
   updateActivity,
+  type LiveActivityStrings,
 } from "local:live-activities-controller"
 
 type UseTimerLiveActivityParams = {
-  title: string
+  strings: LiveActivityStrings
   status: TimerStatus
   remainingMs: number
 }
@@ -17,7 +18,7 @@ type UseTimerLiveActivityParams = {
 const toSeconds = (ms: number) => Math.max(0, Math.ceil(ms / 1000))
 
 export default function useTimerLiveActivity({
-  title,
+  strings,
   status,
   remainingMs,
 }: UseTimerLiveActivityParams) {
@@ -38,7 +39,7 @@ export default function useTimerLiveActivity({
         return
       }
 
-      const activityId = startActivity(title, toSeconds(remainingMs))
+      const activityId = startActivity(strings, toSeconds(remainingMs))
       hasActivityRef.current = activityId != null
       return
     }
@@ -48,7 +49,7 @@ export default function useTimerLiveActivity({
       void endActivity(toSeconds(remainingMs), false)
       hasActivityRef.current = false
     }
-  }, [remainingMs, status, title])
+  }, [remainingMs, status, strings])
 
   useEffect(() => {
     if (Platform.OS !== "ios") return

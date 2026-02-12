@@ -6,5 +6,13 @@ struct FocusOnlyAttributes: ActivityAttributes {
     var isRunning: Bool
   }
 
-  var title: String
+  public struct Strings: Codable, Hashable {
+    var title: String
+    var statusRunning: String
+    var statusPaused: String
+    var subtitleRunning: String
+    var subtitlePaused: String
+  }
+
+  var strings: Strings
 }

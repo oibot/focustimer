@@ -12,6 +12,7 @@ import { isTimerMode, TimerMode } from "@/types/timer"
 import { GestureDetector } from "react-native-gesture-handler"
 import useTimerControls from "@/hooks/useTimerControls"
 import { StyleSheet } from "react-native-unistyles"
+import type { LiveActivityStrings } from "local:live-activities-controller"
 
 const TIMER_MODES = {
   focus: {
@@ -50,6 +51,13 @@ export default function TimerScene({
   const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
   const focusLabel = t`Focus`
   const breakLabel = t`Break`
+  const liveActivityStrings: LiveActivityStrings = {
+    title: timerMode === "focus" ? focusLabel : breakLabel,
+    statusRunning: t`Running`,
+    statusPaused: t`Paused`,
+    subtitleRunning: t`Stay focused`,
+    subtitlePaused: t`Session paused`,
+  }
   const activeIndex = timerMode === "focus" ? 0 : 1
   const {
     remainingMs,
@@ -75,7 +83,7 @@ export default function TimerScene({
 
   useBackgroundTimerNotifications({ status, remainingMs })
   useTimerLiveActivity({
-    title: timerMode === "focus" ? focusLabel : breakLabel,
+    strings: liveActivityStrings,
     status,
     remainingMs,
   })

@@ -7,6 +7,7 @@ import {
   endActivity,
   startActivity,
   updateActivity,
+  type LiveActivityStrings,
 } from "local:live-activities-controller"
 
 const setPlatformOS = (os: "ios" | "android") => {
@@ -16,12 +17,20 @@ const setPlatformOS = (os: "ios" | "android") => {
 const renderLiveActivityHook = (props: {
   status: TimerStatus
   remainingMs: number
-  title?: string
+  strings?: LiveActivityStrings
 }) =>
   renderHook(
-    ({ status, remainingMs, title }: typeof props) =>
+    ({ status, remainingMs, strings }: typeof props) =>
       useTimerLiveActivity({
-        title: title ?? "Focus",
+        strings:
+          strings ??
+          ({
+            title: "Focus",
+            statusRunning: "Running",
+            statusPaused: "Paused",
+            subtitleRunning: "Stay focused",
+            subtitlePaused: "Session paused",
+          } satisfies LiveActivityStrings),
         status,
         remainingMs,
       }),
@@ -56,7 +65,16 @@ describe("useTimerLiveActivity", () => {
     rerender({ status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
-      expect(startActivityMock).toHaveBeenCalledWith("Focus", 5)
+      expect(startActivityMock).toHaveBeenCalledWith(
+        {
+          title: "Focus",
+          statusRunning: "Running",
+          statusPaused: "Paused",
+          subtitleRunning: "Stay focused",
+          subtitlePaused: "Session paused",
+        },
+        5,
+      )
     })
 
     await waitFor(() => {

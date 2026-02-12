@@ -2,6 +2,23 @@ import ActivityKit
 import ExpoModulesCore
 import os
 
+struct LiveActivityStringsRecord: Record {
+  @Field
+  var title: String
+
+  @Field
+  var statusRunning: String
+
+  @Field
+  var statusPaused: String
+
+  @Field
+  var subtitleRunning: String
+
+  @Field
+  var subtitlePaused: String
+}
+
 public class LiveActivitiesControllerModule: Module {
 
   private var current: Activity<FocusOnlyAttributes>?
@@ -17,12 +34,21 @@ public class LiveActivitiesControllerModule: Module {
       return ActivityAuthorizationInfo().areActivitiesEnabled
     }
 
-    Function("startActivity") { (title: String, secondsRemaining: Int) -> String? in
+    Function("startActivity") { (strings: LiveActivityStringsRecord, secondsRemaining: Int) -> String? in
       guard ActivityAuthorizationInfo().areActivitiesEnabled else { return nil }
+      let attributes = FocusOnlyAttributes(
+        strings: FocusOnlyAttributes.Strings(
+          title: strings.title,
+          statusRunning: strings.statusRunning,
+          statusPaused: strings.statusPaused,
+          subtitleRunning: strings.subtitleRunning,
+          subtitlePaused: strings.subtitlePaused
+        )
+      )
 
       do {
         self.current = try Activity.request(
-          attributes: FocusOnlyAttributes(title: title),
+          attributes: attributes,
           content: ActivityContent(
             state: FocusOnlyAttributes.ContentState(
               secondsRemaining: secondsRemaining,
