@@ -6,33 +6,13 @@ import UIKit
 struct FocusOnlyLiveActivity: Widget {
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: FocusOnlyAttributes.self) { context in
-      FocusOnlyLockScreenView(context: context)
-      .activityBackgroundTint(ActivityColors.background)
+      LockScreenView(context: context)
+      .activityBackgroundTint(Color(.secondarySystemBackground))
       .activitySystemActionForegroundColor(.primary)
 
     } dynamicIsland: { context in
       DynamicIsland {
-        DynamicIslandExpandedRegion(.leading) {
-          AppIconView(size: 28, padded: true)
-        }
-        DynamicIslandExpandedRegion(.center) {
-          Text(context.attributes.strings.title)
-            .font(.headline)
-            .lineLimit(1)
-        }
-        DynamicIslandExpandedRegion(.trailing) {
-          TimerText(
-            seconds: context.state.secondsRemaining,
-            size: 28,
-            weight: .semibold
-          )
-        }
-        DynamicIslandExpandedRegion(.bottom) {
-          FocusOnlyExpandedBottomView(
-            isRunning: context.state.isRunning,
-            strings: context.attributes.strings
-          )
-        }
+        expandedContent(context)
       } compactLeading: {
         TimerText(
           seconds: context.state.secondsRemaining,
@@ -40,19 +20,40 @@ struct FocusOnlyLiveActivity: Widget {
           weight: .medium
         )
       } compactTrailing: {
-        Image(.icon)
-          .resizable()
-          .scaledToFit()
-          .frame(width: 24, height: 24)
+        AppIconView(size: 20)
       } minimal: {
-        Image(.icon)
-          .resizable()
-          .scaledToFit()
-          .frame(width: 24, height: 24)
+        AppIconView(size: 20)
       }
-      .widgetURL(URL(string: "https://www.expo.dev"))
       .keylineTint(.primary)
     }
+  }
+}
+
+@DynamicIslandExpandedContentBuilder
+private func expandedContent(
+  _ context: ActivityViewContext<FocusOnlyAttributes>
+) -> DynamicIslandExpandedContent<some View> {
+  DynamicIslandExpandedRegion(.leading) {
+    AppIconView(size: 28)
+      .padding(.leading, 8)
+  }
+  DynamicIslandExpandedRegion(.center) {
+    Text(context.attributes.strings.title)
+      .font(.headline)
+      .lineLimit(1)
+  }
+  DynamicIslandExpandedRegion(.trailing) {
+    TimerText(
+      seconds: context.state.secondsRemaining,
+      size: 28,
+      weight: .semibold
+    )
+  }
+  DynamicIslandExpandedRegion(.bottom) {
+    ExpandedBottomView(
+      isRunning: context.state.isRunning,
+      strings: context.attributes.strings
+    )
   }
 }
 
@@ -70,12 +71,12 @@ private func formatMMSS(_ seconds: Int) -> String {
   TimeFormatters.mmss.string(from: TimeInterval(seconds)) ?? "0:00"
 }
 
-private struct FocusOnlyLockScreenView: View {
+private struct LockScreenView: View {
   let context: ActivityViewContext<FocusOnlyAttributes>
 
   var body: some View {
     HStack(alignment: .center, spacing: Layout.rowSpacing) {
-      AppIconView(size: Layout.iconSize, padded: true)
+      AppIconView(size: Layout.iconSize)
       Text(context.attributes.strings.title)
         .font(.headline)
         .lineLimit(1)
@@ -93,15 +94,17 @@ private struct FocusOnlyLockScreenView: View {
     }
     .padding(Layout.edgePadding)
   }
+
 }
 
-private struct FocusOnlyExpandedBottomView: View {
+private struct ExpandedBottomView: View {
   let isRunning: Bool
   let strings: FocusOnlyAttributes.Strings
 
   var body: some View {
     HStack(spacing: 8) {
       StatusPill(isRunning: isRunning, strings: strings)
+        .padding(.leading, 8)
       Text(isRunning ? strings.subtitleRunning : strings.subtitlePaused)
         .font(.caption)
         .foregroundStyle(.secondary)
@@ -136,24 +139,25 @@ private struct StatusPill: View {
       .foregroundStyle(.primary)
       .padding(.horizontal, 8)
       .padding(.vertical, 4)
-      .background(isRunning ? ActivityColors.runningBackground : ActivityColors.pausedBackground, in: Capsule())
+      .background(
+        isRunning
+          ? Color(.systemGreen).opacity(0.2)
+          : Color(.systemOrange).opacity(0.2),
+        in: Capsule()
+      )
   }
 }
 
 private struct AppIconView: View {
   let size: CGFloat
-  let padded: Bool
 
   var body: some View {
     Image(.icon)
       .resizable()
       .scaledToFit()
       .frame(width: size, height: size)
-      .padding(padded ? Layout.iconPadding : 0)
-      .background(
-        padded ? ActivityColors.iconBackground : Color.clear,
-        in: ContainerRelativeShape().inset(by: Layout.edgePadding)
-      )
+      .padding(Layout.iconPadding)
+      .background(Color(.tertiarySystemBackground), in: Circle())
   }
 }
 
@@ -161,15 +165,8 @@ private enum Layout {
   static let edgePadding: CGFloat = 16
   static let rowSpacing: CGFloat = 12
   static let iconSize: CGFloat = 28
-  static let iconPadding: CGFloat = 6
+  static let iconPadding: CGFloat = 4
   static let timerSize: CGFloat = 36
-}
-
-private enum ActivityColors {
-  static let background = Color(uiColor: .secondarySystemBackground)
-  static let iconBackground = Color(uiColor: .tertiarySystemBackground)
-  static let runningBackground = Color(uiColor: .systemGreen).opacity(0.2)
-  static let pausedBackground = Color(uiColor: .systemOrange).opacity(0.2)
 }
 
 extension FocusOnlyAttributes {
