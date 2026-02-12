@@ -46,9 +46,9 @@ export default function IconPrimaryButton({
 
 const styles = StyleSheet.create((theme) => ({
   iconButton: {
-    width: 80,
-    height: 80,
-    borderRadius: 14,
+    width: 90,
+    height: 90,
+    borderRadius: 9999,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.colors.primary,

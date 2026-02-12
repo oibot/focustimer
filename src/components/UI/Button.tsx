@@ -58,7 +58,6 @@ export function DestructiveButton(props: ButtonProps) {
 const styles = StyleSheet.create((theme) => ({
   button: {
     width: 200,
-    height: 48,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -80,6 +79,7 @@ const styles = StyleSheet.create((theme) => ({
     fontSize: 22,
     fontWeight: "600",
     letterSpacing: 0.4,
+    padding: 20,
   },
   primaryLabel: {
     color: theme.colors.background,
