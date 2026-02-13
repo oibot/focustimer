@@ -2,8 +2,8 @@
   "name": "live-activities-controller",
   "version": "0.1.0",
   "description": "My new module",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "src/index",
+  "react-native": "src/index",
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
