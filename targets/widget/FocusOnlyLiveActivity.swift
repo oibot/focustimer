@@ -7,8 +7,9 @@ struct FocusOnlyLiveActivity: Widget {
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: FocusOnlyAttributes.self) { context in
       LockScreenView(context: context)
-      .activityBackgroundTint(Color(.secondarySystemBackground))
-      .activitySystemActionForegroundColor(.primary)
+        .padding()
+        .activityBackgroundTint(Color(.secondarySystemBackground))
+        .activitySystemActionForegroundColor(.primary)
 
     } dynamicIsland: { context in
       DynamicIsland {
@@ -43,16 +44,17 @@ private func expandedContent(
         .minimumScaleFactor(0.8)
         .allowsTightening(true)
     }
-    .padding(.leading, 8)
   }
   DynamicIslandExpandedRegion(.trailing) {
-    Spacer()
-    TimerText(
-      seconds: context.state.secondsRemaining,
-      endDate: context.state.endDate,
-      size: 28,
-      weight: .semibold
-    )
+    HStack {
+      Spacer()
+      TimerText(
+        seconds: context.state.secondsRemaining,
+        endDate: context.state.endDate,
+        size: 28,
+        weight: .semibold
+      )
+    }
   }
 }
 
@@ -90,9 +92,7 @@ private struct LockScreenView: View {
         weight: .semibold
       )
     }
-    .padding(Layout.edgePadding)
   }
-
 }
 
 private struct TimerText: View {
@@ -141,7 +141,6 @@ private struct AppIconView: View {
 }
 
 private enum Layout {
-  static let edgePadding: CGFloat = 16
   static let rowSpacing: CGFloat = 12
   static let iconSize: CGFloat = 28
   static let iconPadding: CGFloat = 4
