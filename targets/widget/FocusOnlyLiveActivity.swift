@@ -97,17 +97,29 @@ private struct TimerText: View {
   let size: CGFloat
   let weight: Font.Weight
 
+  @Environment(\.isLuminanceReduced) private var isLuminanceReduced
+
   var body: some View {
     HStack {
-      if let endDate {
-        Text(endDate, style: .timer)
-      } else {
-        Text(formatMMSS(seconds))
-      }
+      timerContent
     }
     .font(.system(size: size, weight: weight, design: .rounded))
     .monospacedDigit()
     .lineLimit(1)
+    .opacity(isLuminanceReduced ? 0.75 : 1)
+  }
+
+  @ViewBuilder
+  private var timerContent: some View {
+    if let endDate {
+      if isLuminanceReduced {
+        EmptyView()
+      } else {
+        Text(endDate, style: .timer)
+      }
+    } else {
+      Text(formatMMSS(seconds))
+    }
   }
 }
 
