@@ -1,12 +1,20 @@
 import type { ExpoConfig } from "expo/config"
 
 const variant = process.env.APP_VARIANT
+
 const name =
   variant === "dev"
     ? "Focus Only Dev"
     : variant === "test"
       ? "Focus Only Test"
       : "Focus Only"
+
+const icon =
+  variant === "dev"
+    ? "./assets/icon/Hourglass-dev.icon"
+    : variant === "test"
+      ? "./assets/icon/Hourglass-test.icon"
+      : "./assets/icon/Hourglass.icon"
 
 const bundleBase = "de.totap.focustimer"
 const bundleIdentifier =
@@ -15,6 +23,12 @@ const bundleIdentifier =
     : variant === "test"
       ? `${bundleBase}.test`
       : bundleBase
+const appGroup =
+  variant === "dev"
+    ? `group.${bundleBase}.dev`
+    : variant === "test"
+      ? `group.${bundleBase}.test`
+      : `group.${bundleBase}`
 
 const config: ExpoConfig = {
   name,
@@ -25,13 +39,14 @@ const config: ExpoConfig = {
   userInterfaceStyle: "automatic",
   owner: "tobio",
   newArchEnabled: true,
+  icon,
   ios: {
     supportsTablet: true,
     bundleIdentifier,
     config: {
       usesNonExemptEncryption: false,
     },
-    icon: "./assets/icon/Hourglass.icon",
+    icon,
     splash: {
       image: "./assets/splash/splash-icon-light.png",
       resizeMode: "contain",
@@ -44,7 +59,7 @@ const config: ExpoConfig = {
     },
     appleTeamId: "DCY46V87K7",
     entitlements: {
-      "com.apple.security.application-groups": [`group.${bundleBase}`],
+      "com.apple.security.application-groups": [appGroup],
     },
     infoPlist: {
       NSSupportsLiveActivities: true,
