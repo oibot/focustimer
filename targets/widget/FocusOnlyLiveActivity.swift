@@ -40,6 +40,8 @@ private func expandedContent(
       Text(context.attributes.strings.title)
         .font(.headline)
         .lineLimit(1)
+        .minimumScaleFactor(0.8)
+        .allowsTightening(true)
     }
     .padding(.leading, 8)
   }
@@ -78,6 +80,8 @@ private struct LockScreenView: View {
         .font(.headline)
         .lineLimit(1)
         .truncationMode(.tail)
+        .minimumScaleFactor(0.8)
+        .allowsTightening(true)
       Spacer(minLength: 8)
       TimerText(
         seconds: context.state.secondsRemaining,
