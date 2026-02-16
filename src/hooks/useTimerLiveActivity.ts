@@ -25,13 +25,16 @@ export default function useTimerLiveActivity({
   const prevStatusRef = useRef<TimerStatus>(status)
   const hasActivityRef = useRef(false)
   const remainingMsRef = useRef(remainingMs)
+  const prevRemainingMsRef = useRef(remainingMs)
 
   remainingMsRef.current = remainingMs
 
   useEffect(() => {
     if (Platform.OS !== "ios") return
     const prevStatus = prevStatusRef.current
+    const prevRemainingMs = prevRemainingMsRef.current
     prevStatusRef.current = status
+    prevRemainingMsRef.current = remainingMs
 
     if (status === "running" && prevStatus !== "running") {
       if (!areActivitiesEnabled()) {
@@ -48,14 +51,17 @@ export default function useTimerLiveActivity({
       if (!hasActivityRef.current) return
       void endActivity(toSeconds(remainingMs), false)
       hasActivityRef.current = false
+      return
+    }
+
+    if (
+      status === "running" &&
+      hasActivityRef.current &&
+      remainingMs > prevRemainingMs
+    ) {
+      void updateActivity(toSeconds(remainingMs), true)
     }
   }, [remainingMs, status, strings])
-
-  useEffect(() => {
-    if (Platform.OS !== "ios") return
-    if (status !== "running" || !hasActivityRef.current) return
-    void updateActivity(toSeconds(remainingMs), true)
-  }, [remainingMs, status])
 
   useEffect(() => {
     if (Platform.OS !== "ios") return

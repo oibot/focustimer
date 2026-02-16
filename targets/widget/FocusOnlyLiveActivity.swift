@@ -16,6 +16,8 @@ struct FocusOnlyLiveActivity: Widget {
       } compactLeading: {
         TimerText(
           seconds: context.state.secondsRemaining,
+          endDate: context.state.endDate,
+          isRunning: context.state.isRunning,
           size: 14,
           weight: .medium
         )
@@ -45,6 +47,8 @@ private func expandedContent(
   DynamicIslandExpandedRegion(.trailing) {
     TimerText(
       seconds: context.state.secondsRemaining,
+      endDate: context.state.endDate,
+      isRunning: context.state.isRunning,
       size: 28,
       weight: .semibold
     )
@@ -88,6 +92,8 @@ private struct LockScreenView: View {
       Spacer(minLength: 8)
       TimerText(
         seconds: context.state.secondsRemaining,
+        endDate: context.state.endDate,
+        isRunning: context.state.isRunning,
         size: Layout.timerSize,
         weight: .semibold
       )
@@ -115,11 +121,19 @@ private struct ExpandedBottomView: View {
 
 private struct TimerText: View {
   let seconds: Int
+  let endDate: Date?
+  let isRunning: Bool
   let size: CGFloat
   let weight: Font.Weight
 
   var body: some View {
-    Text(formatMMSS(seconds))
+    let text: Text = {
+      if isRunning, let endDate {
+        return Text(endDate, style: .timer)
+      }
+      return Text(formatMMSS(seconds))
+    }()
+    return text
       .font(.system(size: size, weight: weight, design: .rounded))
       .monospacedDigit()
       .lineLimit(1)
@@ -185,7 +199,11 @@ extension FocusOnlyAttributes {
 
 extension FocusOnlyAttributes.ContentState {
   fileprivate static var preview: Self {
-    Self(secondsRemaining: 1111, isRunning: true)
+    Self(
+      secondsRemaining: 1111,
+      isRunning: true,
+      endDate: Date().addingTimeInterval(1111)
+    )
   }
 }
 

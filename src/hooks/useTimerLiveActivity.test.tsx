@@ -56,7 +56,7 @@ describe("useTimerLiveActivity", () => {
     startActivityMock.mockReturnValue("activity-1")
   })
 
-  it("starts and updates when running begins", async () => {
+  it("starts when running begins", async () => {
     const { rerender } = renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
@@ -77,14 +77,29 @@ describe("useTimerLiveActivity", () => {
       )
     })
 
-    await waitFor(() => {
-      expect(updateActivityMock).toHaveBeenCalledWith(5, true)
-    })
-
     rerender({ status: "running", remainingMs: 4000 })
 
     await waitFor(() => {
-      expect(updateActivityMock).toHaveBeenLastCalledWith(4, true)
+      expect(updateActivityMock).not.toHaveBeenCalled()
+    })
+  })
+
+  it("updates when remaining time increases while running", async () => {
+    const { rerender } = renderLiveActivityHook({
+      status: "idle",
+      remainingMs: 5000,
+    })
+
+    rerender({ status: "running", remainingMs: 5000 })
+
+    await waitFor(() => {
+      expect(startActivityMock).toHaveBeenCalled()
+    })
+
+    rerender({ status: "running", remainingMs: 8000 })
+
+    await waitFor(() => {
+      expect(updateActivityMock).toHaveBeenCalledWith(8, true)
     })
   })
 

@@ -27,6 +27,23 @@ public class LiveActivitiesControllerModule: Module {
     category: "LiveActivitiesController"
   )
 
+  private func makeContent(
+    secondsRemaining: Int,
+    isRunning: Bool
+  ) -> ActivityContent<FocusOnlyAttributes.ContentState> {
+    let endDate = isRunning
+      ? Date().addingTimeInterval(TimeInterval(secondsRemaining))
+      : nil
+    return ActivityContent(
+      state: FocusOnlyAttributes.ContentState(
+        secondsRemaining: secondsRemaining,
+        isRunning: isRunning,
+        endDate: endDate
+      ),
+      staleDate: endDate
+    )
+  }
+
   public func definition() -> ModuleDefinition {
     Name("LiveActivitiesController")
 
@@ -49,12 +66,9 @@ public class LiveActivitiesControllerModule: Module {
       do {
         self.current = try Activity.request(
           attributes: attributes,
-          content: ActivityContent(
-            state: FocusOnlyAttributes.ContentState(
-              secondsRemaining: secondsRemaining,
-              isRunning: true
-            ),
-            staleDate: nil
+          content: makeContent(
+            secondsRemaining: secondsRemaining,
+            isRunning: true
           )
         )
       } catch {
@@ -66,25 +80,12 @@ public class LiveActivitiesControllerModule: Module {
 
     AsyncFunction("updateActivity") { (secondsRemaining: Int, isRunning: Bool) async -> Void in
       guard let current = self.current else { return }
-      let content = ActivityContent(
-        state: FocusOnlyAttributes.ContentState(
-          secondsRemaining: secondsRemaining,
-          isRunning: isRunning
-        ),
-        staleDate: nil
-      )
-      await current.update(content)
+      await current.update(makeContent(secondsRemaining: secondsRemaining, isRunning: isRunning))
     }
 
     AsyncFunction("endActivity") { (secondsRemaining: Int, isRunning: Bool) async -> Void in
       guard let current = self.current else { return }
-      let content = ActivityContent(
-        state: FocusOnlyAttributes.ContentState(
-          secondsRemaining: secondsRemaining,
-          isRunning: isRunning
-        ),
-        staleDate: nil
-      )
+      let content = makeContent(secondsRemaining: secondsRemaining, isRunning: isRunning)
       await current.end(content, dismissalPolicy: .immediate)
       self.current = nil
     }
