@@ -17,7 +17,6 @@ struct FocusOnlyLiveActivity: Widget {
         TimerText(
           seconds: context.state.secondsRemaining,
           endDate: context.state.endDate,
-          isRunning: context.state.isRunning,
           size: 14,
           weight: .medium
         )
@@ -36,27 +35,21 @@ private func expandedContent(
   _ context: ActivityViewContext<FocusOnlyAttributes>
 ) -> DynamicIslandExpandedContent<some View> {
   DynamicIslandExpandedRegion(.leading) {
-    AppIconView(size: 28)
-      .padding(.leading, 8)
-  }
-  DynamicIslandExpandedRegion(.center) {
-    Text(context.attributes.strings.title)
-      .font(.headline)
-      .lineLimit(1)
+    HStack(spacing: 8) {
+      AppIconView(size: 28)
+      Text(context.attributes.strings.title)
+        .font(.headline)
+        .lineLimit(1)
+    }
+    .padding(.leading, 8)
   }
   DynamicIslandExpandedRegion(.trailing) {
+    Spacer()
     TimerText(
       seconds: context.state.secondsRemaining,
       endDate: context.state.endDate,
-      isRunning: context.state.isRunning,
       size: 28,
       weight: .semibold
-    )
-  }
-  DynamicIslandExpandedRegion(.bottom) {
-    ExpandedBottomView(
-      isRunning: context.state.isRunning,
-      strings: context.attributes.strings
     )
   }
 }
@@ -85,15 +78,10 @@ private struct LockScreenView: View {
         .font(.headline)
         .lineLimit(1)
         .truncationMode(.tail)
-      StatusPill(
-        isRunning: context.state.isRunning,
-        strings: context.attributes.strings
-      )
       Spacer(minLength: 8)
       TimerText(
         seconds: context.state.secondsRemaining,
         endDate: context.state.endDate,
-        isRunning: context.state.isRunning,
         size: Layout.timerSize,
         weight: .semibold
       )
@@ -103,62 +91,23 @@ private struct LockScreenView: View {
 
 }
 
-private struct ExpandedBottomView: View {
-  let isRunning: Bool
-  let strings: FocusOnlyAttributes.Strings
-
-  var body: some View {
-    HStack(spacing: 8) {
-      StatusPill(isRunning: isRunning, strings: strings)
-        .padding(.leading, 8)
-      Text(isRunning ? strings.subtitleRunning : strings.subtitlePaused)
-        .font(.caption)
-        .foregroundStyle(.secondary)
-      Spacer(minLength: 0)
-    }
-  }
-}
-
 private struct TimerText: View {
   let seconds: Int
   let endDate: Date?
-  let isRunning: Bool
   let size: CGFloat
   let weight: Font.Weight
 
   var body: some View {
-    let text: Text = {
-      if isRunning, let endDate {
-        return Text(endDate, style: .timer)
+    HStack {
+      if let endDate {
+        Text(endDate, style: .timer)
+      } else {
+        Text(formatMMSS(seconds))
       }
-      return Text(formatMMSS(seconds))
-    }()
-    return text
-      .font(.system(size: size, weight: weight, design: .rounded))
-      .monospacedDigit()
-      .lineLimit(1)
-  }
-}
-
-private struct StatusPill: View {
-  let isRunning: Bool
-  let strings: FocusOnlyAttributes.Strings
-
-  var body: some View {
-    Label(
-      isRunning ? strings.statusRunning : strings.statusPaused,
-      systemImage: isRunning ? "play.fill" : "pause.fill"
-    )
-      .font(.caption2)
-      .foregroundStyle(.primary)
-      .padding(.horizontal, 8)
-      .padding(.vertical, 4)
-      .background(
-        isRunning
-          ? Color(.systemGreen).opacity(0.2)
-          : Color(.systemOrange).opacity(0.2),
-        in: Capsule()
-      )
+    }
+    .font(.system(size: size, weight: weight, design: .rounded))
+    .monospacedDigit()
+    .lineLimit(1)
   }
 }
 
@@ -201,7 +150,6 @@ extension FocusOnlyAttributes.ContentState {
   fileprivate static var preview: Self {
     Self(
       secondsRemaining: 1111,
-      isRunning: true,
       endDate: Date().addingTimeInterval(1111)
     )
   }

@@ -37,7 +37,6 @@ public class LiveActivitiesControllerModule: Module {
     return ActivityContent(
       state: FocusOnlyAttributes.ContentState(
         secondsRemaining: secondsRemaining,
-        isRunning: isRunning,
         endDate: endDate
       ),
       staleDate: endDate
