@@ -98,7 +98,7 @@ describe("TimerScene", () => {
       <TimerScene mode="unknown" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
-    expect(getByLabelText("Focus")).toBeTruthy()
+    expect(getByLabelText("Start")).toBeTruthy()
   })
 
   it("uses the short mode labels without stop button while idle", () => {

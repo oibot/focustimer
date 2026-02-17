@@ -13,49 +13,61 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/home/TimerScene.tsx:53
+#: src/components/home/TimerScene.tsx:59
 msgid "Break"
 msgstr "Break"
 
 #: src/components/home/TimerDoneScene.tsx:29
-#: src/components/home/TimerScene.tsx:51
+#: src/components/home/TimerScene.tsx:52
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/home/TimerScene.tsx:117
+#: src/components/home/TimerScene.tsx:125
 msgid "Cancel focus session?"
 msgstr "Cancel focus session?"
 
-#: src/components/home/TimerScene.tsx:48
-#: src/components/home/TimerScene.tsx:52
+#: src/components/home/TimerScene.tsx:49
+#: src/components/home/TimerScene.tsx:58
 msgid "Focus"
 msgstr "Focus"
 
-#: src/components/home/TimerScene.tsx:120
+#: src/components/home/TimerScene.tsx:128
 msgid "Keep going"
 msgstr "Keep going"
 
-#: src/components/home/TimerScene.tsx:49
+#: src/components/home/TimerScene.tsx:50
 msgid "Pause"
 msgstr "Pause"
 
-#: src/components/home/TimerScene.tsx:57
+#: src/components/home/TimerScene.tsx:64
 msgid "Paused"
 msgstr "Paused"
 
-#: src/components/home/TimerScene.tsx:50
+#: src/components/home/TimerScene.tsx:55
+msgid "Pauses the timer"
+msgstr "Pauses the timer"
+
+#: src/components/home/TimerScene.tsx:57
+msgid "Resets the timer"
+msgstr "Resets the timer"
+
+#: src/components/home/TimerScene.tsx:51
 msgid "Resume"
 msgstr "Resume"
 
 #: src/components/home/TimerScene.tsx:56
+msgid "Resumes the timer"
+msgstr "Resumes the timer"
+
+#: src/components/home/TimerScene.tsx:63
 msgid "Running"
 msgstr "Running"
 
-#: src/components/home/TimerScene.tsx:59
+#: src/components/home/TimerScene.tsx:66
 msgid "Session paused"
 msgstr "Session paused"
 
-#: src/components/home/TimerScene.tsx:48
+#: src/components/home/TimerScene.tsx:49
 msgid "Start"
 msgstr "Start"
 
@@ -63,18 +75,34 @@ msgstr "Start"
 msgid "Start Break"
 msgstr "Start Break"
 
+#: src/components/home/TimerScene.tsx:54
+msgid "Start break timer"
+msgstr "Start break timer"
+
 #: src/components/home/TimerDoneScene.tsx:18
 msgid "Start Focus"
 msgstr "Start Focus"
 
-#: src/components/home/TimerScene.tsx:58
+#: src/components/home/TimerScene.tsx:54
+msgid "Start focus timer"
+msgstr "Start focus timer"
+
+#: src/components/home/TimerScene.tsx:53
+#~ msgid "Starts the timer"
+#~ msgstr "Starts the timer"
+
+#: src/components/home/TimerScene.tsx:65
 msgid "Stay focused"
 msgstr "Stay focused"
 
-#: src/components/home/TimerScene.tsx:51
+#: src/components/home/TimerScene.tsx:52
 msgid "Stop"
 msgstr "Stop"
 
-#: src/components/home/TimerScene.tsx:118
+#: src/components/home/TimerScene.tsx:60
+msgid "Timer mode"
+msgstr "Timer mode"
+
+#: src/components/home/TimerScene.tsx:126
 msgid "Your current focus timer will reset."
 msgstr "Your current focus timer will reset."

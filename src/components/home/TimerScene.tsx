@@ -17,11 +17,11 @@ import type { LiveActivityStrings } from "local:live-activities-controller"
 
 const TIMER_MODES = {
   focus: {
-    startingMs: 25 * 60 * 1000,
+    startingMs: 10000, //25 * 60 * 1000,
     nextMode: "short",
   },
   short: {
-    startingMs: 5 * 60 * 1000,
+    startingMs: 10000, //5 * 60 * 1000,
     nextMode: "focus",
   },
 } as const
@@ -46,13 +46,10 @@ export default function TimerScene({
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, nextMode } = TIMER_MODES[timerMode]
-  const idleLabel = timerMode === "focus" ? t`Focus` : t`Start`
+  const idleLabel = t`Start`
   const pauseLabel = t`Pause`
   const resumeLabel = t`Resume`
   const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
-  const idleHint = t`Starts the timer`
-  const pauseHint = t`Pauses the timer`
-  const resumeHint = t`Resumes the timer`
   const focusLabel = t`Focus`
   const breakLabel = t`Break`
   const modeLabel = t`Timer mode`
@@ -157,20 +154,19 @@ export default function TimerScene({
         <Timer
           remainingMs={remainingMs}
           status={status}
+          timerMode={timerMode}
           onToggle={toggleTimer}
           onCancel={handleCancel}
           idleLabel={idleLabel}
           pauseLabel={pauseLabel}
           resumeLabel={resumeLabel}
-          idleHint={idleHint}
-          pauseHint={pauseHint}
-          resumeHint={resumeHint}
           cancelLabel={cancelLabel}
           canCancel={canCancel}
           showControls={
             isScreenReaderEnabled || timerMode !== "focus" || showControls
           }
           animateDigits={!isScreenReaderEnabled}
+          usePlainTime={isScreenReaderEnabled}
         />
       </View>
     </View>

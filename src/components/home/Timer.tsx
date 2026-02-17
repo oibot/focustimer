@@ -2,14 +2,16 @@ import TimerNumericText from "@/components/home/TimerNumericText"
 import { DestructiveButton } from "@/components/UI/Button"
 import IconPrimaryButton from "@/components/UI/IconPrimaryButton"
 import useTimerControlsAnimation from "@/hooks/useTimerControlsAnimation"
-import type { TimerStatus } from "@/types/timer"
+import type { TimerMode, TimerStatus } from "@/types/timer"
 import { formatDuration } from "@/utils/time"
-import { Animated, View } from "react-native"
+import { useLingui } from "@lingui/react/macro"
+import { Animated, Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 type TimerProps = {
   remainingMs: number
   status: TimerStatus
+  timerMode: TimerMode
   onToggle: () => void
   onCancel: () => void
   idleLabel?: string
@@ -18,11 +20,14 @@ type TimerProps = {
   cancelLabel?: string
   canCancel?: boolean
   showControls?: boolean
+  animateDigits?: boolean
+  usePlainTime?: boolean
 }
 
 export default function Timer({
   remainingMs,
   status,
+  timerMode,
   onToggle,
   onCancel,
   idleLabel = "Start",
@@ -31,13 +36,27 @@ export default function Timer({
   cancelLabel = "Cancel",
   canCancel = status === "running",
   showControls = true,
+  animateDigits = true,
+  usePlainTime = false,
 }: TimerProps) {
+  const { t } = useLingui()
+  const idleHint =
+    timerMode === "focus" ? t`Start focus timer` : t`Start break timer`
+  const pauseHint = t`Pauses the timer`
+  const resumeHint = t`Resumes the timer`
+  const cancelHint = t`Resets the timer`
   const toggleLabel =
     status === "running"
       ? pauseLabel
       : status === "paused"
         ? resumeLabel
         : idleLabel
+  const toggleHint =
+    status === "running"
+      ? pauseHint
+      : status === "paused"
+        ? resumeHint
+        : idleHint
   const toggleSymbol = status === "running" ? "pause.fill" : "play.fill"
   const showCancel = status === "running"
   const { opacity: controlsOpacity, translateY: controlsTranslateY } =
@@ -46,11 +65,15 @@ export default function Timer({
   return (
     <View style={styles.container} pointerEvents="box-none">
       <View style={styles.timerContainer}>
-        <TimerNumericText
-          value={formatDuration(remainingMs)}
-          countsDown
-          animate={animateDigits}
-        />
+        {usePlainTime ? (
+          <Text style={styles.plainTime}>{formatDuration(remainingMs)}</Text>
+        ) : (
+          <TimerNumericText
+            value={formatDuration(remainingMs)}
+            countsDown
+            animate={animateDigits}
+          />
+        )}
       </View>
       <Animated.View
         testID="timer-controls"
@@ -66,10 +89,12 @@ export default function Timer({
         <IconPrimaryButton
           label={toggleLabel}
           symbolName={toggleSymbol}
+          accessibilityHint={toggleHint}
           onPress={onToggle}
         />
         <DestructiveButton
           label={cancelLabel}
+          accessibilityHint={cancelHint}
           disabled={!canCancel || !showCancel}
           onPress={onCancel}
           style={!showCancel && styles.cancelHidden}
@@ -94,6 +119,13 @@ const styles = StyleSheet.create((theme) => ({
   timerContainer: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  plainTime: {
+    fontSize: 96,
+    lineHeight: 96,
+    fontWeight: "600",
+    fontVariant: ["tabular-nums"],
+    color: theme.colors.primary,
   },
   controls: {
     alignItems: "center",
