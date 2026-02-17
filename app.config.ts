@@ -19,13 +19,13 @@ const icon =
 const bundleBase = "de.totap.focustimer"
 const bundleIdentifier =
   variant === "dev"
-    ? `${bundleBase}.dev`
+    ? `${bundleBase}.development`
     : variant === "test"
       ? `${bundleBase}.test`
       : bundleBase
 const appGroup =
   variant === "dev"
-    ? `group.${bundleBase}.dev`
+    ? `group.${bundleBase}.devolopment`
     : variant === "test"
       ? `group.${bundleBase}.test`
       : `group.${bundleBase}`
