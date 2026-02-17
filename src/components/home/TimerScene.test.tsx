@@ -4,6 +4,7 @@ import TimerScene from "@/components/home/TimerScene"
 import { useTimer } from "@/hooks/useTimer"
 import * as useTimerControlsModule from "@/hooks/useTimerControls"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
+import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
 import { useKeepAwake } from "expo-keep-awake"
@@ -15,6 +16,7 @@ import type { ReactElement } from "react"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
+jest.mock("@/hooks/useScreenReaderEnabled")
 jest.mock("@/components/home/TimerModePicker", () => {
   const React = require("react")
   const { View, Text, Pressable } = require("react-native")
@@ -54,6 +56,8 @@ jest.mock("@/components/home/TimerModePicker", () => {
 })
 
 const mockUseTimer = useTimer as jest.MockedFunction<typeof useTimer>
+const mockUseScreenReaderEnabled =
+  useScreenReaderEnabled as jest.MockedFunction<typeof useScreenReaderEnabled>
 const mockUseKeepAwake = useKeepAwake as jest.MockedFunction<
   typeof useKeepAwake
 >
@@ -81,6 +85,7 @@ describe("TimerScene", () => {
 
   beforeEach(() => {
     mockUseTimer.mockReturnValue({ ...baseTimerState })
+    mockUseScreenReaderEnabled.mockReturnValue(false)
   })
 
   afterEach(() => {

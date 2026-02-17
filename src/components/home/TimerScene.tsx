@@ -11,6 +11,7 @@ import { useTimer } from "@/hooks/useTimer"
 import { isTimerMode, TimerMode } from "@/types/timer"
 import { GestureDetector } from "react-native-gesture-handler"
 import useTimerControls from "@/hooks/useTimerControls"
+import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { StyleSheet } from "react-native-unistyles"
 import type { LiveActivityStrings } from "local:live-activities-controller"
 
@@ -49,8 +50,12 @@ export default function TimerScene({
   const pauseLabel = t`Pause`
   const resumeLabel = t`Resume`
   const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
+  const idleHint = t`Starts the timer`
+  const pauseHint = t`Pauses the timer`
+  const resumeHint = t`Resumes the timer`
   const focusLabel = t`Focus`
   const breakLabel = t`Break`
+  const modeLabel = t`Timer mode`
   const liveActivityStrings: LiveActivityStrings = {
     title: timerMode === "focus" ? focusLabel : breakLabel,
     statusRunning: t`Running`,
@@ -72,6 +77,7 @@ export default function TimerScene({
     status,
     timerMode,
   })
+  const isScreenReaderEnabled = useScreenReaderEnabled()
 
   const handleModeChange = (index: number) => {
     if (index === activeIndex) return
@@ -141,6 +147,7 @@ export default function TimerScene({
         <TimerModePicker
           options={[focusLabel, breakLabel]}
           activeIndex={activeIndex}
+          label={modeLabel}
           disabled={status === "running"}
           onModeChange={handleModeChange}
         />
@@ -155,9 +162,15 @@ export default function TimerScene({
           idleLabel={idleLabel}
           pauseLabel={pauseLabel}
           resumeLabel={resumeLabel}
+          idleHint={idleHint}
+          pauseHint={pauseHint}
+          resumeHint={resumeHint}
           cancelLabel={cancelLabel}
           canCancel={canCancel}
-          showControls={timerMode !== "focus" || showControls}
+          showControls={
+            isScreenReaderEnabled || timerMode !== "focus" || showControls
+          }
+          animateDigits={!isScreenReaderEnabled}
         />
       </View>
     </View>

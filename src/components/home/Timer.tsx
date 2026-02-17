@@ -46,7 +46,11 @@ export default function Timer({
   return (
     <View style={styles.container} pointerEvents="box-none">
       <View style={styles.timerContainer}>
-        <TimerNumericText value={formatDuration(remainingMs)} countsDown />
+        <TimerNumericText
+          value={formatDuration(remainingMs)}
+          countsDown
+          animate={animateDigits}
+        />
       </View>
       <Animated.View
         testID="timer-controls"

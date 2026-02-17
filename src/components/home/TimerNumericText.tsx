@@ -11,14 +11,16 @@ const ROLL_DURATION_MS = 280
 type TimerNumericTextProps = {
   value: string
   countsDown?: boolean
+  animate?: boolean
 }
 
 type RollingDigitProps = {
   value: number
   countsDown: boolean
+  animate: boolean
 }
 
-function RollingDigit({ value, countsDown }: RollingDigitProps) {
+function RollingDigit({ value, countsDown, animate }: RollingDigitProps) {
   const startIndex = BASE_INDEX + value
   const animatedIndex = useRef(new Animated.Value(startIndex)).current
   const indexRef = useRef(startIndex)
@@ -31,12 +33,20 @@ function RollingDigit({ value, countsDown }: RollingDigitProps) {
       return
     }
 
+    const resetIndex = BASE_INDEX + value
+
+    if (!animate) {
+      indexRef.current = resetIndex
+      prevValueRef.current = value
+      animatedIndex.setValue(resetIndex)
+      return
+    }
+
     const isStep = countsDown
       ? (prevValue === 0 && value === 9) || value === prevValue - 1
       : (prevValue === 9 && value === 0) || value === prevValue + 1
 
     if (!isStep) {
-      const resetIndex = BASE_INDEX + value
       indexRef.current = resetIndex
       prevValueRef.current = value
       animatedIndex.setValue(resetIndex)
@@ -57,11 +67,10 @@ function RollingDigit({ value, countsDown }: RollingDigitProps) {
         return
       }
 
-      const resetIndex = BASE_INDEX + value
       indexRef.current = resetIndex
       animatedIndex.setValue(resetIndex)
     })
-  }, [value, countsDown, animatedIndex])
+  }, [value, countsDown, animate, animatedIndex])
 
   const translateY = Animated.multiply(animatedIndex, -DIGIT_HEIGHT)
 
@@ -88,6 +97,7 @@ function RollingDigit({ value, countsDown }: RollingDigitProps) {
 export default function TimerNumericText({
   value,
   countsDown = true,
+  animate = true,
 }: TimerNumericTextProps) {
   const chars = value.split("")
 
@@ -112,6 +122,7 @@ export default function TimerNumericText({
             key={`digit-${index}`}
             value={Number(char)}
             countsDown={countsDown}
+            animate={animate}
           />
         ),
       )}
