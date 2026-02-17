@@ -27,6 +27,8 @@ function BaseButton({
         state.pressed && styles.buttonPressed,
         typeof style === "function" ? style(state) : style,
       ]}
+      accessibilityRole="button"
+      accessibilityLabel={label}
       disabled={disabled}
       {...pressableProps}
     >
