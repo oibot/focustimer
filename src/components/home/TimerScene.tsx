@@ -144,7 +144,6 @@ export default function TimerScene({
         <TimerModePicker
           options={[focusLabel, breakLabel]}
           activeIndex={activeIndex}
-          label={modeLabel}
           disabled={status === "running"}
           onModeChange={handleModeChange}
         />

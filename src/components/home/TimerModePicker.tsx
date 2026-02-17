@@ -1,5 +1,9 @@
 import { Host, Picker } from "@expo/ui/swift-ui"
-import { disabled as disabledModifier } from "@expo/ui/swift-ui/modifiers"
+import {
+  accessibilityHint,
+  disabled as disabledModifier,
+} from "@expo/ui/swift-ui/modifiers"
+import { useLingui } from "@lingui/react/macro"
 import { StyleSheet } from "react-native-unistyles"
 import { useEffect, useState } from "react"
 
@@ -16,6 +20,7 @@ export default function TimerModePicker({
   disabled = false,
   onModeChange,
 }: TimerModePickerProps) {
+  const { t } = useLingui()
   const [selectedIndex, setSelectedIndex] = useState(activeIndex)
 
   useEffect(() => {
@@ -40,7 +45,10 @@ export default function TimerModePicker({
         selectedIndex={selectedIndex}
         onOptionSelected={handleOptionSelected}
         variant="segmented"
-        modifiers={[disabledModifier(disabled)]}
+        modifiers={[
+          disabledModifier(disabled),
+          accessibilityHint(t`Changes the timer mode`),
+        ]}
       />
     </Host>
   )

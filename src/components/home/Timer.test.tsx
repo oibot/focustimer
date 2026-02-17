@@ -53,6 +53,20 @@ describe("Timer", () => {
     expect(getByLabelText("Resume")).toBeTruthy()
   })
 
+  it("uses mode-specific start hints", () => {
+    const { getByA11yHint, rerender } = renderWithI18n(<Timer {...baseProps} />)
+
+    expect(getByA11yHint("Start focus timer")).toBeTruthy()
+
+    rerender(
+      <I18nProvider i18n={i18n}>
+        <Timer {...baseProps} timerMode="short" />
+      </I18nProvider>,
+    )
+
+    expect(getByA11yHint("Start break timer")).toBeTruthy()
+  })
+
   it("shows cancel only while running", () => {
     const { queryByText, rerender } = renderWithI18n(<Timer {...baseProps} />)
     expect(queryByText("Cancel")).toBeNull()
