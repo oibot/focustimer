@@ -17,18 +17,10 @@ const icon =
       : "./assets/icon/Hourglass.icon"
 
 const bundleBase = "de.totap.focustimer"
-const bundleIdentifier =
-  variant === "dev"
-    ? `${bundleBase}.development`
-    : variant === "test"
-      ? `${bundleBase}.test`
-      : bundleBase
-const appGroup =
-  variant === "dev"
-    ? `group.${bundleBase}.devolopment`
-    : variant === "test"
-      ? `group.${bundleBase}.test`
-      : `group.${bundleBase}`
+const deploymentSuffix =
+  variant === "dev" ? ".development" : variant === "test" ? ".test" : ""
+const bundleIdentifier = `${bundleBase}${deploymentSuffix}`
+const appGroup = `group.${bundleBase}${deploymentSuffix}`
 
 const config: ExpoConfig = {
   name,

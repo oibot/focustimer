@@ -8,4 +8,8 @@ module.exports = (config) => ({
   images: {
     icon: "../../assets/widgets/icon.png",
   },
+  entitlements: {
+    "com.apple.security.application-groups":
+      config.ios?.entitlements?.["com.apple.security.application-groups"] ?? [],
+  },
 })

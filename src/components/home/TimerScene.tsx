@@ -17,11 +17,11 @@ import type { LiveActivityStrings } from "local:live-activities-controller"
 
 const TIMER_MODES = {
   focus: {
-    startingMs: 10000, //25 * 60 * 1000,
+    startingMs: 25 * 60 * 1000,
     nextMode: "short",
   },
   short: {
-    startingMs: 10000, //5 * 60 * 1000,
+    startingMs: 5 * 60 * 1000,
     nextMode: "focus",
   },
 } as const
