@@ -27,10 +27,12 @@ const config: ExpoConfig = {
   slug: "focusonly",
   scheme: "focusonly",
   version: "0.1.0",
+  runtimeVersion: {
+    policy: "fingerprint",
+  },
   orientation: "portrait",
   userInterfaceStyle: "automatic",
   owner: "tobio",
-  newArchEnabled: true,
   icon,
   ios: {
     supportsTablet: true,
@@ -63,7 +65,6 @@ const config: ExpoConfig = {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#ffffff",
     },
-    edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
   },
   web: {
@@ -90,6 +91,7 @@ const config: ExpoConfig = {
         organization: "totap",
       },
     ],
+    "expo-localization",
   ],
   extra: {
     eas: {

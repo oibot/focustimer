@@ -1,11 +1,13 @@
-import { Host, Picker } from "@expo/ui/swift-ui"
+import { Host, Picker, Text } from "@expo/ui/swift-ui"
 import {
   accessibilityHint,
   disabled as disabledModifier,
+  pickerStyle,
+  tag,
 } from "@expo/ui/swift-ui/modifiers"
 import { useLingui } from "@lingui/react/macro"
-import { StyleSheet } from "react-native-unistyles"
 import { useEffect, useState } from "react"
+import { StyleSheet } from "react-native-unistyles"
 
 type TimerModePickerProps = {
   options: string[]
@@ -27,11 +29,7 @@ export default function TimerModePicker({
     setSelectedIndex(activeIndex)
   }, [activeIndex])
 
-  const handleOptionSelected = ({
-    nativeEvent: { index },
-  }: {
-    nativeEvent: { index: number }
-  }) => {
+  const handleSelectionChange = (index: number) => {
     if (disabled) return
     if (index === selectedIndex) return
     setSelectedIndex(index)
@@ -41,15 +39,20 @@ export default function TimerModePicker({
   return (
     <Host style={styles.host}>
       <Picker
-        options={options}
-        selectedIndex={selectedIndex}
-        onOptionSelected={handleOptionSelected}
-        variant="segmented"
+        selection={selectedIndex}
+        onSelectionChange={handleSelectionChange}
         modifiers={[
+          pickerStyle("segmented"),
           disabledModifier(disabled),
           accessibilityHint(t`Changes the timer mode`),
         ]}
-      />
+      >
+        {options.map((option, index) => (
+          <Text key={option} modifiers={[tag(index)]}>
+            {option}
+          </Text>
+        ))}
+      </Picker>
     </Host>
   )
 }

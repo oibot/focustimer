@@ -1,4 +1,4 @@
-import { NativeModule, requireNativeModule } from "expo"
+import { NativeModule, requireOptionalNativeModule } from "expo"
 import type { LiveActivityStrings } from "./LiveActivitiesController.type"
 
 declare class LiveActivitiesControllerModule extends NativeModule {
@@ -7,10 +7,13 @@ declare class LiveActivitiesControllerModule extends NativeModule {
     strings: LiveActivityStrings,
     secondsRemaining: number,
   ) => string | null
-  updateActivity: (secondsRemaining: number, isRunning: boolean) => Promise<void>
+  updateActivity: (
+    secondsRemaining: number,
+    isRunning: boolean,
+  ) => Promise<void>
   endActivity: (secondsRemaining: number, isRunning: boolean) => Promise<void>
 }
 
-export default requireNativeModule<LiveActivitiesControllerModule>(
+export default requireOptionalNativeModule<LiveActivitiesControllerModule>(
   "LiveActivitiesController",
 )

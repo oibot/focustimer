@@ -4,26 +4,32 @@ import type { LiveActivityStrings } from "./LiveActivitiesController.type"
 export type { LiveActivityStrings }
 
 export function areActivitiesEnabled(): boolean {
-  return LiveActivitiesControllerModule.areActivitiesEnabled()
+  return LiveActivitiesControllerModule?.areActivitiesEnabled() ?? false
 }
 
 export function startActivity(
   strings: LiveActivityStrings,
   secondsRemaining: number,
 ): string | null {
-  return LiveActivitiesControllerModule.startActivity(strings, secondsRemaining)
+  return (
+    LiveActivitiesControllerModule?.startActivity(strings, secondsRemaining) ??
+    null
+  )
 }
 
 export async function updateActivity(
   secondsRemaining: number,
   isRunning: boolean,
 ): Promise<void> {
-  await LiveActivitiesControllerModule.updateActivity(secondsRemaining, isRunning)
+  await LiveActivitiesControllerModule?.updateActivity(
+    secondsRemaining,
+    isRunning,
+  )
 }
 
 export async function endActivity(
   secondsRemaining: number,
   isRunning: boolean,
 ): Promise<void> {
-  await LiveActivitiesControllerModule.endActivity(secondsRemaining, isRunning)
+  await LiveActivitiesControllerModule?.endActivity(secondsRemaining, isRunning)
 }
