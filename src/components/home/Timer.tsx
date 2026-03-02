@@ -3,7 +3,7 @@ import { DestructiveButton } from "@/components/UI/Button"
 import IconPrimaryButton from "@/components/UI/IconPrimaryButton"
 import useTimerControlsAnimation from "@/hooks/useTimerControlsAnimation"
 import type { TimerMode, TimerStatus } from "@/types/timer"
-import { formatDuration } from "@/utils/time"
+import { formatDuration, getDurationParts } from "@/utils/time"
 import { useLingui } from "@lingui/react/macro"
 import { Animated, Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
@@ -40,11 +40,24 @@ export default function Timer({
   usePlainTime = false,
 }: TimerProps) {
   const { t } = useLingui()
+  const visibleTime = formatDuration(remainingMs)
+  const { minutes, seconds } = getDurationParts(remainingMs)
   const idleHint =
     timerMode === "focus" ? t`Start focus timer` : t`Start break timer`
   const pauseHint = t`Pauses the timer`
   const resumeHint = t`Resumes the timer`
   const cancelHint = t`Resets the timer`
+  const minuteLabel =
+    minutes === 1 ? t`${minutes} minute` : t`${minutes} minutes`
+  const secondLabel =
+    seconds === 1 ? t`${seconds} second` : t`${seconds} seconds`
+  const duration =
+    minutes > 0 && seconds > 0
+      ? `${minuteLabel} ${secondLabel}`
+      : minutes > 0
+        ? minuteLabel
+        : secondLabel
+  const spokenTimerLabel = t`${duration} remaining`
   const toggleLabel =
     status === "running"
       ? pauseLabel
@@ -64,16 +77,26 @@ export default function Timer({
 
   return (
     <View style={styles.container} pointerEvents="box-none">
-      <View style={styles.timerContainer}>
-        {usePlainTime ? (
-          <Text style={styles.plainTime}>{formatDuration(remainingMs)}</Text>
-        ) : (
-          <TimerNumericText
-            value={formatDuration(remainingMs)}
-            countsDown
-            animate={animateDigits}
-          />
-        )}
+      <View
+        style={styles.timerContainer}
+        accessible
+        accessibilityRole="text"
+        accessibilityLabel={spokenTimerLabel}
+      >
+        <View
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        >
+          {usePlainTime ? (
+            <Text style={styles.plainTime}>{visibleTime}</Text>
+          ) : (
+            <TimerNumericText
+              value={visibleTime}
+              countsDown
+              animate={animateDigits}
+            />
+          )}
+        </View>
       </View>
       <Animated.View
         testID="timer-controls"

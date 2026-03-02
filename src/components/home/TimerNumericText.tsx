@@ -102,11 +102,7 @@ export default function TimerNumericText({
   const chars = value.split("")
 
   return (
-    <View
-      style={styles.row}
-      accessibilityLabel={value}
-      accessibilityRole="text"
-    >
+    <View style={styles.row}>
       {chars.map((char, index) =>
         char === ":" ? (
           <Text

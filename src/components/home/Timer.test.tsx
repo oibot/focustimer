@@ -22,16 +22,58 @@ describe("Timer", () => {
   const renderWithI18n = (ui: React.ReactElement) =>
     render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>)
 
-  it("shows minutes and seconds", () => {
+  it("reads full minutes remaining for VoiceOver", () => {
     const { getByLabelText } = renderWithI18n(<Timer {...baseProps} />)
-    expect(getByLabelText("25:00")).toBeTruthy()
+    expect(getByLabelText("25 minutes remaining")).toBeTruthy()
   })
 
-  it("shows 00:00 when remainingMs is 0", () => {
+  it("reads 00:00 as zero seconds remaining", () => {
     const { getByLabelText } = renderWithI18n(
       <Timer {...baseProps} remainingMs={0} />,
     )
-    expect(getByLabelText("00:00")).toBeTruthy()
+    expect(getByLabelText("0 seconds remaining")).toBeTruthy()
+  })
+
+  it("reads both minutes and seconds when both are present", () => {
+    const { getByLabelText } = renderWithI18n(
+      <Timer {...baseProps} remainingMs={10 * 60 * 1000 + 30 * 1000} />,
+    )
+
+    expect(getByLabelText("10 minutes 30 seconds remaining")).toBeTruthy()
+  })
+
+  it("reads seconds only when less than a minute remains", () => {
+    const { getByLabelText } = renderWithI18n(
+      <Timer {...baseProps} remainingMs={45 * 1000} />,
+    )
+
+    expect(getByLabelText("45 seconds remaining")).toBeTruthy()
+  })
+
+  it("reads singular seconds correctly", () => {
+    const { getByLabelText } = renderWithI18n(
+      <Timer {...baseProps} remainingMs={1000} />,
+    )
+
+    expect(getByLabelText("1 second remaining")).toBeTruthy()
+  })
+
+  it("does not expose the compact timer string as the accessibility label", () => {
+    const { queryByLabelText } = renderWithI18n(<Timer {...baseProps} />)
+
+    expect(queryByLabelText("25:00")).toBeNull()
+  })
+
+  it("keeps the visible plain timer text", () => {
+    const { getByText } = renderWithI18n(<Timer {...baseProps} usePlainTime />)
+
+    expect(getByText("25:00", { includeHiddenElements: true })).toBeTruthy()
+  })
+
+  it("exposes the timer as one accessible text element", () => {
+    const { getAllByRole } = renderWithI18n(<Timer {...baseProps} />)
+
+    expect(getAllByRole("text")).toHaveLength(1)
   })
 
   it("shows Start, Pause, and Resume labels", () => {
