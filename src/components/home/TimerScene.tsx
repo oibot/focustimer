@@ -168,6 +168,7 @@ export default function TimerScene({
           options={[focusLabel, breakLabel]}
           activeIndex={activeIndex}
           disabled={status === "running"}
+          disableInactiveOptions={status === "paused"}
           onModeChange={handleModeChange}
         />
       </View>

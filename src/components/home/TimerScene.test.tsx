@@ -30,28 +30,38 @@ jest.mock("@/components/home/TimerModePicker", () => {
     onModeChange,
     disabled,
     activeIndex,
+    disableInactiveOptions,
   }: {
     onModeChange?: (index: number) => void
     disabled?: boolean
     activeIndex: number
+    disableInactiveOptions?: boolean
   }) {
+    const focusDisabled =
+      !!disabled || (!!disableInactiveOptions && activeIndex !== 0)
+    const breakDisabled =
+      !!disabled || (!!disableInactiveOptions && activeIndex !== 1)
+
     return (
       <View>
         <Text testID="mode-picker-active">{activeIndex}</Text>
         <Text testID="mode-picker-disabled">
           {disabled ? "disabled" : "enabled"}
         </Text>
+        <Text testID="mode-picker-disable-inactive">
+          {disableInactiveOptions ? "locked" : "unlocked"}
+        </Text>
         <Pressable
           testID="mode-picker-focus"
           onPress={() => onModeChange?.(0)}
-          disabled={disabled}
+          disabled={focusDisabled}
         >
           <Text>PickerFocus</Text>
         </Pressable>
         <Pressable
           testID="mode-picker-break"
           onPress={() => onModeChange?.(1)}
-          disabled={disabled}
+          disabled={breakDisabled}
         >
           <Text>PickerBreak</Text>
         </Pressable>
@@ -326,44 +336,32 @@ describe("TimerScene", () => {
     expect(onModeChange).toHaveBeenCalledWith("focus")
   })
 
-  it("switches to short on a paused focus edge swipe", () => {
+  it("does not render an edge swipe zone while paused in focus", () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "paused",
     })
-    const onModeChange = jest.fn()
 
-    renderWithI18n(
-      <TimerScene
-        mode="focus"
-        onDone={jest.fn()}
-        onModeChange={onModeChange}
-      />,
+    const { queryByTestId } = renderWithI18n(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
-    fireEdgeSwipeGesture({ translationX: -60 })
-
-    expect(onModeChange).toHaveBeenCalledWith("short")
+    expect(queryByTestId("timer-edge-swipe-left")).toBeNull()
+    expect(queryByTestId("timer-edge-swipe-right")).toBeNull()
   })
 
-  it("switches to focus on a paused short edge swipe", () => {
+  it("does not render an edge swipe zone while paused in short", () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "paused",
     })
-    const onModeChange = jest.fn()
 
-    renderWithI18n(
-      <TimerScene
-        mode="short"
-        onDone={jest.fn()}
-        onModeChange={onModeChange}
-      />,
+    const { queryByTestId } = renderWithI18n(
+      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
-    fireEdgeSwipeGesture({ translationX: 60 })
-
-    expect(onModeChange).toHaveBeenCalledWith("focus")
+    expect(queryByTestId("timer-edge-swipe-left")).toBeNull()
+    expect(queryByTestId("timer-edge-swipe-right")).toBeNull()
   })
 
   it("calls onModeChange with short when selecting break mode", () => {
@@ -433,6 +431,48 @@ describe("TimerScene", () => {
     )
 
     expect(getByTestId("mode-picker-disabled").children[0]).toBe("enabled")
+  })
+
+  it("locks the inactive mode while paused", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "paused",
+    })
+
+    const { getByTestId } = renderWithI18n(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(getByTestId("mode-picker-disabled").children[0]).toBe("enabled")
+    expect(getByTestId("mode-picker-disable-inactive").children[0]).toBe(
+      "locked",
+    )
+    expect(
+      getByTestId("mode-picker-focus").props.accessibilityState.disabled,
+    ).toBe(false)
+    expect(
+      getByTestId("mode-picker-break").props.accessibilityState.disabled,
+    ).toBe(true)
+  })
+
+  it("does not call onModeChange when selecting the inactive mode while paused", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "paused",
+    })
+    const onModeChange = jest.fn()
+
+    const { getByTestId } = renderWithI18n(
+      <TimerScene
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    fireEvent.press(getByTestId("mode-picker-break"))
+
+    expect(onModeChange).not.toHaveBeenCalled()
   })
 
   it("passes correct activeIndex to mode picker", () => {

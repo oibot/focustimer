@@ -62,10 +62,10 @@ describe("useTimerModeEdgeSwipe", () => {
     expect(getByText("right")).toBeTruthy()
   })
 
-  it("exposes the right edge in focus paused", () => {
+  it("does not expose an edge in focus paused", () => {
     const { getByText } = render(<Harness status="paused" timerMode="focus" />)
 
-    expect(getByText("right")).toBeTruthy()
+    expect(getByText("none")).toBeTruthy()
   })
 
   it("exposes the left edge in short idle", () => {
@@ -74,10 +74,10 @@ describe("useTimerModeEdgeSwipe", () => {
     expect(getByText("left")).toBeTruthy()
   })
 
-  it("exposes the left edge in short paused", () => {
+  it("does not expose an edge in short paused", () => {
     const { getByText } = render(<Harness status="paused" timerMode="short" />)
 
-    expect(getByText("left")).toBeTruthy()
+    expect(getByText("none")).toBeTruthy()
   })
 
   it("does not expose an edge while running", () => {
@@ -152,7 +152,7 @@ describe("useTimerModeEdgeSwipe", () => {
     const onModeChange = jest.fn()
 
     render(
-      <Harness status="paused" timerMode="focus" onModeChange={onModeChange} />,
+      <Harness status="idle" timerMode="focus" onModeChange={onModeChange} />,
     )
 
     act(() => {

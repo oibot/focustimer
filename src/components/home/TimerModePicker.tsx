@@ -13,6 +13,7 @@ type TimerModePickerProps = {
   options: string[]
   activeIndex: number
   disabled?: boolean
+  disableInactiveOptions?: boolean
   onModeChange?: (index: number) => void
 }
 
@@ -20,6 +21,7 @@ export default function TimerModePicker({
   options,
   activeIndex,
   disabled = false,
+  disableInactiveOptions = false,
   onModeChange,
 }: TimerModePickerProps) {
   const { t } = useLingui()
@@ -33,6 +35,7 @@ export default function TimerModePicker({
 
   const handleSelectionChange = (index: number) => {
     if (disabled) return
+    if (disableInactiveOptions && index !== selectedIndex) return
     if (index === selectedIndex) return
     setSelectedIndex(index)
     onModeChange?.(index)
@@ -50,7 +53,13 @@ export default function TimerModePicker({
         ]}
       >
         {options.map((option, index) => (
-          <Text key={option} modifiers={[tag(index)]}>
+          <Text
+            key={option}
+            modifiers={[
+              tag(index),
+              disabledModifier(disableInactiveOptions && index !== activeIndex),
+            ]}
+          >
             {option}
           </Text>
         ))}
