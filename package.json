@@ -14,7 +14,8 @@
     "format:changed": "bash -lc 'files=$(git diff --name-only --diff-filter=ACMRTUXB HEAD -- \"src\" | tr \"\\n\" \" \"); if [ -z \"$files\" ]; then echo \"No changed files in src\"; exit 0; fi; bunx prettier --write $files'",
     "test:changed": "jest --watchAll=false --watchman=false --onlyChanged",
     "extract": "lingui extract",
-    "compile": "lingui compile --typescript"
+    "compile": "lingui compile --typescript",
+    "lint": "expo lint"
   },
   "dependencies": {
     "@bacons/apple-targets": "^4.0.0",
@@ -52,9 +53,13 @@
     "@testing-library/react-native": "^12.4.2",
     "@types/jest": "29.5.14",
     "@types/react": "~19.2.10",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~55.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "jest": "~29.7.0",
     "jest-expo": "~55.0.9",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "typescript": "~5.9.2"
   },
   "jest": {
