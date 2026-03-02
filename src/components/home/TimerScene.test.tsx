@@ -2,6 +2,7 @@ import { fireEvent, render } from "@testing-library/react-native"
 
 import TimerScene from "@/components/home/TimerScene"
 import { useTimer } from "@/hooks/useTimer"
+import { TIMER_MODE_EDGE_SWIPE_GESTURE_ID } from "@/hooks/useTimerModeEdgeSwipe"
 import * as useTimerControlsModule from "@/hooks/useTimerControls"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
@@ -9,8 +10,12 @@ import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
 import { useKeepAwake } from "expo-keep-awake"
 import { useAudioPlayer } from "expo-audio"
-import { Gesture } from "react-native-gesture-handler"
+import { Gesture, State } from "react-native-gesture-handler"
 import { Alert } from "react-native"
+import {
+  fireGestureHandler,
+  getByGestureTestId,
+} from "react-native-gesture-handler/jest-utils"
 import { messages as enMessages } from "@/locales/en/messages"
 import type { ReactElement } from "react"
 
@@ -68,6 +73,20 @@ const mockUseAudioPlayer = useAudioPlayer as jest.MockedFunction<
 const renderWithI18n = (ui: ReactElement) =>
   render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>)
 
+const fireEdgeSwipeGesture = ({
+  translationX,
+  translationY = 0,
+}: {
+  translationX: number
+  translationY?: number
+}) => {
+  fireGestureHandler(getByGestureTestId(TIMER_MODE_EDGE_SWIPE_GESTURE_ID), [
+    { state: State.BEGAN, translationX: 0, translationY: 0 },
+    { state: State.ACTIVE, translationX, translationY },
+    { state: State.END, translationX, translationY },
+  ])
+}
+
 const baseTimerState = {
   remainingMs: 1500,
   status: "idle" as const,
@@ -102,12 +121,24 @@ describe("TimerScene", () => {
   })
 
   it("uses the short mode labels without stop button while idle", () => {
-    const { getByLabelText, queryByText } = renderWithI18n(
-      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
-    )
+    const { getByLabelText, getByTestId, queryByText, queryByTestId } =
+      renderWithI18n(
+        <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      )
 
     expect(getByLabelText("Start")).toBeTruthy()
+    expect(getByTestId("timer-edge-swipe-left")).toBeTruthy()
+    expect(queryByTestId("timer-edge-swipe-right")).toBeNull()
     expect(queryByText("Stop")).toBeNull()
+  })
+
+  it("renders the right edge swipe zone in focus idle", () => {
+    const { getByTestId, queryByTestId } = renderWithI18n(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(getByTestId("timer-edge-swipe-right")).toBeTruthy()
+    expect(queryByTestId("timer-edge-swipe-left")).toBeNull()
   })
 
   it("shows the stop button when short mode is running", () => {
@@ -116,12 +147,14 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    const { getByLabelText, getByText } = renderWithI18n(
+    const { getByLabelText, getByText, queryByTestId } = renderWithI18n(
       <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
     )
 
     expect(getByLabelText("Pause")).toBeTruthy()
     expect(getByText("Stop")).toBeTruthy()
+    expect(queryByTestId("timer-edge-swipe-left")).toBeNull()
+    expect(queryByTestId("timer-edge-swipe-right")).toBeNull()
   })
 
   it("hides controls while running in focus mode", () => {
@@ -289,6 +322,46 @@ describe("TimerScene", () => {
     )
 
     fireEvent.press(getByTestId("mode-picker-focus"))
+
+    expect(onModeChange).toHaveBeenCalledWith("focus")
+  })
+
+  it("switches to short on a paused focus edge swipe", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "paused",
+    })
+    const onModeChange = jest.fn()
+
+    renderWithI18n(
+      <TimerScene
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    fireEdgeSwipeGesture({ translationX: -60 })
+
+    expect(onModeChange).toHaveBeenCalledWith("short")
+  })
+
+  it("switches to focus on a paused short edge swipe", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "paused",
+    })
+    const onModeChange = jest.fn()
+
+    renderWithI18n(
+      <TimerScene
+        mode="short"
+        onDone={jest.fn()}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    fireEdgeSwipeGesture({ translationX: 60 })
 
     expect(onModeChange).toHaveBeenCalledWith("focus")
   })

@@ -1,6 +1,7 @@
 import Timer from "@/components/home/Timer"
 import TimerModePicker from "@/components/home/TimerModePicker"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
+import useTimerModeEdgeSwipe from "@/hooks/useTimerModeEdgeSwipe"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import { useLingui } from "@lingui/react/macro"
 import { useKeepAwake } from "expo-keep-awake"
@@ -75,11 +76,18 @@ export default function TimerScene({
     timerMode,
   })
   const isScreenReaderEnabled = useScreenReaderEnabled()
+  const handleTimerModeChange = (nextMode: TimerMode) => {
+    if (nextMode === timerMode) return
+    onModeChange(nextMode)
+  }
+  const { activeEdge, edgeSwipeGesture } = useTimerModeEdgeSwipe({
+    status,
+    timerMode,
+    onModeChange: handleTimerModeChange,
+  })
 
   const handleModeChange = (index: number) => {
-    if (index === activeIndex) return
-    const nextMode = index === 0 ? "focus" : "short"
-    onModeChange(nextMode)
+    handleTimerModeChange(index === 0 ? "focus" : "short")
   }
 
   const hasShownDoneRef = useRef(false)
@@ -138,6 +146,24 @@ export default function TimerScene({
       <GestureDetector gesture={tapGesture}>
         <View style={styles.background} />
       </GestureDetector>
+      {activeEdge ? (
+        <GestureDetector gesture={edgeSwipeGesture}>
+          <View
+            testID={
+              activeEdge === "left"
+                ? "timer-edge-swipe-left"
+                : "timer-edge-swipe-right"
+            }
+            style={[
+              styles.edgeSwipeZone,
+              activeEdge === "left"
+                ? styles.edgeSwipeZoneLeft
+                : styles.edgeSwipeZoneRight,
+            ]}
+            accessible={false}
+          />
+        </GestureDetector>
+      ) : null}
 
       {status === "running" ? <KeepAwakeWhileRunning /> : null}
 
@@ -185,6 +211,20 @@ const styles = StyleSheet.create((theme) => ({
     right: 0,
     bottom: 0,
     left: 0,
+  },
+  edgeSwipeZone: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: 64,
+    backgroundColor: "transparent",
+    zIndex: 1,
+  },
+  edgeSwipeZoneLeft: {
+    left: 0,
+  },
+  edgeSwipeZoneRight: {
+    right: 0,
   },
   pickerContainer: {
     alignItems: "center",
