@@ -1,5 +1,5 @@
 import { act, render, waitFor } from "@testing-library/react-native"
-import { AccessibilityInfo, Text } from "react-native"
+import { AccessibilityInfo, AppState, Text } from "react-native"
 
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 
@@ -9,20 +9,30 @@ function Harness() {
 }
 
 describe("useScreenReaderEnabled", () => {
-  let listener: ((enabled: boolean) => void) | undefined
-  const remove = jest.fn()
+  let accessibilityListener: ((enabled: boolean) => void) | undefined
+  let appStateListener: ((state: string) => void) | undefined
+  const removeAccessibility = jest.fn()
+  const removeAppState = jest.fn()
 
   beforeEach(() => {
-    listener = undefined
-    remove.mockClear()
+    accessibilityListener = undefined
+    appStateListener = undefined
+    removeAccessibility.mockClear()
+    removeAppState.mockClear()
     jest
       .spyOn(AccessibilityInfo, "isScreenReaderEnabled")
       .mockResolvedValue(false)
     jest
       .spyOn(AccessibilityInfo as any, "addEventListener")
       .mockImplementation((_event: any, handler: any) => {
-        listener = handler as (enabled: boolean) => void
-        return { remove } as any
+        accessibilityListener = handler as (enabled: boolean) => void
+        return { remove: removeAccessibility } as any
+      })
+    jest
+      .spyOn(AppState, "addEventListener")
+      .mockImplementation((_event, handler) => {
+        appStateListener = handler as (state: string) => void
+        return { remove: removeAppState } as any
       })
   })
 
@@ -52,7 +62,30 @@ describe("useScreenReaderEnabled", () => {
     })
 
     act(() => {
-      listener?.(true)
+      accessibilityListener?.(true)
+    })
+
+    await waitFor(() => {
+      expect(getByText("enabled")).toBeTruthy()
+    })
+  })
+
+  it("refreshes when the app becomes active", async () => {
+    const isScreenReaderEnabled =
+      AccessibilityInfo.isScreenReaderEnabled as jest.MockedFunction<
+        typeof AccessibilityInfo.isScreenReaderEnabled
+      >
+
+    const { getByText } = render(<Harness />)
+
+    await waitFor(() => {
+      expect(getByText("disabled")).toBeTruthy()
+    })
+
+    isScreenReaderEnabled.mockResolvedValue(true)
+
+    await act(async () => {
+      appStateListener?.("active")
     })
 
     await waitFor(() => {
@@ -65,6 +98,7 @@ describe("useScreenReaderEnabled", () => {
 
     unmount()
 
-    expect(remove).toHaveBeenCalledTimes(1)
+    expect(removeAccessibility).toHaveBeenCalledTimes(1)
+    expect(removeAppState).toHaveBeenCalledTimes(1)
   })
 })

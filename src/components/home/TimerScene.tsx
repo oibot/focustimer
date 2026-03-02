@@ -164,6 +164,7 @@ export default function TimerScene({
           showControls={
             isScreenReaderEnabled || timerMode !== "focus" || showControls
           }
+          showDisabledCancel={isScreenReaderEnabled}
           animateDigits={!isScreenReaderEnabled}
           usePlainTime={isScreenReaderEnabled}
         />

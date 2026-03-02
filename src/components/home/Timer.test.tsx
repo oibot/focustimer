@@ -120,6 +120,15 @@ describe("Timer", () => {
     expect(queryByText("Cancel")).toBeTruthy()
   })
 
+  it("shows a disabled cancel button when requested for accessibility", () => {
+    const { getByText } = renderWithI18n(
+      <Timer {...baseProps} showDisabledCancel />,
+    )
+
+    expect(getByText("Cancel")).toBeTruthy()
+    expect(getByText("Cancel").parent!).toBeDisabled()
+  })
+
   it("disables cancel when running and cannot cancel", () => {
     const { getByText } = renderWithI18n(
       <Timer {...baseProps} status="running" canCancel={false} />,

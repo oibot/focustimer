@@ -20,6 +20,7 @@ type TimerProps = {
   cancelLabel?: string
   canCancel?: boolean
   showControls?: boolean
+  showDisabledCancel?: boolean
   animateDigits?: boolean
   usePlainTime?: boolean
 }
@@ -36,6 +37,7 @@ export default function Timer({
   cancelLabel = "Cancel",
   canCancel = status === "running",
   showControls = true,
+  showDisabledCancel = false,
   animateDigits = true,
   usePlainTime = false,
 }: TimerProps) {
@@ -71,7 +73,7 @@ export default function Timer({
         ? resumeHint
         : idleHint
   const toggleSymbol = status === "running" ? "pause.fill" : "play.fill"
-  const showCancel = status === "running"
+  const showCancel = status === "running" || showDisabledCancel
   const { opacity: controlsOpacity, translateY: controlsTranslateY } =
     useTimerControlsAnimation({ visible: showControls })
 
@@ -118,7 +120,7 @@ export default function Timer({
         <DestructiveButton
           label={cancelLabel}
           accessibilityHint={cancelHint}
-          disabled={!canCancel || !showCancel}
+          disabled={!canCancel || status !== "running"}
           onPress={onCancel}
           style={!showCancel && styles.cancelHidden}
           pointerEvents={showCancel ? "auto" : "none"}

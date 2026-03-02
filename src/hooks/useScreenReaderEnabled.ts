@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { AccessibilityInfo } from "react-native"
+import { AccessibilityInfo, AppState } from "react-native"
 
 export default function useScreenReaderEnabled() {
   const [enabled, setEnabled] = useState(false)
@@ -16,14 +16,22 @@ export default function useScreenReaderEnabled() {
 
     load()
 
-    const subscription = AccessibilityInfo.addEventListener(
+    const screenReaderSubscription = AccessibilityInfo.addEventListener(
       "screenReaderChanged",
       setEnabled,
+    )
+    const appStateSubscription = AppState.addEventListener(
+      "change",
+      (nextAppState) => {
+        if (nextAppState !== "active") return
+        void load()
+      },
     )
 
     return () => {
       isMounted = false
-      subscription.remove()
+      screenReaderSubscription.remove()
+      appStateSubscription.remove()
     }
   }, [])
 
