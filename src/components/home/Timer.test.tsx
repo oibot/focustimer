@@ -64,10 +64,13 @@ describe("Timer", () => {
     expect(queryByLabelText("25:00")).toBeNull()
   })
 
-  it("keeps the visible plain timer text", () => {
-    const { getByText } = renderWithI18n(<Timer {...baseProps} usePlainTime />)
+  it("keeps the visible timer digits when plain rendering is requested", () => {
+    const { getByLabelText, getByText } = renderWithI18n(
+      <Timer {...baseProps} usePlainTime />,
+    )
 
-    expect(getByText("25:00", { includeHiddenElements: true })).toBeTruthy()
+    expect(getByLabelText("25 minutes remaining")).toBeTruthy()
+    expect(getByText(":", { includeHiddenElements: true })).toBeTruthy()
   })
 
   it("exposes the timer as one accessible text element", () => {

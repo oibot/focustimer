@@ -5,7 +5,7 @@ import useTimerControlsAnimation from "@/hooks/useTimerControlsAnimation"
 import type { TimerMode, TimerStatus } from "@/types/timer"
 import { formatDuration, getDurationParts } from "@/utils/time"
 import { useLingui } from "@lingui/react/macro"
-import { Animated, Text, View } from "react-native"
+import { Animated, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 type TimerProps = {
@@ -89,15 +89,11 @@ export default function Timer({
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
         >
-          {usePlainTime ? (
-            <Text style={styles.plainTime}>{visibleTime}</Text>
-          ) : (
-            <TimerNumericText
-              value={visibleTime}
-              countsDown
-              animate={animateDigits}
-            />
-          )}
+          <TimerNumericText
+            value={visibleTime}
+            countsDown
+            animate={usePlainTime ? false : animateDigits}
+          />
         </View>
       </View>
       <Animated.View
@@ -144,13 +140,6 @@ const styles = StyleSheet.create((theme) => ({
   timerContainer: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  plainTime: {
-    fontSize: 96,
-    lineHeight: 96,
-    fontWeight: "600",
-    fontVariant: ["tabular-nums"],
-    color: theme.colors.primary,
   },
   controls: {
     alignItems: "center",
