@@ -123,6 +123,15 @@ describe("Timer", () => {
     expect(queryByText("Cancel")).toBeTruthy()
   })
 
+  it("shows cancel while paused", () => {
+    const { getByText } = renderWithI18n(
+      <Timer {...baseProps} status="paused" canCancel />,
+    )
+
+    expect(getByText("Cancel")).toBeTruthy()
+    expect(getByText("Cancel").parent!).toBeEnabled()
+  })
+
   it("shows a disabled cancel button when requested for accessibility", () => {
     const { getByText } = renderWithI18n(
       <Timer {...baseProps} showDisabledCancel />,

@@ -183,6 +183,20 @@ describe("TimerScene", () => {
     expect(controls.props.pointerEvents).toBe("none")
   })
 
+  it("shows the cancel button while paused", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "paused",
+    })
+
+    const { getByLabelText, getByText } = renderWithI18n(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(getByLabelText("Resume")).toBeTruthy()
+    expect(getByText("Cancel")).toBeTruthy()
+  })
+
   it("keeps the screen awake while running", () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
