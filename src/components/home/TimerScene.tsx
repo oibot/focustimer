@@ -136,12 +136,18 @@ export default function TimerScene({
     cancelTimer()
     onDone(nextMode)
   }
+  const showsTapGesture = status === "running" && timerMode === "focus"
 
   return (
     <View style={styles.container}>
-      <GestureDetector gesture={tapGesture}>
-        <View style={styles.background} />
-      </GestureDetector>
+      {showsTapGesture ? (
+        <GestureDetector gesture={tapGesture}>
+          <View
+            testID="timer-tap-gesture-background"
+            style={styles.background}
+          />
+        </GestureDetector>
+      ) : null}
       {activeEdge ? (
         <GestureDetector gesture={edgeSwipeGesture}>
           <View

@@ -179,8 +179,30 @@ describe("TimerScene", () => {
 
     expect(getByLabelText("Pause")).toBeTruthy()
     expect(getByText("Cancel")).toBeTruthy()
+    expect(getByTestId("timer-tap-gesture-background")).toBeTruthy()
     const controls = getByTestId("timer-controls")
     expect(controls.props.pointerEvents).toBe("none")
+  })
+
+  it("does not render the tap gesture background while idle in focus mode", () => {
+    const { queryByTestId } = renderWithI18n(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(queryByTestId("timer-tap-gesture-background")).toBeNull()
+  })
+
+  it("does not render the tap gesture background in short mode", () => {
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    const { queryByTestId } = renderWithI18n(
+      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(queryByTestId("timer-tap-gesture-background")).toBeNull()
   })
 
   it("shows the cancel button while paused", () => {
