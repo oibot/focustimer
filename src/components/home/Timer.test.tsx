@@ -180,24 +180,10 @@ describe("Timer", () => {
     expect(onCancel).toHaveBeenCalledTimes(1)
   })
 
-  it("uses a custom idle label when provided", () => {
-    const { getByLabelText } = renderWithI18n(
-      <Timer {...baseProps} idleLabel="Focus" />,
-    )
-    expect(getByLabelText("Focus")).toBeTruthy()
-  })
-
   it("uses a custom cancel label when provided", () => {
     const { getByText } = renderWithI18n(
       <Timer {...baseProps} status="running" cancelLabel="Reset" canCancel />,
     )
     expect(getByText("Reset")).toBeTruthy()
-  })
-
-  it("uses the idle label for the toggle button", () => {
-    const { getByLabelText } = renderWithI18n(
-      <Timer {...baseProps} idleLabel="Begin" />,
-    )
-    expect(getByLabelText("Begin")).toBeTruthy()
   })
 })

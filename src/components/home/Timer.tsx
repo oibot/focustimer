@@ -14,9 +14,6 @@ type TimerProps = {
   timerMode: TimerMode
   onToggle: () => void
   onCancel: () => void
-  idleLabel?: string
-  pauseLabel?: string
-  resumeLabel?: string
   cancelLabel?: string
   canCancel?: boolean
   showControls?: boolean
@@ -31,9 +28,6 @@ export default function Timer({
   timerMode,
   onToggle,
   onCancel,
-  idleLabel = "Start",
-  pauseLabel = "Pause",
-  resumeLabel = "Resume",
   cancelLabel = "Cancel",
   canCancel = status === "running",
   showControls = true,
@@ -42,6 +36,9 @@ export default function Timer({
   usePlainTime = false,
 }: TimerProps) {
   const { t } = useLingui()
+  const idleLabel = t`Start`
+  const pauseLabel = t`Pause`
+  const resumeLabel = t`Resume`
   const visibleTime = formatDuration(remainingMs)
   const { minutes, seconds } = getDurationParts(remainingMs)
   const idleHint =
