@@ -7,7 +7,7 @@ import {
 } from "@expo/ui/swift-ui/modifiers"
 import { useLingui } from "@lingui/react/macro"
 import { useEffect, useState } from "react"
-import { StyleSheet } from "react-native-unistyles"
+import { StyleSheet, useUnistyles } from "react-native-unistyles"
 
 type TimerModePickerProps = {
   options: string[]
@@ -23,6 +23,8 @@ export default function TimerModePicker({
   onModeChange,
 }: TimerModePickerProps) {
   const { t } = useLingui()
+  const { rt } = useUnistyles()
+  const contentSizeCategory = rt.contentSizeCategory
   const [selectedIndex, setSelectedIndex] = useState(activeIndex)
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function TimerModePicker({
   }
 
   return (
-    <Host style={styles.host}>
+    <Host key={contentSizeCategory} style={styles.host}>
       <Picker
         selection={selectedIndex}
         onSelectionChange={handleSelectionChange}
@@ -59,7 +61,7 @@ export default function TimerModePicker({
 
 const styles = StyleSheet.create({
   host: {
-    width: 200,
+    width: 250,
     height: 100,
   },
 })

@@ -16,9 +16,7 @@ const fallbackLocale: AppLocale = "en"
 export function detectLocale(): AppLocale {
   const deviceLocale = getLocales()[0]?.languageCode ?? fallbackLocale
 
-  return deviceLocale in catalogs
-    ? (deviceLocale as AppLocale)
-    : fallbackLocale
+  return deviceLocale in catalogs ? (deviceLocale as AppLocale) : fallbackLocale
 }
 
 export function initI18n(): AppLocale {

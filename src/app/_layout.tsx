@@ -1,3 +1,4 @@
+import ContentSizeCategorySubscriber from "@/components/UI/ContentSizeCategorySubscriber"
 import TimerProvider from "@/components/providers/TimerProvider"
 import { initI18n } from "@/i18n"
 import { i18n } from "@lingui/core"
@@ -7,10 +8,9 @@ import * as Notifications from "expo-notifications"
 import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { StatusBar } from "expo-status-bar"
-import { useEffect, type ReactNode } from "react"
+import { useEffect } from "react"
 import { useColorScheme } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import { useUnistyles } from "react-native-unistyles"
 
 export const unstable_settings = {
   anchor: "index",
@@ -46,15 +46,6 @@ Sentry.init({
 
 initI18n()
 
-function ContentSizeCategorySubscriber({ children }: { children: ReactNode }) {
-  const { rt } = useUnistyles()
-  const contentSizeCategory = rt.contentSizeCategory
-
-  void contentSizeCategory
-
-  return children
-}
-
 function Layout() {
   useEffect(() => {
     const ensurePermissions = async () => {
@@ -83,7 +74,6 @@ function Layout() {
                   sheetAllowedDetents: [0.25],
                   sheetInitialDetentIndex: 0,
                   sheetGrabberVisible: true,
-                  headerShown: false,
                   contentStyle: { backgroundColor: "transparent" },
                 }}
               />
