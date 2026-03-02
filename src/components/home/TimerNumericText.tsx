@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import { Animated, Easing, Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
-const TIMER_FONT_SIZE = 96
+const TIMER_FONT_SIZE = 104
 const DIGIT_HEIGHT = TIMER_FONT_SIZE
 const DIGIT_SEQUENCE = Array.from({ length: 30 }, (_, index) => index % 10)
 const BASE_INDEX = 10
