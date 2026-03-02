@@ -104,7 +104,9 @@ export default function TimerScene({
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
-      playDoneSound()
+      if (timerMode === "focus") {
+        playDoneSound()
+      }
       cancelTimer()
       onDone(nextMode)
       return
@@ -112,7 +114,7 @@ export default function TimerScene({
     if (status !== "done") {
       hasShownDoneRef.current = false
     }
-  }, [cancelTimer, nextMode, onDone, player, status])
+  }, [cancelTimer, nextMode, onDone, player, status, timerMode])
 
   const handleCancel = () => {
     if (timerMode === "focus") {
@@ -128,7 +130,6 @@ export default function TimerScene({
     }
 
     cancelTimer()
-    playDoneSound()
     onDone(nextMode)
   }
 

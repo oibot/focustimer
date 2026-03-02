@@ -178,6 +178,31 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("short")
   })
 
+  it("does not play audio when a break finishes", () => {
+    const cancelTimer = jest.fn()
+    const onDone = jest.fn()
+
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "done",
+      cancelTimer,
+    })
+
+    renderWithI18n(
+      <TimerScene mode="short" onDone={onDone} onModeChange={jest.fn()} />,
+    )
+
+    const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
+      play: jest.Mock
+      seekTo: jest.Mock
+    }
+
+    expect(player.seekTo).not.toHaveBeenCalled()
+    expect(player.play).not.toHaveBeenCalled()
+    expect(cancelTimer).toHaveBeenCalledTimes(1)
+    expect(onDone).toHaveBeenCalledWith("focus")
+  })
+
   it("cancels the timer when canceling focus", () => {
     const cancelTimer = jest.fn()
     const useTimerControlsSpy = jest.spyOn(useTimerControlsModule, "default")
@@ -232,8 +257,8 @@ describe("TimerScene", () => {
 
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onDone).toHaveBeenCalledWith("focus")
-    expect(player.seekTo).toHaveBeenCalledWith(0)
-    expect(player.play).toHaveBeenCalledTimes(1)
+    expect(player.seekTo).not.toHaveBeenCalled()
+    expect(player.play).not.toHaveBeenCalled()
   })
 
   it("wires background notifications", () => {
