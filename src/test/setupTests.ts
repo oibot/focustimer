@@ -66,6 +66,9 @@ jest.mock("react-native-unistyles", () => ({
         secondary: "#666666",
       },
     },
-    rt: { colorScheme: "light" },
+    rt: {
+      colorScheme: "light",
+      contentSizeCategory: "Medium",
+    },
   }),
 }))

@@ -7,9 +7,10 @@ import * as Notifications from "expo-notifications"
 import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { StatusBar } from "expo-status-bar"
-import { useEffect } from "react"
+import { useEffect, type ReactNode } from "react"
 import { useColorScheme } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { useUnistyles } from "react-native-unistyles"
 
 export const unstable_settings = {
   anchor: "index",
@@ -45,6 +46,15 @@ Sentry.init({
 
 initI18n()
 
+function ContentSizeCategorySubscriber({ children }: { children: ReactNode }) {
+  const { rt } = useUnistyles()
+  const contentSizeCategory = rt.contentSizeCategory
+
+  void contentSizeCategory
+
+  return children
+}
+
 function Layout() {
   useEffect(() => {
     const ensurePermissions = async () => {
@@ -61,23 +71,25 @@ function Layout() {
   return (
     <GestureHandlerRootView>
       <I18nProvider i18n={i18n}>
-        <TimerProvider>
-          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen
-              name="timer-done"
-              options={{
-                presentation: "formSheet",
-                sheetAllowedDetents: [0.25],
-                sheetInitialDetentIndex: 0,
-                sheetGrabberVisible: true,
-                headerShown: false,
-                contentStyle: { backgroundColor: "transparent" },
-              }}
-            />
-          </Stack>
-        </TimerProvider>
+        <ContentSizeCategorySubscriber>
+          <TimerProvider>
+            <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen
+                name="timer-done"
+                options={{
+                  presentation: "formSheet",
+                  sheetAllowedDetents: [0.25],
+                  sheetInitialDetentIndex: 0,
+                  sheetGrabberVisible: true,
+                  headerShown: false,
+                  contentStyle: { backgroundColor: "transparent" },
+                }}
+              />
+            </Stack>
+          </TimerProvider>
+        </ContentSizeCategorySubscriber>
       </I18nProvider>
     </GestureHandlerRootView>
   )
