@@ -2,7 +2,6 @@ import { fireEvent, render } from "@testing-library/react-native"
 
 import TimerScene from "@/components/home/TimerScene"
 import { useTimer } from "@/hooks/useTimer"
-import { TIMER_MODE_EDGE_SWIPE_GESTURE_ID } from "@/hooks/useTimerModeEdgeSwipe"
 import * as useTimerControlsModule from "@/hooks/useTimerControls"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
@@ -10,12 +9,8 @@ import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
 import { useKeepAwake } from "expo-keep-awake"
 import { useAudioPlayer } from "expo-audio"
-import { Gesture, State } from "react-native-gesture-handler"
+import { Gesture } from "react-native-gesture-handler"
 import { Alert } from "react-native"
-import {
-  fireGestureHandler,
-  getByGestureTestId,
-} from "react-native-gesture-handler/jest-utils"
 import { messages as enMessages } from "@/locales/en/messages"
 import type { ReactElement } from "react"
 
@@ -23,8 +18,8 @@ jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
 jest.mock("@/hooks/useScreenReaderEnabled")
 jest.mock("@/components/home/TimerModePicker", () => {
-  const React = require("react")
-  const { View, Text, Pressable } = require("react-native")
+  const React = jest.requireActual("react")
+  const { View, Text, Pressable } = jest.requireActual("react-native")
 
   return function MockTimerModePicker({
     onModeChange,
@@ -82,20 +77,6 @@ const mockUseAudioPlayer = useAudioPlayer as jest.MockedFunction<
 
 const renderWithI18n = (ui: ReactElement) =>
   render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>)
-
-const fireEdgeSwipeGesture = ({
-  translationX,
-  translationY = 0,
-}: {
-  translationX: number
-  translationY?: number
-}) => {
-  fireGestureHandler(getByGestureTestId(TIMER_MODE_EDGE_SWIPE_GESTURE_ID), [
-    { state: State.BEGAN, translationX: 0, translationY: 0 },
-    { state: State.ACTIVE, translationX, translationY },
-    { state: State.END, translationX, translationY },
-  ])
-}
 
 const baseTimerState = {
   remainingMs: 1500,

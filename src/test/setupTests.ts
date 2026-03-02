@@ -40,11 +40,11 @@ jest.mock(
 )
 
 jest.mock("@expo/ui/swift-ui", () => {
-  const React = require("react")
-  const { View } = require("react-native")
+  const mockReact = jest.requireActual("react")
+  const { View: MockViewBase } = jest.requireActual("react-native")
 
   const MockView = ({ children, ...props }: any) =>
-    React.createElement(View, props, children)
+    mockReact.createElement(MockViewBase, props, children)
 
   return new Proxy(
     {},

@@ -28,15 +28,6 @@ export default function useTimerControls({
     }
   }
 
-  const scheduleAutoHide = () => {
-    clearAutoHideTimeout()
-    if (status === "running" && timerMode === "focus") {
-      autoHideTimeoutRef.current = setTimeout(() => {
-        setShowControls(false)
-      }, autoHideDelay)
-    }
-  }
-
   const tapGesture = Gesture.Tap()
     .withTestId(TIMER_CONTROLS_TAP_GESTURE_ID)
     .runOnJS(true)
@@ -49,7 +40,10 @@ export default function useTimerControls({
   // Schedule auto-hide when controls become visible while running
   useEffect(() => {
     if (showControls && status === "running" && timerMode === "focus") {
-      scheduleAutoHide()
+      clearAutoHideTimeout()
+      autoHideTimeoutRef.current = setTimeout(() => {
+        setShowControls(false)
+      }, autoHideDelay)
     } else {
       clearAutoHideTimeout()
     }

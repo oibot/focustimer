@@ -98,18 +98,14 @@ export default function TimerScene({
   // TODO: should we sync the startingMs, or put this logic in the timer provider?
   useLayoutEffect(() => {
     setStartingMs(startingMs)
-  }, [startingMs])
-
-  const playDoneSound = () => {
-    player.seekTo(0)
-    player.play()
-  }
+  }, [setStartingMs, startingMs])
 
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
       if (timerMode === "focus") {
-        playDoneSound()
+        player.seekTo(0)
+        player.play()
       }
       cancelTimer()
       onDone(nextMode)

@@ -9,8 +9,11 @@ export default function ContentSizeCategorySubscriber({
   children,
 }: ContentSizeCategorySubscriberProps) {
   const { rt } = useUnistyles()
+  const contentSizeCategory = rt.contentSizeCategory
 
-  rt.contentSizeCategory
+  if (contentSizeCategory === "unspecified") {
+    return children
+  }
 
   return children
 }
