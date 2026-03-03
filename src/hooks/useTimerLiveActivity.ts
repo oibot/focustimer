@@ -1,13 +1,14 @@
-import type { TimerStatus } from "@/types/timer"
-import { useEffect, useRef } from "react"
-import { Platform } from "react-native"
 import {
   areActivitiesEnabled,
   endActivity,
+  type LiveActivityStrings,
   startActivity,
   updateActivity,
-  type LiveActivityStrings,
 } from "local:live-activities-controller"
+import { useEffect, useRef } from "react"
+import { Platform } from "react-native"
+
+import type { TimerStatus } from "@/types/timer"
 
 type UseTimerLiveActivityParams = {
   strings: LiveActivityStrings

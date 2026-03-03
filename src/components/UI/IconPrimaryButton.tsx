@@ -1,5 +1,5 @@
-import { Pressable, type PressableProps } from "react-native"
 import { Host, Image, type ImageProps } from "@expo/ui/swift-ui"
+import { Pressable, type PressableProps } from "react-native"
 import { StyleSheet, useUnistyles } from "react-native-unistyles"
 
 type IconPrimaryButtonProps = PressableProps & {

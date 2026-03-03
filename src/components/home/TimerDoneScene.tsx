@@ -1,7 +1,8 @@
-import { DestructiveButton, PrimaryButton } from "@/components/UI/Button"
-import { useTimer } from "@/hooks/useTimer"
 import { useLingui } from "@lingui/react/macro"
 import { ScrollView, StyleSheet } from "react-native"
+
+import { DestructiveButton, PrimaryButton } from "@/components/UI/Button"
+import { useTimer } from "@/hooks/useTimer"
 
 type TimerDoneSceneProps = {
   nextMode: "focus" | "short"

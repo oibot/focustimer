@@ -1,8 +1,8 @@
-import React from "react"
 import { renderHook } from "@testing-library/react-native"
+import React from "react"
 
-import { useTimer } from "@/hooks/useTimer"
 import { TimerContext } from "@/components/providers/TimerProvider"
+import { useTimer } from "@/hooks/useTimer"
 import type { TimerStatus } from "@/types/timer"
 
 jest.mock("react", () => ({

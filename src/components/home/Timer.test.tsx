@@ -1,8 +1,8 @@
+import { i18n } from "@lingui/core"
+import { I18nProvider } from "@lingui/react"
 import { fireEvent, render } from "@testing-library/react-native"
 
 import Timer from "@/components/home/Timer"
-import { i18n } from "@lingui/core"
-import { I18nProvider } from "@lingui/react"
 import { messages as enMessages } from "@/locales/en/messages"
 
 const baseProps = {

@@ -1,14 +1,15 @@
 import { renderHook, waitFor } from "@testing-library/react-native"
-import { Platform } from "react-native"
-import type { TimerStatus } from "@/types/timer"
-import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import {
   areActivitiesEnabled,
   endActivity,
+  type LiveActivityStrings,
   startActivity,
   updateActivity,
-  type LiveActivityStrings,
 } from "local:live-activities-controller"
+import { Platform } from "react-native"
+
+import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
+import type { TimerStatus } from "@/types/timer"
 
 const setPlatformOS = (os: "ios" | "android") => {
   Object.defineProperty(Platform, "OS", { value: os, configurable: true })

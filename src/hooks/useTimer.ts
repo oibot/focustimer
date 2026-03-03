@@ -1,5 +1,6 @@
-import { TimerContext } from "@/components/providers/TimerProvider"
 import { useContext } from "react"
+
+import { TimerContext } from "@/components/providers/TimerProvider"
 
 export function useTimer() {
   const {

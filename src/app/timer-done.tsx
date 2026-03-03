@@ -1,5 +1,6 @@
-import TimerDoneScene from "@/components/home/TimerDoneScene"
 import { useLocalSearchParams, useRouter } from "expo-router"
+
+import TimerDoneScene from "@/components/home/TimerDoneScene"
 
 export default function Page() {
   const router = useRouter()

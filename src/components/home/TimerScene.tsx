@@ -1,3 +1,12 @@
+import { useLingui } from "@lingui/react/macro"
+import { useAudioPlayer } from "expo-audio"
+import { useKeepAwake } from "expo-keep-awake"
+import type { LiveActivityStrings } from "local:live-activities-controller"
+import { useEffect, useLayoutEffect, useRef } from "react"
+import { Alert, View } from "react-native"
+import { GestureDetector } from "react-native-gesture-handler"
+import { StyleSheet } from "react-native-unistyles"
+
 import Timer from "@/components/home/Timer"
 import TimerModePicker from "@/components/home/TimerModePicker"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
@@ -7,14 +16,6 @@ import useTimerControls from "@/hooks/useTimerControls"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import useTimerModeEdgeSwipe from "@/hooks/useTimerModeEdgeSwipe"
 import { isTimerMode, TimerMode } from "@/types/timer"
-import { useLingui } from "@lingui/react/macro"
-import { useAudioPlayer } from "expo-audio"
-import { useKeepAwake } from "expo-keep-awake"
-import type { LiveActivityStrings } from "local:live-activities-controller"
-import { useEffect, useLayoutEffect, useRef } from "react"
-import { Alert, View } from "react-native"
-import { GestureDetector } from "react-native-gesture-handler"
-import { StyleSheet } from "react-native-unistyles"
 
 const TIMER_MODES = {
   focus: {

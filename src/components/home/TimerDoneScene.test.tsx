@@ -1,11 +1,11 @@
+import { i18n } from "@lingui/core"
+import { I18nProvider } from "@lingui/react"
 import { fireEvent, render } from "@testing-library/react-native"
+import type { ReactElement } from "react"
 
 import TimerDoneScene from "@/components/home/TimerDoneScene"
 import { useTimer } from "@/hooks/useTimer"
-import { i18n } from "@lingui/core"
-import { I18nProvider } from "@lingui/react"
 import { messages as enMessages } from "@/locales/en/messages"
-import type { ReactElement } from "react"
 
 jest.mock("@/hooks/useTimer")
 

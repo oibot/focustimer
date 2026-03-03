@@ -11,6 +11,8 @@ This Project implements a focus timer for iOS using React Native with expo and T
 + test changed files: `bun run test:changed`
 + format changed files: `bun run format:changed`
 + install dependencies: `bunx expo install`
++ lint: `bunx expo lint`
++ lint and fix: `bunx expo lint --fix`
 
 ## Repo Layout
 + All source files are in *src/*.

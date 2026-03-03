@@ -1,9 +1,9 @@
 import { act, renderHook, waitFor } from "@testing-library/react-native"
-import { AppState } from "react-native"
 import * as Notifications from "expo-notifications"
-import type { TimerStatus } from "@/types/timer"
+import { AppState } from "react-native"
 
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
+import type { TimerStatus } from "@/types/timer"
 
 jest.mock("expo-notifications", () => ({
   cancelScheduledNotificationAsync: jest.fn(),

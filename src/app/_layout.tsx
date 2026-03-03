@@ -1,6 +1,3 @@
-import ContentSizeCategorySubscriber from "@/components/UI/ContentSizeCategorySubscriber"
-import TimerProvider from "@/components/providers/TimerProvider"
-import { initI18n } from "@/i18n"
 import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
 import * as Sentry from "@sentry/react-native"
@@ -11,6 +8,10 @@ import { StatusBar } from "expo-status-bar"
 import { useEffect } from "react"
 import { useColorScheme } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+
+import TimerProvider from "@/components/providers/TimerProvider"
+import ContentSizeCategorySubscriber from "@/components/UI/ContentSizeCategorySubscriber"
+import { initI18n } from "@/i18n"
 
 export const unstable_settings = {
   anchor: "index",

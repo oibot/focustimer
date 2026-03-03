@@ -1,5 +1,5 @@
-import React, { useContext } from "react"
 import { act, renderHook } from "@testing-library/react-native"
+import React, { useContext } from "react"
 
 import TimerProvider, {
   TimerContext,

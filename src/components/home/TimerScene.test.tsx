@@ -1,18 +1,18 @@
-import { fireEvent, render } from "@testing-library/react-native"
-
-import TimerScene from "@/components/home/TimerScene"
-import { useTimer } from "@/hooks/useTimer"
-import * as useTimerControlsModule from "@/hooks/useTimerControls"
-import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
-import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
-import { useKeepAwake } from "expo-keep-awake"
+import { fireEvent, render } from "@testing-library/react-native"
 import { useAudioPlayer } from "expo-audio"
-import { Gesture } from "react-native-gesture-handler"
-import { Alert } from "react-native"
-import { messages as enMessages } from "@/locales/en/messages"
+import { useKeepAwake } from "expo-keep-awake"
 import type { ReactElement } from "react"
+import { Alert } from "react-native"
+import { Gesture } from "react-native-gesture-handler"
+
+import TimerScene from "@/components/home/TimerScene"
+import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
+import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
+import { useTimer } from "@/hooks/useTimer"
+import * as useTimerControlsModule from "@/hooks/useTimerControls"
+import { messages as enMessages } from "@/locales/en/messages"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")

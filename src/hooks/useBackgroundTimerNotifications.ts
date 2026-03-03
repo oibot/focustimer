@@ -1,7 +1,7 @@
+import * as Sentry from "@sentry/react-native"
+import * as Notifications from "expo-notifications"
 import { useCallback, useEffect, useRef } from "react"
 import { AppState } from "react-native"
-import * as Notifications from "expo-notifications"
-import * as Sentry from "@sentry/react-native"
 
 import type { TimerStatus } from "@/types/timer"
 
