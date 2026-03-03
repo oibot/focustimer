@@ -1,4 +1,11 @@
-import { createContext, useEffect, useRef, useState } from "react"
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
 import type { TimerStatus } from "@/types/timer"
 
@@ -47,6 +54,9 @@ export default function TimerProvider({
   const [isRunning, setIsRunning] = useState(false)
   const [remainingMs, setRemainingMs] = useState(startingMs)
   const endAtRef = useRef<number | null>(null)
+  const startingMsRef = useRef(startingMs)
+  const remainingMsRef = useRef(remainingMs)
+  const isRunningRef = useRef(isRunning)
   const status: TimerStatus = isRunning
     ? "running"
     : remainingMs === 0
@@ -54,6 +64,10 @@ export default function TimerProvider({
       : remainingMs === startingMs
         ? "idle"
         : "paused"
+
+  startingMsRef.current = startingMs
+  remainingMsRef.current = remainingMs
+  isRunningRef.current = isRunning
 
   useEffect(() => {
     if (!isRunning) return
@@ -66,15 +80,15 @@ export default function TimerProvider({
     return () => clearInterval(id)
   }, [isRunning])
 
-  const setStartingMsAndReset = (ms: number) => {
+  const setStartingMsAndReset = useCallback((ms: number) => {
     setIsRunning(false)
     setStartingMs(ms)
     setRemainingMs(ms)
     endAtRef.current = null
-  }
+  }, [])
 
-  const toggleTimer = () => {
-    if (isRunning) {
+  const toggleTimer = useCallback(() => {
+    if (isRunningRef.current) {
       setIsRunning(false)
       if (endAtRef.current !== null) {
         const next = Math.max(0, endAtRef.current - Date.now())
@@ -82,26 +96,32 @@ export default function TimerProvider({
       }
       return
     }
-    endAtRef.current = Date.now() + remainingMs
+    endAtRef.current = Date.now() + remainingMsRef.current
     setIsRunning(true)
-  }
+  }, [])
 
-  const cancelTimer = () => {
+  const cancelTimer = useCallback(() => {
     setIsRunning(false)
-    setRemainingMs(startingMs)
+    setRemainingMs(startingMsRef.current)
     endAtRef.current = null
-  }
+  }, [])
 
-  const actions = {
-    toggleTimer,
-    cancelTimer,
-    setStartingMs: setStartingMsAndReset,
-  }
+  const actions = useMemo(
+    () => ({
+      toggleTimer,
+      cancelTimer,
+      setStartingMs: setStartingMsAndReset,
+    }),
+    [toggleTimer, cancelTimer, setStartingMsAndReset],
+  )
 
-  const value = {
-    state: { startingMs, remainingMs, isRunning, status },
-    actions,
-  }
+  const value = useMemo(
+    () => ({
+      state: { startingMs, remainingMs, isRunning, status },
+      actions,
+    }),
+    [startingMs, remainingMs, isRunning, status, actions],
+  )
 
   return <TimerContext value={value}>{children}</TimerContext>
 }

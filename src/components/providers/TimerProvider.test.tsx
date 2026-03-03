@@ -127,4 +127,16 @@ describe("TimerProvider", () => {
     expect(result.current.state.remainingMs).toBe(5000)
     expectTimerActions(result.current.actions)
   })
+
+  it("keeps action identities stable across rerenders", () => {
+    const { result } = renderHook(() => useTimerContext(), { wrapper })
+
+    const initialActions = result.current.actions
+
+    act(() => result.current.actions.setStartingMs(5000))
+    expect(result.current.actions).toBe(initialActions)
+
+    act(() => result.current.actions.toggleTimer())
+    expect(result.current.actions).toBe(initialActions)
+  })
 })

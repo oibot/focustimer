@@ -200,6 +200,35 @@ describe("TimerScene", () => {
     expect(getByText("Cancel")).toBeTruthy()
   })
 
+  it("does not reset the duration again when status changes in the same mode", () => {
+    const setStartingMs = jest.fn()
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      setStartingMs,
+    })
+
+    const { rerender } = renderWithI18n(
+      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+    )
+
+    expect(setStartingMs).toHaveBeenCalledTimes(1)
+    expect(setStartingMs).toHaveBeenCalledWith(25 * 60 * 1000)
+
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+      setStartingMs,
+    })
+
+    rerender(
+      <I18nProvider i18n={i18n}>
+        <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />
+      </I18nProvider>,
+    )
+
+    expect(setStartingMs).toHaveBeenCalledTimes(1)
+  })
+
   it("keeps the screen awake while running", () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
