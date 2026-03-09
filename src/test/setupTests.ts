@@ -1,5 +1,7 @@
 import "@testing-library/jest-native/extend-expect"
 
+import type { ReactNode } from "react"
+
 jest.mock("expo-notifications", () => ({
   addNotificationReceivedListener: jest.fn(),
   addNotificationResponseReceivedListener: jest.fn(),
@@ -29,10 +31,8 @@ jest.mock("@sentry/react-native", () => ({
 }))
 
 jest.mock("react-native-safe-area-context", () => {
-  const React = jest.requireActual("react")
-
   return {
-    SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
+    SafeAreaProvider: ({ children }: { children: ReactNode }) => children,
     useSafeAreaInsets: () => ({
       top: 0,
       right: 0,

@@ -1,8 +1,8 @@
 import {
   areActivitiesEnabled,
   endActivity,
-  reconcileExpiredActivities,
   type LiveActivityStrings,
+  reconcileExpiredActivities,
   startActivity,
   updateActivity,
 } from "local:live-activities-controller"

@@ -2,8 +2,8 @@ import { act, renderHook, waitFor } from "@testing-library/react-native"
 import {
   areActivitiesEnabled,
   endActivity,
-  reconcileExpiredActivities,
   type LiveActivityStrings,
+  reconcileExpiredActivities,
   startActivity,
   updateActivity,
 } from "local:live-activities-controller"
