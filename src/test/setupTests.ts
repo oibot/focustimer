@@ -47,6 +47,7 @@ jest.mock(
   () => ({
     areActivitiesEnabled: jest.fn(() => false),
     startActivity: jest.fn(() => null),
+    reconcileExpiredActivities: jest.fn(async () => {}),
     updateActivity: jest.fn(async () => {}),
     endActivity: jest.fn(async () => {}),
   }),

@@ -1,12 +1,13 @@
-import { renderHook, waitFor } from "@testing-library/react-native"
+import { act, renderHook, waitFor } from "@testing-library/react-native"
 import {
   areActivitiesEnabled,
   endActivity,
+  reconcileExpiredActivities,
   type LiveActivityStrings,
   startActivity,
   updateActivity,
 } from "local:live-activities-controller"
-import { Platform } from "react-native"
+import { AppState, Platform } from "react-native"
 
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import type { TimerStatus } from "@/types/timer"
@@ -14,6 +15,8 @@ import type { TimerStatus } from "@/types/timer"
 const setPlatformOS = (os: "ios" | "android") => {
   Object.defineProperty(Platform, "OS", { value: os, configurable: true })
 }
+
+let appStateHandler: ((state: string) => void) | null = null
 
 const renderLiveActivityHook = (props: {
   status: TimerStatus
@@ -48,13 +51,57 @@ describe("useTimerLiveActivity", () => {
   const updateActivityMock = updateActivity as jest.MockedFunction<
     typeof updateActivity
   >
+  const reconcileExpiredActivitiesMock =
+    reconcileExpiredActivities as jest.MockedFunction<
+      typeof reconcileExpiredActivities
+    >
   const endActivityMock = endActivity as jest.MockedFunction<typeof endActivity>
 
   beforeEach(() => {
     setPlatformOS("ios")
     jest.clearAllMocks()
+    appStateHandler = null
     areActivitiesEnabledMock.mockReturnValue(true)
     startActivityMock.mockReturnValue("activity-1")
+    jest
+      .spyOn(AppState, "addEventListener")
+      .mockImplementation((_type, handler) => {
+        appStateHandler = handler as (state: string) => void
+        return { remove: jest.fn() }
+      })
+  })
+
+  afterEach(() => {
+    ;(AppState.addEventListener as jest.Mock).mockRestore()
+  })
+
+  it("reconciles expired activities on mount", async () => {
+    renderLiveActivityHook({
+      status: "idle",
+      remainingMs: 5000,
+    })
+
+    await waitFor(() => {
+      expect(reconcileExpiredActivitiesMock).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  it("reconciles expired activities when the app becomes active", async () => {
+    renderLiveActivityHook({
+      status: "idle",
+      remainingMs: 5000,
+    })
+
+    await waitFor(() => {
+      expect(appStateHandler).not.toBeNull()
+    })
+
+    act(() => appStateHandler?.("background"))
+    act(() => appStateHandler?.("active"))
+
+    await waitFor(() => {
+      expect(reconcileExpiredActivitiesMock).toHaveBeenCalledTimes(2)
+    })
   })
 
   it("starts when running begins", async () => {
@@ -176,6 +223,7 @@ describe("useTimerLiveActivity", () => {
 
     await waitFor(() => {
       expect(startActivityMock).not.toHaveBeenCalled()
+      expect(reconcileExpiredActivitiesMock).not.toHaveBeenCalled()
       expect(updateActivityMock).not.toHaveBeenCalled()
       expect(endActivityMock).not.toHaveBeenCalled()
     })

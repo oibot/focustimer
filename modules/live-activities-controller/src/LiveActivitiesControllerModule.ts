@@ -7,6 +7,7 @@ declare class LiveActivitiesControllerModule extends NativeModule {
     strings: LiveActivityStrings,
     secondsRemaining: number,
   ) => string | null
+  reconcileExpiredActivities: () => Promise<void>
   updateActivity: (
     secondsRemaining: number,
     isRunning: boolean,

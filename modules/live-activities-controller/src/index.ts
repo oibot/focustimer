@@ -27,6 +27,10 @@ export async function updateActivity(
   )
 }
 
+export async function reconcileExpiredActivities(): Promise<void> {
+  await LiveActivitiesControllerModule?.reconcileExpiredActivities()
+}
+
 export async function endActivity(
   secondsRemaining: number,
   isRunning: boolean,

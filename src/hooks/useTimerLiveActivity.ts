@@ -1,12 +1,13 @@
 import {
   areActivitiesEnabled,
   endActivity,
+  reconcileExpiredActivities,
   type LiveActivityStrings,
   startActivity,
   updateActivity,
 } from "local:live-activities-controller"
 import { useEffect, useRef } from "react"
-import { Platform } from "react-native"
+import { AppState, Platform } from "react-native"
 
 import type { TimerStatus } from "@/types/timer"
 
@@ -29,6 +30,21 @@ export default function useTimerLiveActivity({
   const prevRemainingMsRef = useRef(remainingMs)
 
   remainingMsRef.current = remainingMs
+
+  useEffect(() => {
+    if (Platform.OS !== "ios") return
+
+    void reconcileExpiredActivities()
+
+    const subscription = AppState.addEventListener("change", (nextState) => {
+      if (nextState !== "active") return
+      void reconcileExpiredActivities()
+    })
+
+    return () => {
+      subscription.remove()
+    }
+  }, [])
 
   useEffect(() => {
     if (Platform.OS !== "ios") return

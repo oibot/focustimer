@@ -43,6 +43,16 @@ public class LiveActivitiesControllerModule: Module {
     )
   }
 
+  private func endContent() -> ActivityContent<FocusOnlyAttributes.ContentState> {
+    ActivityContent(
+      state: FocusOnlyAttributes.ContentState(
+        secondsRemaining: 0,
+        endDate: nil
+      ),
+      staleDate: nil
+    )
+  }
+
   public func definition() -> ModuleDefinition {
     Name("LiveActivitiesController")
 
@@ -87,6 +97,22 @@ public class LiveActivitiesControllerModule: Module {
       let content = makeContent(secondsRemaining: secondsRemaining, isRunning: isRunning)
       await current.end(content, dismissalPolicy: .immediate)
       self.current = nil
+    }
+
+    AsyncFunction("reconcileExpiredActivities") { () async -> Void in
+      let now = Date()
+
+      for activity in Activity<FocusOnlyAttributes>.activities {
+        guard let endDate = activity.content.state.endDate, endDate <= now else {
+          continue
+        }
+
+        await activity.end(self.endContent(), dismissalPolicy: .immediate)
+
+        if self.current?.id == activity.id {
+          self.current = nil
+        }
+      }
     }
   }
 }
