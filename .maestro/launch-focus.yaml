@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+    permissions:
+      all: deny
+- tapOn:
+    text: "Don't allow|Nicht erlauben"
+    optional: true
+- assertVisible: "Focus|Fokus"
+- assertVisible:
+    id: "timer-readout"
+- assertVisible:
+    id: "timer-toggle-button"
+- assertVisible:
+    text: "Break|Pause"
+    enabled: true

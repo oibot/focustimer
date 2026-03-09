@@ -20,6 +20,7 @@
               packages = with pkgs; [
                 bun
                 git
+                maestro
                 nodejs
                 python3
                 typescript

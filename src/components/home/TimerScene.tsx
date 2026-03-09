@@ -158,8 +158,15 @@ export default function TimerScene({
 
       {status === "running" ? <KeepAwakeWhileRunning /> : null}
 
-      <View pointerEvents="none" style={styles.titleContainer}>
-        <Text accessibilityRole="header" style={styles.titleText}>
+      <View
+        testID="timer-mode-title"
+        pointerEvents="none"
+        accessible
+        accessibilityRole="header"
+        accessibilityLabel={timerMode === "focus" ? focusLabel : breakLabel}
+        style={styles.titleContainer}
+      >
+        <Text style={styles.titleText}>
           {timerMode === "focus" ? focusLabel : breakLabel}
         </Text>
       </View>

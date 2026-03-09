@@ -11,6 +11,7 @@
     "web": "expo start --web",
     "format": "prettier --write src",
     "test": "jest --watchAll=false --watchman=false",
+    "maestro:test": "maestro test -e APP_ID=de.totap.focustimer.test .maestro",
     "format:changed": "bash -lc 'files=$(git diff --name-only --diff-filter=ACMRTUXB HEAD -- \"src\" | tr \"\\n\" \" \"); if [ -z \"$files\" ]; then echo \"No changed files in src\"; exit 0; fi; bunx prettier --write $files'",
     "test:changed": "jest --watchAll=false --watchman=false --onlyChanged",
     "extract": "lingui extract",
@@ -66,12 +67,8 @@
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFiles": [
-      "./node_modules/react-native-gesture-handler/jestSetup.js"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/test/setupTests.ts"
-    ],
+    "setupFiles": ["./node_modules/react-native-gesture-handler/jestSetup.js"],
+    "setupFilesAfterEnv": ["<rootDir>/src/test/setupTests.ts"],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }

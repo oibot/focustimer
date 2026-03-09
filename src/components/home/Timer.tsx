@@ -79,6 +79,7 @@ export default function Timer({
   return (
     <View style={styles.container} pointerEvents="box-none">
       <View
+        testID="timer-readout"
         style={styles.timerContainer}
         accessible
         accessibilityRole="text"
@@ -107,12 +108,14 @@ export default function Timer({
         pointerEvents={showControls ? "auto" : "none"}
       >
         <IconPrimaryButton
+          testID="timer-toggle-button"
           label={toggleLabel}
           symbolName={toggleSymbol}
           accessibilityHint={toggleHint}
           onPress={onToggle}
         />
         <DestructiveButton
+          testID="timer-cancel-button"
           label={cancelLabel}
           accessibilityHint={cancelHint}
           disabled={!canCancel || !cancelAvailable}
