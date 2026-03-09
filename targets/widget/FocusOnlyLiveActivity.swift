@@ -39,7 +39,7 @@ private func expandedContent(
     HStack(spacing: 8) {
       AppIconView(size: 28)
       Text(context.attributes.strings.title)
-        .font(.headline)
+        .font(.title)
         .lineLimit(1)
         .minimumScaleFactor(0.8)
         .allowsTightening(true)
@@ -96,12 +96,12 @@ private struct TimerText: View {
   }
 
   var body: some View {
-      timerContent
-        .font(.system(size: size, weight: weight))
-        .monospacedDigit()
-        .lineLimit(1)
-        .opacity(isLuminanceReduced ? 0.75 : 1)
-        .frame(width: timerWidth(for: uiFont), alignment: .trailing)
+    timerContent
+      .font(.system(size: size, weight: weight))
+      .monospacedDigit()
+      .lineLimit(1)
+      .opacity(isLuminanceReduced ? 0.75 : 1)
+      .frame(width: timerWidth(for: uiFont), alignment: .trailing)
   }
 
   @ViewBuilder
@@ -110,7 +110,11 @@ private struct TimerText: View {
       if isLuminanceReduced {
         EmptyView()
       } else {
-        Text(endDate, style: .timer)
+        Text(
+          timerInterval: min(Date.now, endDate)...endDate,
+          countsDown: true,
+          showsHours: false
+        )
       }
     } else {
       Text(formatMMSS(seconds))

@@ -63,7 +63,7 @@ msgstr "Pause"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/components/home/TimerScene.tsx:117
+#: src/components/home/TimerScene.tsx:115
 msgid "Cancel focus session?"
 msgstr "Fokussitzung abbrechen?"
 
@@ -71,12 +71,16 @@ msgstr "Fokussitzung abbrechen?"
 msgid "Changes the timer mode"
 msgstr "Ändert den Timer-Modus"
 
+#: src/components/home/TimerScene.tsx:55
+#~ msgid "Ended"
+#~ msgstr "Beendet"
+
 #: src/app/index.tsx:16
 #: src/components/home/TimerScene.tsx:51
 msgid "Focus"
 msgstr "Fokus"
 
-#: src/components/home/TimerScene.tsx:120
+#: src/components/home/TimerScene.tsx:118
 msgid "Keep going"
 msgstr "Weitermachen"
 
@@ -164,6 +168,6 @@ msgstr "Zum Fokusmodus wechseln"
 #~ msgid "Timer mode"
 #~ msgstr "Timer-Modus"
 
-#: src/components/home/TimerScene.tsx:118
+#: src/components/home/TimerScene.tsx:116
 msgid "Your current focus timer will reset."
 msgstr "Der aktuelle Fokus-Timer wird zurückgesetzt."
