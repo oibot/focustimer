@@ -47,7 +47,6 @@ private func expandedContent(
   }
   DynamicIslandExpandedRegion(.trailing) {
     HStack {
-      Spacer()
       TimerText(
         seconds: context.state.secondsRemaining,
         endDate: context.state.endDate,
@@ -62,10 +61,10 @@ private struct LockScreenView: View {
   let context: ActivityViewContext<FocusOnlyAttributes>
 
   var body: some View {
-    HStack(alignment: .center, spacing: Layout.rowSpacing) {
-      AppIconView(size: Layout.iconSize)
+    HStack(alignment: .center) {
+      AppIconView(size: 36)
       Text(context.attributes.strings.title)
-        .font(.headline)
+        .font(.title)
         .lineLimit(1)
         .truncationMode(.tail)
         .minimumScaleFactor(0.8)
@@ -74,7 +73,7 @@ private struct LockScreenView: View {
       TimerText(
         seconds: context.state.secondsRemaining,
         endDate: context.state.endDate,
-        size: Layout.timerSize,
+        size: 36,
         weight: .semibold
       )
     }
@@ -127,16 +126,9 @@ private struct AppIconView: View {
       .resizable()
       .scaledToFit()
       .frame(width: size, height: size)
-      .padding(Layout.iconPadding)
+      .padding(4)
       .background(Color(.tertiarySystemBackground), in: Circle())
   }
-}
-
-private enum Layout {
-  static let rowSpacing: CGFloat = 12
-  static let iconSize: CGFloat = 18
-  static let iconPadding: CGFloat = 4
-  static let timerSize: CGFloat = 36
 }
 
 extension FocusOnlyAttributes {
