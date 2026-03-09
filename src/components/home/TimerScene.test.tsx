@@ -220,7 +220,7 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("short")
   })
 
-  it("does not play audio when a break finishes", () => {
+  it("plays audio when a break finishes", () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()
 
@@ -239,8 +239,8 @@ describe("TimerScene", () => {
       seekTo: jest.Mock
     }
 
-    expect(player.seekTo).not.toHaveBeenCalled()
-    expect(player.play).not.toHaveBeenCalled()
+    expect(player.seekTo).toHaveBeenCalledWith(0)
+    expect(player.play).toHaveBeenCalledTimes(1)
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onDone).toHaveBeenCalledWith("focus")
   })

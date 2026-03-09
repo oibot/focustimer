@@ -98,10 +98,8 @@ export default function TimerScene({
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
-      if (timerMode === "focus") {
-        player.seekTo(0)
-        player.play()
-      }
+      player.seekTo(0)
+      player.play()
       cancelTimer()
       onDone(nextMode)
       return
