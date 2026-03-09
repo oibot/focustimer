@@ -1,7 +1,7 @@
 import ActivityKit
-import WidgetKit
 import SwiftUI
 import UIKit
+import WidgetKit
 
 struct FocusOnlyLiveActivity: Widget {
   var body: some WidgetConfiguration {
@@ -58,20 +58,6 @@ private func expandedContent(
   }
 }
 
-enum TimeFormatters {
-  static let mmss: DateComponentsFormatter = {
-    let f = DateComponentsFormatter()
-    f.allowedUnits = [.minute, .second]
-    f.unitsStyle = .positional
-    f.zeroFormattingBehavior = [.pad]
-    return f
-  }()
-}
-
-private func formatMMSS(_ seconds: Int) -> String {
-  TimeFormatters.mmss.string(from: TimeInterval(seconds)) ?? "0:00"
-}
-
 private struct LockScreenView: View {
   let context: ActivityViewContext<FocusOnlyAttributes>
 
@@ -96,21 +82,27 @@ private struct LockScreenView: View {
 }
 
 private struct TimerText: View {
+  @Environment(\.isLuminanceReduced) private var isLuminanceReduced
+
   let seconds: Int
   let endDate: Date?
   let size: CGFloat
   let weight: Font.Weight
 
-  @Environment(\.isLuminanceReduced) private var isLuminanceReduced
+  private var uiFont: UIFont {
+    UIFont.monospacedDigitSystemFont(
+      ofSize: size,
+      weight: .init(weight),
+    )
+  }
 
   var body: some View {
-    HStack {
       timerContent
-    }
-    .font(.system(size: size, weight: weight, design: .rounded))
-    .monospacedDigit()
-    .lineLimit(1)
-    .opacity(isLuminanceReduced ? 0.75 : 1)
+        .font(.system(size: size, weight: weight))
+        .monospacedDigit()
+        .lineLimit(1)
+        .opacity(isLuminanceReduced ? 0.75 : 1)
+        .frame(width: timerWidth(for: uiFont), alignment: .trailing)
   }
 
   @ViewBuilder
@@ -142,7 +134,7 @@ private struct AppIconView: View {
 
 private enum Layout {
   static let rowSpacing: CGFloat = 12
-  static let iconSize: CGFloat = 28
+  static let iconSize: CGFloat = 18
   static let iconPadding: CGFloat = 4
   static let timerSize: CGFloat = 36
 }
