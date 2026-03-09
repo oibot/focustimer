@@ -28,6 +28,20 @@ jest.mock("@sentry/react-native", () => ({
   },
 }))
 
+jest.mock("react-native-safe-area-context", () => {
+  const React = jest.requireActual("react")
+
+  return {
+    SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
+    useSafeAreaInsets: () => ({
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    }),
+  }
+})
+
 jest.mock(
   "local:live-activities-controller",
   () => ({
@@ -69,6 +83,12 @@ jest.mock("react-native-unistyles", () => ({
     rt: {
       colorScheme: "light",
       contentSizeCategory: "Medium",
+      insets: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
     },
   }),
 }))

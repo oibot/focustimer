@@ -3,12 +3,11 @@ import { useAudioPlayer } from "expo-audio"
 import { useKeepAwake } from "expo-keep-awake"
 import type { LiveActivityStrings } from "local:live-activities-controller"
 import { useEffect, useLayoutEffect, useRef } from "react"
-import { Alert, View } from "react-native"
+import { Alert, Text, View } from "react-native"
 import { GestureDetector } from "react-native-gesture-handler"
 import { StyleSheet } from "react-native-unistyles"
 
 import Timer from "@/components/home/Timer"
-import TimerModePicker from "@/components/home/TimerModePicker"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { useTimer } from "@/hooks/useTimer"
@@ -58,7 +57,6 @@ export default function TimerScene({
     subtitleRunning: t`Stay focused`,
     subtitlePaused: t`Session paused`,
   }
-  const activeIndex = timerMode === "focus" ? 0 : 1
   const {
     remainingMs,
     status,
@@ -82,10 +80,6 @@ export default function TimerScene({
     timerMode,
     onModeChange: handleTimerModeChange,
   })
-
-  const handleModeChange = (index: number) => {
-    handleTimerModeChange(index === 0 ? "focus" : "short")
-  }
 
   const hasShownDoneRef = useRef(false)
 
@@ -166,14 +160,10 @@ export default function TimerScene({
 
       {status === "running" ? <KeepAwakeWhileRunning /> : null}
 
-      <View style={styles.pickerContainer}>
-        <TimerModePicker
-          options={[focusLabel, breakLabel]}
-          activeIndex={activeIndex}
-          disabled={status === "running"}
-          disableInactiveOptions={status === "paused"}
-          onModeChange={handleModeChange}
-        />
+      <View pointerEvents="none" style={styles.titleContainer}>
+        <Text accessibilityRole="header" style={styles.titleText}>
+          {timerMode === "focus" ? focusLabel : breakLabel}
+        </Text>
       </View>
 
       <View style={styles.timerContainer} pointerEvents="box-none">
@@ -197,7 +187,7 @@ export default function TimerScene({
   )
 }
 
-const styles = StyleSheet.create((theme) => ({
+const styles = StyleSheet.create((theme, rt) => ({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -223,10 +213,20 @@ const styles = StyleSheet.create((theme) => ({
   edgeSwipeZoneRight: {
     right: 0,
   },
-  pickerContainer: {
-    alignItems: "center",
-    paddingTop: 16,
-    paddingHorizontal: 16,
+  titleContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    paddingTop: rt.insets.top + 12,
+    paddingHorizontal: 24,
+    zIndex: 1,
+  },
+  titleText: {
+    color: theme.colors.primary,
+    fontSize: 32,
+    fontWeight: "600",
+    textAlign: "left",
   },
   timerContainer: {
     position: "absolute",

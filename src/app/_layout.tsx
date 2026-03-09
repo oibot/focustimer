@@ -8,6 +8,7 @@ import { StatusBar } from "expo-status-bar"
 import { useEffect } from "react"
 import { useColorScheme } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 
 import TimerProvider from "@/components/providers/TimerProvider"
 import ContentSizeCategorySubscriber from "@/components/UI/ContentSizeCategorySubscriber"
@@ -62,26 +63,28 @@ function Layout() {
 
   return (
     <GestureHandlerRootView>
-      <I18nProvider i18n={i18n}>
-        <ContentSizeCategorySubscriber>
-          <TimerProvider>
-            <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen
-                name="timer-done"
-                options={{
-                  presentation: "formSheet",
-                  sheetAllowedDetents: [0.25],
-                  sheetInitialDetentIndex: 0,
-                  sheetGrabberVisible: true,
-                  contentStyle: { backgroundColor: "transparent" },
-                }}
-              />
-            </Stack>
-          </TimerProvider>
-        </ContentSizeCategorySubscriber>
-      </I18nProvider>
+      <SafeAreaProvider>
+        <I18nProvider i18n={i18n}>
+          <ContentSizeCategorySubscriber>
+            <TimerProvider>
+              <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen
+                  name="timer-done"
+                  options={{
+                    presentation: "formSheet",
+                    sheetAllowedDetents: [0.25],
+                    sheetInitialDetentIndex: 0,
+                    sheetGrabberVisible: true,
+                    contentStyle: { backgroundColor: "transparent" },
+                  }}
+                />
+              </Stack>
+            </TimerProvider>
+          </ContentSizeCategorySubscriber>
+        </I18nProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   )
 }
