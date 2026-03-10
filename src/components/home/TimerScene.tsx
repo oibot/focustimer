@@ -112,11 +112,11 @@ export default function TimerScene({
   const handleCancel = () => {
     if (timerMode === "focus") {
       Alert.alert(
-        t`Cancel focus session?`,
+        t`End focus session`,
         t`Your current focus timer will reset.`,
         [
           { text: t`Keep going`, style: "cancel" },
-          { text: cancelLabel, style: "destructive", onPress: cancelTimer },
+          { text: t`End`, style: "destructive", onPress: cancelTimer },
         ],
       )
       return

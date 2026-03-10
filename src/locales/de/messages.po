@@ -54,7 +54,7 @@ msgid "{seconds} seconds"
 msgstr "{seconds} Sekunden"
 
 #: src/app/index.tsx:16
-#: src/components/home/TimerScene.tsx:52
+#: src/components/home/TimerScene.tsx:53
 msgid "Break"
 msgstr "Pause"
 
@@ -64,23 +64,31 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: src/components/home/TimerScene.tsx:115
-msgid "Cancel focus session?"
-msgstr "Fokussitzung abbrechen?"
+#~ msgid "Cancel focus session?"
+#~ msgstr "Fokussitzung abbrechen?"
 
 #: src/app/index.tsx:51
 msgid "Changes the timer mode"
 msgstr "Ändert den Timer-Modus"
+
+#: src/components/home/TimerScene.tsx:51
+msgid "End"
+msgstr "Beenden"
+
+#: src/components/home/TimerScene.tsx:116
+msgid "End focus session"
+msgstr "Fokussitzung beenden"
 
 #: src/components/home/TimerScene.tsx:55
 #~ msgid "Ended"
 #~ msgstr "Beendet"
 
 #: src/app/index.tsx:16
-#: src/components/home/TimerScene.tsx:51
+#: src/components/home/TimerScene.tsx:52
 msgid "Focus"
 msgstr "Fokus"
 
-#: src/components/home/TimerScene.tsx:118
+#: src/components/home/TimerScene.tsx:119
 msgid "Keep going"
 msgstr "Weitermachen"
 
@@ -88,7 +96,7 @@ msgstr "Weitermachen"
 msgid "Pause"
 msgstr "Pausieren"
 
-#: src/components/home/TimerScene.tsx:56
+#: src/components/home/TimerScene.tsx:57
 msgid "Paused"
 msgstr "Pausiert"
 
@@ -112,11 +120,11 @@ msgstr "Fortsetzen"
 msgid "Resumes the timer"
 msgstr "Setzt den Timer fort"
 
-#: src/components/home/TimerScene.tsx:55
+#: src/components/home/TimerScene.tsx:56
 msgid "Running"
 msgstr "Läuft"
 
-#: src/components/home/TimerScene.tsx:58
+#: src/components/home/TimerScene.tsx:59
 msgid "Session paused"
 msgstr "Sitzung pausiert"
 
@@ -144,7 +152,7 @@ msgstr "Fokus-Timer starten"
 #~ msgid "Starts the timer"
 #~ msgstr "Startet den Timer"
 
-#: src/components/home/TimerScene.tsx:57
+#: src/components/home/TimerScene.tsx:58
 msgid "Stay focused"
 msgstr "Bleib fokussiert"
 
@@ -168,6 +176,6 @@ msgstr "Zum Fokusmodus wechseln"
 #~ msgid "Timer mode"
 #~ msgstr "Timer-Modus"
 
-#: src/components/home/TimerScene.tsx:116
+#: src/components/home/TimerScene.tsx:117
 msgid "Your current focus timer will reset."
 msgstr "Der aktuelle Fokus-Timer wird zurückgesetzt."

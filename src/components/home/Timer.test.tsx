@@ -149,13 +149,12 @@ describe("Timer", () => {
   })
 
   it("hides controls when requested", () => {
-    const { getByLabelText, getByText, getByTestId } = renderWithI18n(
+    const { queryByLabelText, queryByText, queryByTestId } = renderWithI18n(
       <Timer {...baseProps} status="running" showControls={false} />,
     )
-    expect(getByLabelText("Pause")).toBeTruthy()
-    expect(getByText("Cancel")).toBeTruthy()
-    const controls = getByTestId("timer-controls")
-    expect(controls.props.pointerEvents).toBe("none")
+    expect(queryByLabelText("Pause")).toBeNull()
+    expect(queryByText("Cancel")).toBeNull()
+    expect(queryByTestId("timer-controls")).toBeNull()
   })
 
   it("enables cancel by default while running", () => {

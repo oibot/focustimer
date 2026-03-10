@@ -107,15 +107,15 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    const { getByLabelText, getByText, getByTestId } = renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
-    )
+    const { queryByLabelText, queryByText, getByTestId, queryByTestId } =
+      renderWithI18n(
+        <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      )
 
-    expect(getByLabelText("Pause")).toBeTruthy()
-    expect(getByText("Cancel")).toBeTruthy()
+    expect(queryByLabelText("Pause")).toBeNull()
+    expect(queryByText("Cancel")).toBeNull()
     expect(getByTestId("timer-tap-gesture-background")).toBeTruthy()
-    const controls = getByTestId("timer-controls")
-    expect(controls.props.pointerEvents).toBe("none")
+    expect(queryByTestId("timer-controls")).toBeNull()
   })
 
   it("does not render the tap gesture background while idle in focus mode", () => {
@@ -267,6 +267,14 @@ describe("TimerScene", () => {
     fireEvent.press(getByText("Cancel").parent!)
 
     expect(alertSpy).toHaveBeenCalledTimes(1)
+    expect(alertSpy).toHaveBeenCalledWith(
+      "End focus session",
+      "Your current focus timer will reset.",
+      expect.arrayContaining([
+        expect.objectContaining({ text: "Keep going", style: "cancel" }),
+        expect.objectContaining({ text: "End", style: "destructive" }),
+      ]),
+    )
     const buttons = alertSpy.mock.calls[0]?.[2]
     const confirm = Array.isArray(buttons)
       ? buttons.find((button) => button.style === "destructive")

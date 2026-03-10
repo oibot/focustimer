@@ -98,6 +98,7 @@ export default function Timer({
       </View>
       <Animated.View
         testID="timer-controls"
+        accessibilityElementsHidden={!showControls}
         style={[
           styles.controls,
           {
@@ -123,9 +124,6 @@ export default function Timer({
           style={!showCancel && styles.cancelHidden}
           pointerEvents={showCancel ? "auto" : "none"}
           accessibilityElementsHidden={!showCancel}
-          importantForAccessibility={
-            showCancel ? "auto" : "no-hide-descendants"
-          }
         />
       </Animated.View>
     </View>

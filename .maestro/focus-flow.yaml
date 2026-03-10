@@ -1,0 +1,72 @@
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+    permissions:
+      all: deny
+- tapOn:
+    text: "Don't allow|Nicht erlauben"
+    optional: true
+# Enter the focus scene
+- assertVisible: "Focus|Fokus"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Start"
+- assertVisible:
+    text: "Break|Pause"
+    enabled: true
+# Start the focus timer
+- tapOn:
+    id: "timer-toggle-button"
+- assertNotVisible:
+    id: "timer-toggle-button"
+- assertNotVisible:
+    id: "timer-cancel-button"
+- assertVisible:
+    text: "Break|Pause"
+    enabled: false
+# Tap the screen to let the controls appear
+- tapOn:
+    id: "timer-tap-gesture-background"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Pause|Pausieren"
+    enabled: true
+- assertVisible:
+    id: "timer-cancel-button"
+    text: "Cancel|Abbrechen"
+    enabled: true
+- assertVisible:
+    text: "Break|Pause"
+    enabled: false
+# Pause the timer
+- tapOn:
+    id: "timer-toggle-button"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Resume|Fortsetzen"
+    enabled: true
+- assertVisible:
+    id: "timer-cancel-button"
+    text: "Cancel|Abbrechen"
+    enabled: true
+- assertVisible:
+    text: "Break|Pause"
+    enabled: false
+# Cancel the focus timer, and confirm cancellation in the alert dialog
+- tapOn:
+    id: "timer-cancel-button"
+- assertVisible: "End focus session|Fokussitzung beenden"
+- tapOn:
+    text: "End|Beenden"
+    retryTapIfNoChange: true
+    waitToSettleTimeoutMs: 1000
+    repeat: 2
+    delay: 300
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Start"
+    enabled: true
+- assertVisible:
+    text: "Break|Pause"
+    enabled: true
