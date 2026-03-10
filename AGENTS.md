@@ -1,35 +1,21 @@
-# Pomodoro
+# Focus Only (Focus timer app)
 
 ## Project
 
-This Project implements a focus timer for iOS using React Native with expo and Typescript. The project uses bun for package management.
+This Project implements a focus timer for iOS using React Native with expo and Typescript.
 
-## Quick Commands
-+ all tests: `bun run test`
-+ format all files: `bun run format`
-+ type check: `bunx tsc --noEmit`
-+ test changed files: `bun run test:changed`
-+ format changed files: `bun run format:changed`
-+ install dependencies: `bunx expo install`
-+ lint: `bunx expo lint`
-+ lint and fix: `bunx expo lint --fix`
+## Do
+Before commiting check that everything works (if not don't commit and fix the warnings/errors).
++ `bun test`
++ `bun format`
++ `bun lint`  (you can fix some problems automatically with `bun lint --fix`)
++ `bunx tsc --noEmit`
 
-## Repo Layout
-+ All source files are in *src/*.
-+ *src/app* contains files for routing with expo-router.
-+ *src/hooks* contains all hooks.
-+ *src/components* contains all scenes and components, ordered by the overall scene in the app (for example *src/components/home* for the home view).
-+ Test file live alongside their implementation.
+When you add a string:
++ `bun extract`
++ `bun compile`
 
-## Coding Conventions
-+ The responsibility of file in *src/app* are only routing and showing a *scene*
-+ The scene builds itself from components.
-+ Components should be mostly dumb, that is no own state. They are controlled by the scene.
-+ We are using React 19 with the new compiler enabled.
-+ We are using Unistyles for styling.
+## Don't
+Do not hardcode colors.
 
-## Workflow
-+ Always plan your edits.
-+ After each task/feature do a type check, test of changed files and format of changed files.
-+ Before each commit do a type check, test of all files, and format of all files.
-+ use context7 for third party dependencies
+Unistyles `StyleSheet` can be a function that returns a dictionary of styles. The parameter of this function are the theme and rt (runtime). Use this instead of the hook `useUnistyles` when possible (don't create functions for the styles keys that take a theme, and provide the theme from outside).
