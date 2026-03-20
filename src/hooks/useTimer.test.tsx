@@ -47,13 +47,33 @@ describe("useTimer", () => {
     expect(result.current.canCancel).toBe(false)
   })
 
-  it("marks canCancel true when remaining differs", () => {
+  it("marks canCancel true as soon as the timer starts", () => {
+    mockUseContext.mockReturnValue({
+      state: {
+        startingMs: 6000,
+        remainingMs: 6000,
+        isRunning: true,
+        status: "running",
+      },
+      actions: {
+        setStartingMs: jest.fn(),
+        toggleTimer: jest.fn(),
+        cancelTimer: jest.fn(),
+      },
+    } as React.ContextType<typeof TimerContext>)
+
+    const { result } = renderHook(() => useTimer())
+
+    expect(result.current.canCancel).toBe(true)
+  })
+
+  it("marks canCancel true when paused", () => {
     mockUseContext.mockReturnValue({
       state: {
         startingMs: 6000,
         remainingMs: 3000,
-        isRunning: true,
-        status: "running",
+        isRunning: false,
+        status: "paused",
       },
       actions: {
         setStartingMs: jest.fn(),

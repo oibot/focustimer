@@ -4,11 +4,11 @@ import { TimerContext } from "@/components/providers/TimerProvider"
 
 export function useTimer() {
   const {
-    state: { startingMs, remainingMs, status },
+    state: { remainingMs, status },
     actions: { setStartingMs, toggleTimer, cancelTimer },
   } = useContext(TimerContext)
 
-  const canCancel = remainingMs !== startingMs
+  const canCancel = status === "running" || status === "paused"
 
   return {
     remainingMs,
