@@ -28,10 +28,19 @@ const TIMER_MODES = {
   },
 } as const
 
+type TimerSceneModeConfig = Record<
+  TimerMode,
+  {
+    startingMs: number
+    nextMode: TimerMode
+  }
+>
+
 type TimerSceneProps = {
   mode?: string
   onDone: (nextMode: string) => void
   onModeChange: (nextMode: string) => void
+  modeConfig?: TimerSceneModeConfig
 }
 
 function KeepAwakeWhileRunning() {
@@ -43,11 +52,12 @@ export default function TimerScene({
   mode,
   onDone,
   onModeChange,
+  modeConfig = TIMER_MODES,
 }: TimerSceneProps) {
   const { t } = useLingui()
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
-  const { startingMs, nextMode } = TIMER_MODES[timerMode]
+  const { startingMs, nextMode } = modeConfig[timerMode]
   const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
   const focusLabel = t`Focus`
   const breakLabel = t`Break`

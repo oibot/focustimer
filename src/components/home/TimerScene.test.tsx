@@ -154,6 +154,7 @@ describe("TimerScene", () => {
   })
 
   it("does not reset the duration again when status changes in the same mode", () => {
+    const testStartingMs = 123_456
     const setStartingMs = jest.fn()
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
@@ -161,11 +162,19 @@ describe("TimerScene", () => {
     })
 
     const { rerender } = renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+        modeConfig={{
+          focus: { startingMs: testStartingMs, nextMode: "short" },
+          short: { startingMs: 99_999, nextMode: "focus" },
+        }}
+      />,
     )
 
     expect(setStartingMs).toHaveBeenCalledTimes(1)
-    expect(setStartingMs).toHaveBeenCalledWith(25 * 60 * 1000)
+    expect(setStartingMs).toHaveBeenCalledWith(testStartingMs)
 
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
@@ -175,7 +184,15 @@ describe("TimerScene", () => {
 
     rerender(
       <I18nProvider i18n={i18n}>
-        <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />
+        <TimerScene
+          mode="focus"
+          onDone={jest.fn()}
+          onModeChange={jest.fn()}
+          modeConfig={{
+            focus: { startingMs: testStartingMs, nextMode: "short" },
+            short: { startingMs: 99_999, nextMode: "focus" },
+          }}
+        />
       </I18nProvider>,
     )
 
