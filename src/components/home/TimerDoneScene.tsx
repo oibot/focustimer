@@ -1,5 +1,6 @@
 import { useLingui } from "@lingui/react/macro"
-import { ScrollView, StyleSheet } from "react-native"
+import { View } from "react-native"
+import { StyleSheet } from "react-native-unistyles"
 
 import { DestructiveButton, PrimaryButton } from "@/components/UI/Button"
 import { useTimer } from "@/hooks/useTimer"
@@ -25,18 +26,20 @@ export default function TimerDoneScene({
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <PrimaryButton label={buttonLabel} onPress={onStart} />
       <DestructiveButton label={t`Cancel`} onPress={handleCancel} />
-    </ScrollView>
+    </View>
   )
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((_, rt) => ({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: rt.insets.top + 32,
+    paddingBottom: rt.insets.bottom + 32,
+    paddingHorizontal: 24,
     gap: 20,
   },
-})
+}))
