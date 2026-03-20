@@ -1,13 +1,16 @@
 import { useLingui } from "@lingui/react/macro"
-import { Animated, View } from "react-native"
+import { useEffect, useRef } from "react"
+import * as ReactNative from "react-native"
+import { AccessibilityInfo, Animated, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 import TimerNumericText from "@/components/home/TimerNumericText"
 import { DestructiveButton } from "@/components/UI/Button"
 import IconPrimaryButton from "@/components/UI/IconPrimaryButton"
+import useRemainingTimeLabel from "@/hooks/useRemainingTimeLabel"
 import useTimerControlsAnimation from "@/hooks/useTimerControlsAnimation"
 import type { TimerMode, TimerStatus } from "@/types/timer"
-import { formatDuration, getDurationParts } from "@/utils/time"
+import { formatDuration } from "@/utils/time"
 
 type TimerProps = {
   remainingMs: number
@@ -21,7 +24,10 @@ type TimerProps = {
   showDisabledCancel?: boolean
   animateDigits?: boolean
   usePlainTime?: boolean
+  shouldFocusReadoutOnStart?: boolean
 }
+
+const READOUT_FOCUS_DELAY_MS = 100
 
 export default function Timer({
   remainingMs,
@@ -35,29 +41,25 @@ export default function Timer({
   showDisabledCancel = false,
   animateDigits = true,
   usePlainTime = false,
+  shouldFocusReadoutOnStart = false,
 }: TimerProps) {
   const { t } = useLingui()
+  const previousStatusRef = useRef<TimerStatus>(status)
+  const readoutRef = useRef<View>(null)
+  const pendingFocusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  )
   const idleLabel = t`Start`
   const pauseLabel = t`Pause`
   const resumeLabel = t`Resume`
   const visibleTime = formatDuration(remainingMs)
-  const { minutes, seconds } = getDurationParts(remainingMs)
+  const formatRemainingTimeLabel = useRemainingTimeLabel()
   const idleHint =
     timerMode === "focus" ? t`Start focus timer` : t`Start break timer`
   const pauseHint = t`Pauses the timer`
   const resumeHint = t`Resumes the timer`
   const cancelHint = t`Resets the timer`
-  const minuteLabel =
-    minutes === 1 ? t`${minutes} minute` : t`${minutes} minutes`
-  const secondLabel =
-    seconds === 1 ? t`${seconds} second` : t`${seconds} seconds`
-  const duration =
-    minutes > 0 && seconds > 0
-      ? `${minuteLabel} ${secondLabel}`
-      : minutes > 0
-        ? minuteLabel
-        : secondLabel
-  const spokenTimerLabel = t`${duration} remaining`
+  const spokenTimerLabel = formatRemainingTimeLabel(remainingMs)
   const toggleLabel =
     status === "running"
       ? pauseLabel
@@ -76,9 +78,40 @@ export default function Timer({
   const { opacity: controlsOpacity, translateY: controlsTranslateY } =
     useTimerControlsAnimation({ visible: showControls })
 
+  useEffect(() => {
+    if (pendingFocusTimeoutRef.current !== null) {
+      clearTimeout(pendingFocusTimeoutRef.current)
+      pendingFocusTimeoutRef.current = null
+    }
+
+    if (
+      shouldFocusReadoutOnStart &&
+      previousStatusRef.current !== "running" &&
+      status === "running"
+    ) {
+      pendingFocusTimeoutRef.current = setTimeout(() => {
+        const reactTag = ReactNative.findNodeHandle(readoutRef.current)
+        if (reactTag != null) {
+          AccessibilityInfo.setAccessibilityFocus(reactTag)
+        }
+        pendingFocusTimeoutRef.current = null
+      }, READOUT_FOCUS_DELAY_MS)
+    }
+
+    previousStatusRef.current = status
+
+    return () => {
+      if (pendingFocusTimeoutRef.current !== null) {
+        clearTimeout(pendingFocusTimeoutRef.current)
+        pendingFocusTimeoutRef.current = null
+      }
+    }
+  }, [shouldFocusReadoutOnStart, status])
+
   return (
     <View style={styles.container} pointerEvents="box-none">
       <View
+        ref={readoutRef}
         testID="timer-readout"
         style={styles.timerContainer}
         accessible

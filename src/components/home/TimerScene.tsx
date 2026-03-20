@@ -11,6 +11,7 @@ import Timer from "@/components/home/Timer"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { useTimer } from "@/hooks/useTimer"
+import useTimerAccessibilityAnnouncements from "@/hooks/useTimerAccessibilityAnnouncements"
 import useTimerControls from "@/hooks/useTimerControls"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import useTimerModeEdgeSwipe from "@/hooks/useTimerModeEdgeSwipe"
@@ -84,6 +85,11 @@ export default function TimerScene({
   const hasShownDoneRef = useRef(false)
 
   useBackgroundTimerNotifications({ status, remainingMs })
+  useTimerAccessibilityAnnouncements({
+    enabled: isScreenReaderEnabled,
+    remainingMs,
+    status,
+  })
   useTimerLiveActivity({
     strings: liveActivityStrings,
     status,
@@ -186,6 +192,7 @@ export default function TimerScene({
           showDisabledCancel={isScreenReaderEnabled}
           animateDigits={!isScreenReaderEnabled}
           usePlainTime={isScreenReaderEnabled}
+          shouldFocusReadoutOnStart={isScreenReaderEnabled}
         />
       </View>
     </View>

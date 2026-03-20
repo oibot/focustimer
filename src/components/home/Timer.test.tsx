@@ -1,6 +1,7 @@
 import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
 import { fireEvent, render } from "@testing-library/react-native"
+import * as ReactNative from "react-native"
 
 import Timer from "@/components/home/Timer"
 import { messages as enMessages } from "@/locales/en/messages"
@@ -17,6 +18,16 @@ describe("Timer", () => {
   beforeAll(() => {
     i18n.load({ en: enMessages })
     i18n.activate("en")
+  })
+
+  beforeEach(() => {
+    jest.useFakeTimers()
+    jest.clearAllMocks()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+    jest.restoreAllMocks()
   })
 
   const renderWithI18n = (ui: React.ReactElement) =>
@@ -193,5 +204,72 @@ describe("Timer", () => {
       <Timer {...baseProps} status="running" cancelLabel="Reset" canCancel />,
     )
     expect(getByText("Reset")).toBeTruthy()
+  })
+
+  it("moves accessibility focus to the timer when starting", () => {
+    jest
+      .spyOn(ReactNative.AccessibilityInfo, "setAccessibilityFocus")
+      .mockImplementation()
+    jest.spyOn(ReactNative, "findNodeHandle").mockReturnValue(42)
+
+    const { rerender } = renderWithI18n(
+      <Timer {...baseProps} shouldFocusReadoutOnStart />,
+    )
+
+    rerender(
+      <I18nProvider i18n={i18n}>
+        <Timer {...baseProps} status="running" shouldFocusReadoutOnStart />
+      </I18nProvider>,
+    )
+
+    jest.advanceTimersByTime(100)
+
+    expect(
+      ReactNative.AccessibilityInfo.setAccessibilityFocus,
+    ).toHaveBeenCalledWith(42)
+  })
+
+  it("moves accessibility focus to the timer when resuming", () => {
+    jest
+      .spyOn(ReactNative.AccessibilityInfo, "setAccessibilityFocus")
+      .mockImplementation()
+    jest.spyOn(ReactNative, "findNodeHandle").mockReturnValue(42)
+
+    const { rerender } = renderWithI18n(
+      <Timer {...baseProps} status="paused" shouldFocusReadoutOnStart />,
+    )
+
+    rerender(
+      <I18nProvider i18n={i18n}>
+        <Timer {...baseProps} status="running" shouldFocusReadoutOnStart />
+      </I18nProvider>,
+    )
+
+    jest.advanceTimersByTime(100)
+
+    expect(
+      ReactNative.AccessibilityInfo.setAccessibilityFocus,
+    ).toHaveBeenCalledWith(42)
+  })
+
+  it("does not move accessibility focus when the option is off", () => {
+    jest
+      .spyOn(ReactNative.AccessibilityInfo, "setAccessibilityFocus")
+      .mockImplementation()
+    jest.spyOn(ReactNative, "findNodeHandle").mockReturnValue(42)
+
+    const { rerender } = renderWithI18n(<Timer {...baseProps} />)
+
+    rerender(
+      <I18nProvider i18n={i18n}>
+        <Timer {...baseProps} status="running" />
+      </I18nProvider>,
+    )
+
+    jest.advanceTimersByTime(100)
+
+    expect(
+      ReactNative.AccessibilityInfo.setAccessibilityFocus,
+    ).not.toHaveBeenCalled()
   })
 })
