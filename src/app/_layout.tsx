@@ -74,8 +74,7 @@ function Layout() {
                   name="timer-done"
                   options={{
                     presentation: "formSheet",
-                    sheetAllowedDetents: [0.25],
-                    sheetInitialDetentIndex: 0,
+                    sheetAllowedDetents: "fitToContents",
                     sheetGrabberVisible: true,
                     contentStyle: { backgroundColor: "transparent" },
                   }}

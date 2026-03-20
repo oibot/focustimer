@@ -32,9 +32,7 @@ function BaseButton({
       disabled={disabled}
       {...pressableProps}
     >
-      <Text style={[styles.buttonLabel, labelStyle]} numberOfLines={1}>
-        {label}
-      </Text>
+      <Text style={[styles.buttonLabel, labelStyle]}>{label}</Text>
     </Pressable>
   )
 }
@@ -63,6 +61,7 @@ const styles = StyleSheet.create((theme) => ({
   button: {
     alignItems: "center",
     justifyContent: "center",
+    maxWidth: "100%",
     paddingHorizontal: 24,
     paddingVertical: 20,
   },
@@ -82,6 +81,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   buttonLabel: {
     fontSize: 22,
+    lineHeight: 28,
     fontWeight: "600",
     letterSpacing: 0.4,
     textAlign: "center",
@@ -91,6 +91,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   destructiveLabel: {
     fontSize: 18,
+    lineHeight: 24,
     fontWeight: "600",
     letterSpacing: 0.2,
     color: theme.colors.primary,
