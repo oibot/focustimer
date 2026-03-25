@@ -73,7 +73,15 @@ const config: ExpoConfig = {
   plugins: [
     "@bacons/apple-targets",
     "expo-router",
-    "expo-audio",
+    [
+      "expo-audio",
+      {
+        microphonePermission: false,
+        recordAudioAndroid: false,
+        enableBackgroundPlayback: false,
+        enableBackgroundRecording: false,
+      },
+    ],
     "expo-asset",
     [
       "expo-build-properties",
