@@ -40,6 +40,11 @@ const baseTimerState = {
   canCancel: true,
 }
 
+const baseConfig = {
+  focus: { startingMs: 25 * 60 * 1000, nextMode: "short" as const },
+  short: { startingMs: 5 * 60 * 1000, nextMode: "focus" as const },
+}
+
 describe("TimerScene", () => {
   beforeAll(() => {
     i18n.load({ en: enMessages })
@@ -58,7 +63,12 @@ describe("TimerScene", () => {
 
   it("defaults to focus mode when mode is invalid", () => {
     const { getByLabelText } = renderWithI18n(
-      <TimerScene mode="unknown" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="unknown"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(getByLabelText("Start")).toBeTruthy()
@@ -67,7 +77,12 @@ describe("TimerScene", () => {
   it("uses the short mode labels without stop button while idle", () => {
     const { getByLabelText, getByTestId, queryByText, queryByTestId } =
       renderWithI18n(
-        <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+        <TimerScene
+          config={baseConfig}
+          mode="short"
+          onDone={jest.fn()}
+          onModeChange={jest.fn()}
+        />,
       )
 
     expect(getByLabelText("Start")).toBeTruthy()
@@ -78,7 +93,12 @@ describe("TimerScene", () => {
 
   it("renders the right edge swipe zone in focus idle", () => {
     const { getByTestId, queryByTestId } = renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(getByTestId("timer-edge-swipe-right")).toBeTruthy()
@@ -92,7 +112,12 @@ describe("TimerScene", () => {
     })
 
     const { getByLabelText, getByText, queryByTestId } = renderWithI18n(
-      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="short"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(getByLabelText("Pause")).toBeTruthy()
@@ -109,7 +134,12 @@ describe("TimerScene", () => {
 
     const { queryByLabelText, queryByText, getByTestId, queryByTestId } =
       renderWithI18n(
-        <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+        <TimerScene
+          config={baseConfig}
+          mode="focus"
+          onDone={jest.fn()}
+          onModeChange={jest.fn()}
+        />,
       )
 
     expect(queryByLabelText("Pause")).toBeNull()
@@ -120,7 +150,12 @@ describe("TimerScene", () => {
 
   it("does not render the tap gesture background while idle in focus mode", () => {
     const { queryByTestId } = renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(queryByTestId("timer-tap-gesture-background")).toBeNull()
@@ -133,7 +168,12 @@ describe("TimerScene", () => {
     })
 
     const { queryByTestId } = renderWithI18n(
-      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="short"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(queryByTestId("timer-tap-gesture-background")).toBeNull()
@@ -146,7 +186,12 @@ describe("TimerScene", () => {
     })
 
     const { getByLabelText, getByText } = renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(getByLabelText("Resume")).toBeTruthy()
@@ -163,13 +208,13 @@ describe("TimerScene", () => {
 
     const { rerender } = renderWithI18n(
       <TimerScene
-        mode="focus"
-        onDone={jest.fn()}
-        onModeChange={jest.fn()}
-        modeConfig={{
+        config={{
           focus: { startingMs: testStartingMs, nextMode: "short" },
           short: { startingMs: 99_999, nextMode: "focus" },
         }}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
       />,
     )
 
@@ -185,13 +230,13 @@ describe("TimerScene", () => {
     rerender(
       <I18nProvider i18n={i18n}>
         <TimerScene
-          mode="focus"
-          onDone={jest.fn()}
-          onModeChange={jest.fn()}
-          modeConfig={{
+          config={{
             focus: { startingMs: testStartingMs, nextMode: "short" },
             short: { startingMs: 99_999, nextMode: "focus" },
           }}
+          mode="focus"
+          onDone={jest.fn()}
+          onModeChange={jest.fn()}
         />
       </I18nProvider>,
     )
@@ -206,7 +251,12 @@ describe("TimerScene", () => {
     })
 
     renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(mockUseKeepAwake).toHaveBeenCalled()
@@ -223,7 +273,12 @@ describe("TimerScene", () => {
     })
 
     renderWithI18n(
-      <TimerScene mode="focus" onDone={onDone} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={onDone}
+        onModeChange={jest.fn()}
+      />,
     )
 
     const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
@@ -248,7 +303,12 @@ describe("TimerScene", () => {
     })
 
     renderWithI18n(
-      <TimerScene mode="short" onDone={onDone} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="short"
+        onDone={onDone}
+        onModeChange={jest.fn()}
+      />,
     )
 
     const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
@@ -278,7 +338,12 @@ describe("TimerScene", () => {
     })
 
     const { getByText } = renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     fireEvent.press(getByText("Cancel").parent!)
@@ -312,7 +377,12 @@ describe("TimerScene", () => {
     })
 
     const { getByText } = renderWithI18n(
-      <TimerScene mode="short" onDone={onDone} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="short"
+        onDone={onDone}
+        onModeChange={jest.fn()}
+      />,
     )
 
     const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
@@ -335,7 +405,12 @@ describe("TimerScene", () => {
       >
 
     renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(mockNotifications).toHaveBeenCalledWith({
@@ -351,7 +426,12 @@ describe("TimerScene", () => {
     })
 
     const { queryByTestId } = renderWithI18n(
-      <TimerScene mode="focus" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(queryByTestId("timer-edge-swipe-left")).toBeNull()
@@ -365,7 +445,12 @@ describe("TimerScene", () => {
     })
 
     const { queryByTestId } = renderWithI18n(
-      <TimerScene mode="short" onDone={jest.fn()} onModeChange={jest.fn()} />,
+      <TimerScene
+        config={baseConfig}
+        mode="short"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
     )
 
     expect(queryByTestId("timer-edge-swipe-left")).toBeNull()

@@ -9,7 +9,6 @@ import {
   Toggle,
 } from "@expo/ui/swift-ui"
 import { useLingui } from "@lingui/react/macro"
-import { useState } from "react"
 import { StyleSheet } from "react-native-unistyles"
 
 import { useStore } from "@/state/store"
@@ -21,9 +20,14 @@ const MAX_BREAK_TIME_MINUTES = 20
 
 export default function Settings() {
   const { t } = useLingui()
-  const { keepScreenAwake, setKeepScreenAwake } = useStore()
-  const [focusTimeMinutes, setFocusTimeMinutes] = useState(25)
-  const [breakTimeMinutes, setBreakTimeMinutes] = useState(5)
+  const {
+    breakTimeMinutes,
+    focusTimeMinutes,
+    keepScreenAwake,
+    setBreakTimeMinutes,
+    setFocusTimeMinutes,
+    setKeepScreenAwake,
+  } = useStore()
   const focusTimeLabel =
     focusTimeMinutes === 1
       ? t`${focusTimeMinutes} minute`

@@ -3,6 +3,7 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router"
 
 import TimerScene from "@/components/home/TimerScene"
 import { useTimer } from "@/hooks/useTimer"
+import useTimerModeConfig from "@/hooks/useTimerModeConfig"
 import { isTimerMode } from "@/types/timer"
 
 export default function Page() {
@@ -12,6 +13,7 @@ export default function Page() {
   const { mode } = useLocalSearchParams<{ mode?: string }>()
   const modeParam = typeof mode === "string" ? mode : undefined
   const timerMode = isTimerMode(modeParam) ? modeParam : "focus"
+  const config = useTimerModeConfig()
   const nextMode = timerMode === "focus" ? "short" : "focus"
   const nextModeLabel = nextMode === "focus" ? t`Focus` : t`Break`
   const hasActiveSession = status !== "idle"
@@ -33,6 +35,7 @@ export default function Page() {
   return (
     <>
       <TimerScene
+        config={config}
         key={modeParam ?? "focus"}
         mode={modeParam}
         onDone={handleDone}

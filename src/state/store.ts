@@ -15,14 +15,26 @@ const zustandStorage: StateStorage = {
 }
 
 type StoreState = {
+  breakTimeMinutes: number
+  focusTimeMinutes: number
   keepScreenAwake: boolean
+  setBreakTimeMinutes: (nextValue: number) => void
+  setFocusTimeMinutes: (nextValue: number) => void
   setKeepScreenAwake: (nextValue: boolean) => void
 }
 
 export const useStore = create<StoreState>()(
   persist(
     (set) => ({
+      breakTimeMinutes: 5,
+      focusTimeMinutes: 25,
       keepScreenAwake: true,
+      setBreakTimeMinutes: (nextValue) => {
+        set({ breakTimeMinutes: nextValue })
+      },
+      setFocusTimeMinutes: (nextValue) => {
+        set({ focusTimeMinutes: nextValue })
+      },
       setKeepScreenAwake: (nextValue) => {
         set({ keepScreenAwake: nextValue })
       },
