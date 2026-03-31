@@ -6,7 +6,7 @@ This Project implements a focus timer for iOS using React Native with expo and T
 
 ## Do
 Before commiting check that everything works (if not don't commit and fix the warnings/errors).
-+ `bun test`
++ `bun run test`
 + `bun format`
 + `bun lint`  (you can fix some problems automatically with `bun lint --fix`)
 + `bunx tsc --noEmit`
