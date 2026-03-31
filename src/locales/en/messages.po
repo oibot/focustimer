@@ -58,12 +58,12 @@ msgid "{seconds} seconds"
 msgstr "{seconds} seconds"
 
 #: src/app/index.tsx:16
-#: src/components/home/TimerScene.tsx:53
+#: src/components/home/TimerScene.tsx:63
 msgid "Break"
 msgstr "Break"
 
-#: src/components/home/TimerDoneScene.tsx:30
-#: src/components/home/TimerScene.tsx:51
+#: src/components/home/TimerDoneScene.tsx:31
+#: src/components/home/TimerScene.tsx:61
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -71,15 +71,15 @@ msgstr "Cancel"
 #~ msgid "Cancel focus session?"
 #~ msgstr "Cancel focus session?"
 
-#: src/app/index.tsx:51
+#: src/app/index.tsx:64
 msgid "Changes the timer mode"
 msgstr "Changes the timer mode"
 
-#: src/components/home/TimerScene.tsx:125
+#: src/components/home/TimerScene.tsx:135
 msgid "End"
 msgstr "End"
 
-#: src/components/home/TimerScene.tsx:121
+#: src/components/home/TimerScene.tsx:131
 msgid "End focus session"
 msgstr "End focus session"
 
@@ -88,19 +88,23 @@ msgstr "End focus session"
 #~ msgstr "Ended"
 
 #: src/app/index.tsx:16
-#: src/components/home/TimerScene.tsx:52
+#: src/components/home/TimerScene.tsx:62
 msgid "Focus"
 msgstr "Focus"
 
-#: src/components/home/TimerScene.tsx:124
+#: src/components/home/TimerScene.tsx:134
 msgid "Keep going"
 msgstr "Keep going"
+
+#: src/app/index.tsx:44
+msgid "Open settings"
+msgstr "Open settings"
 
 #: src/components/home/Timer.tsx:53
 msgid "Pause"
 msgstr "Pause"
 
-#: src/components/home/TimerScene.tsx:57
+#: src/components/home/TimerScene.tsx:67
 msgid "Paused"
 msgstr "Paused"
 
@@ -108,7 +112,7 @@ msgstr "Paused"
 msgid "Pauses the timer"
 msgstr "Pauses the timer"
 
-#: src/app/index.tsx:50
+#: src/app/index.tsx:63
 msgid "Reset the timer before changing the mode"
 msgstr "Reset the timer before changing the mode"
 
@@ -124,19 +128,27 @@ msgstr "Resume"
 msgid "Resumes the timer"
 msgstr "Resumes the timer"
 
-#: src/components/home/TimerScene.tsx:56
+#: src/components/home/TimerScene.tsx:66
 msgid "Running"
 msgstr "Running"
 
-#: src/components/home/TimerScene.tsx:59
+#: src/components/home/TimerScene.tsx:69
 msgid "Session paused"
 msgstr "Session paused"
+
+#: src/app/index.tsx:49
+msgid "Settings"
+msgstr "Settings"
+
+#: src/app/index.tsx:45
+msgid "Shows timer and app preferences"
+msgstr "Shows timer and app preferences"
 
 #: src/components/home/Timer.tsx:52
 msgid "Start"
 msgstr "Start"
 
-#: src/components/home/TimerDoneScene.tsx:19
+#: src/components/home/TimerDoneScene.tsx:20
 msgid "Start Break"
 msgstr "Start Break"
 
@@ -144,7 +156,7 @@ msgstr "Start Break"
 msgid "Start break timer"
 msgstr "Start break timer"
 
-#: src/components/home/TimerDoneScene.tsx:19
+#: src/components/home/TimerDoneScene.tsx:20
 msgid "Start Focus"
 msgstr "Start Focus"
 
@@ -156,23 +168,23 @@ msgstr "Start focus timer"
 #~ msgid "Starts the timer"
 #~ msgstr "Starts the timer"
 
-#: src/components/home/TimerScene.tsx:58
+#: src/components/home/TimerScene.tsx:68
 msgid "Stay focused"
 msgstr "Stay focused"
 
-#: src/components/home/TimerScene.tsx:51
+#: src/components/home/TimerScene.tsx:61
 msgid "Stop"
 msgstr "Stop"
 
-#: src/app/index.tsx:43
+#: src/app/index.tsx:56
 msgid "Switch mode unavailable while the timer is active"
 msgstr "Switch mode unavailable while the timer is active"
 
-#: src/app/index.tsx:46
+#: src/app/index.tsx:59
 msgid "Switch to break mode"
 msgstr "Switch to break mode"
 
-#: src/app/index.tsx:45
+#: src/app/index.tsx:58
 msgid "Switch to focus mode"
 msgstr "Switch to focus mode"
 
@@ -180,6 +192,6 @@ msgstr "Switch to focus mode"
 #~ msgid "Timer mode"
 #~ msgstr "Timer mode"
 
-#: src/components/home/TimerScene.tsx:122
+#: src/components/home/TimerScene.tsx:132
 msgid "Your current focus timer will reset."
 msgstr "Your current focus timer will reset."

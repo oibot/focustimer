@@ -79,6 +79,10 @@ function Layout() {
                     contentStyle: { backgroundColor: "transparent" },
                   }}
                 />
+                <Stack.Screen
+                  name="settings"
+                  options={{ presentation: "modal" }}
+                />
               </Stack>
             </TimerProvider>
           </ContentSizeCategorySubscriber>

@@ -14,7 +14,7 @@ export default function Page() {
   const timerMode = isTimerMode(modeParam) ? modeParam : "focus"
   const nextMode = timerMode === "focus" ? "short" : "focus"
   const nextModeLabel = nextMode === "focus" ? t`Focus` : t`Break`
-  const isModeSwitchDisabled = status !== "idle"
+  const hasActiveSession = status !== "idle"
 
   const handleDone = (nextMode: string) =>
     router.push({
@@ -26,6 +26,10 @@ export default function Page() {
     router.setParams({ mode: nextMode })
   }
 
+  const handleSettingsPress = () => {
+    router.push("/settings")
+  }
+
   return (
     <>
       <TimerScene
@@ -35,22 +39,31 @@ export default function Page() {
         onModeChange={handleModeChange}
       />
       <Stack.Toolbar>
+        <Stack.Toolbar.Button
+          icon="gear"
+          accessibilityLabel={t`Open settings`}
+          accessibilityHint={t`Shows timer and app preferences`}
+          disabled={hasActiveSession}
+          onPress={handleSettingsPress}
+        >
+          {t`Settings`}
+        </Stack.Toolbar.Button>
         <Stack.Toolbar.Spacer />
         <Stack.Toolbar.Button
           icon="arrow.left.arrow.right"
           accessibilityLabel={
-            isModeSwitchDisabled
+            hasActiveSession
               ? t`Switch mode unavailable while the timer is active`
               : nextMode === "focus"
                 ? t`Switch to focus mode`
                 : t`Switch to break mode`
           }
           accessibilityHint={
-            isModeSwitchDisabled
+            hasActiveSession
               ? t`Reset the timer before changing the mode`
               : t`Changes the timer mode`
           }
-          disabled={isModeSwitchDisabled}
+          disabled={hasActiveSession}
           onPress={() => handleModeChange(nextMode)}
         >
           {nextModeLabel}
