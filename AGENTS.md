@@ -19,3 +19,7 @@ When you add a string:
 Do not hardcode colors.
 
 Unistyles `StyleSheet` can be a function that returns a dictionary of styles. The parameter of this function are the theme and rt (runtime). Use this instead of the hook `useUnistyles` when possible (don't create functions for the styles keys that take a theme, and provide the theme from outside).
+
+<Context.Provider value={value}> is old syntax. Just <Context value={value}> is right
+
+Don't create a useContext function. You can use the context directly with `use`.
