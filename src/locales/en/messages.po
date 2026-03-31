@@ -136,6 +136,7 @@ msgstr "Running"
 msgid "Session paused"
 msgstr "Session paused"
 
+#: src/app/(settings)/_layout.tsx:13
 #: src/app/index.tsx:49
 msgid "Settings"
 msgstr "Settings"

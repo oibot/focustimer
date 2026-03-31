@@ -80,8 +80,8 @@ function Layout() {
                   }}
                 />
                 <Stack.Screen
-                  name="settings"
-                  options={{ presentation: "modal" }}
+                  name="(settings)"
+                  options={{ headerShown: false, presentation: "modal" }}
                 />
               </Stack>
             </TimerProvider>
