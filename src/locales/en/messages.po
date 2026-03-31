@@ -62,6 +62,7 @@ msgstr "{seconds} seconds"
 msgid "Break"
 msgstr "Break"
 
+#: src/app/(settings)/_layout.tsx:18
 #: src/components/home/TimerDoneScene.tsx:31
 #: src/components/home/TimerScene.tsx:61
 msgid "Cancel"
@@ -132,11 +133,14 @@ msgstr "Resumes the timer"
 msgid "Running"
 msgstr "Running"
 
+#: src/app/(settings)/_layout.tsx:28
+msgid "Save"
+msgstr "Save"
+
 #: src/components/home/TimerScene.tsx:69
 msgid "Session paused"
 msgstr "Session paused"
 
-#: src/app/(settings)/_layout.tsx:13
 #: src/app/index.tsx:49
 msgid "Settings"
 msgstr "Settings"

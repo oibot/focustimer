@@ -58,6 +58,7 @@ msgstr "{seconds} Sekunden"
 msgid "Break"
 msgstr "Pause"
 
+#: src/app/(settings)/_layout.tsx:18
 #: src/components/home/TimerDoneScene.tsx:31
 #: src/components/home/TimerScene.tsx:61
 msgid "Cancel"
@@ -94,7 +95,7 @@ msgstr "Weitermachen"
 
 #: src/app/index.tsx:44
 msgid "Open settings"
-msgstr ""
+msgstr "Einstellungen öffnen"
 
 #: src/components/home/Timer.tsx:53
 msgid "Pause"
@@ -128,18 +129,21 @@ msgstr "Setzt den Timer fort"
 msgid "Running"
 msgstr "Läuft"
 
+#: src/app/(settings)/_layout.tsx:28
+msgid "Save"
+msgstr "Speichern"
+
 #: src/components/home/TimerScene.tsx:69
 msgid "Session paused"
 msgstr "Sitzung pausiert"
 
-#: src/app/(settings)/_layout.tsx:13
 #: src/app/index.tsx:49
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: src/app/index.tsx:45
 msgid "Shows timer and app preferences"
-msgstr ""
+msgstr "Zeigt Timer- und App-Einstellungen an"
 
 #: src/components/home/Timer.tsx:52
 msgid "Start"
