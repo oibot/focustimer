@@ -33,11 +33,11 @@ msgstr ""
 #~ msgid "{0} seconds"
 #~ msgstr "{0} seconds"
 
-#: src/app/(settings)/settings.tsx:37
+#: src/app/(settings)/settings.tsx:41
 msgid "{breakTimeMinutes} minute"
 msgstr "{breakTimeMinutes} minute"
 
-#: src/app/(settings)/settings.tsx:38
+#: src/app/(settings)/settings.tsx:42
 msgid "{breakTimeMinutes} minutes"
 msgstr "{breakTimeMinutes} minutes"
 
@@ -49,11 +49,11 @@ msgstr "{duration} remaining"
 #~ msgid "{durationLabel} remaining"
 #~ msgstr "{durationLabel} remaining"
 
-#: src/app/(settings)/settings.tsx:33
+#: src/app/(settings)/settings.tsx:37
 msgid "{focusTimeMinutes} minute"
 msgstr "{focusTimeMinutes} minute"
 
-#: src/app/(settings)/settings.tsx:34
+#: src/app/(settings)/settings.tsx:38
 msgid "{focusTimeMinutes} minutes"
 msgstr "{focusTimeMinutes} minutes"
 
@@ -73,13 +73,13 @@ msgstr "{seconds} second"
 msgid "{seconds} seconds"
 msgstr "{seconds} seconds"
 
-#: src/app/(settings)/settings.tsx:61
+#: src/app/(settings)/settings.tsx:101
 #: src/app/index.tsx:18
 #: src/components/home/TimerScene.tsx:46
 msgid "Break"
 msgstr "Break"
 
-#: src/app/(settings)/_layout.tsx:18
+#: src/app/(settings)/settings.tsx:63
 #: src/components/home/TimerDoneScene.tsx:31
 #: src/components/home/TimerScene.tsx:44
 msgid "Cancel"
@@ -93,7 +93,7 @@ msgstr "Cancel"
 msgid "Changes the timer mode"
 msgstr "Changes the timer mode"
 
-#: src/app/(settings)/settings.tsx:77
+#: src/app/(settings)/settings.tsx:117
 msgid "Display"
 msgstr "Display"
 
@@ -109,7 +109,7 @@ msgstr "End focus session"
 #~ msgid "Ended"
 #~ msgstr "Ended"
 
-#: src/app/(settings)/settings.tsx:45
+#: src/app/(settings)/settings.tsx:85
 #: src/app/index.tsx:18
 #: src/components/home/TimerScene.tsx:45
 msgid "Focus"
@@ -123,7 +123,7 @@ msgstr "Focus"
 msgid "Keep going"
 msgstr "Keep going"
 
-#: src/app/(settings)/settings.tsx:83
+#: src/app/(settings)/settings.tsx:123
 msgid "Keep Screen Awake"
 msgstr "Keep Screen Awake"
 
@@ -147,7 +147,7 @@ msgstr "Paused"
 msgid "Pauses the timer"
 msgstr "Pauses the timer"
 
-#: src/app/(settings)/settings.tsx:79
+#: src/app/(settings)/settings.tsx:119
 msgid "Prevent the screen from turning off while a timer is running."
 msgstr "Prevent the screen from turning off while a timer is running."
 
@@ -171,7 +171,7 @@ msgstr "Resumes the timer"
 msgid "Running"
 msgstr "Running"
 
-#: src/app/(settings)/_layout.tsx:28
+#: src/app/(settings)/settings.tsx:73
 msgid "Save"
 msgstr "Save"
 
