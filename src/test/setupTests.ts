@@ -30,6 +30,22 @@ jest.mock("@sentry/react-native", () => ({
   },
 }))
 
+jest.mock("react-native-mmkv", () => {
+  const values = new Map<string, string>()
+
+  return {
+    createMMKV: () => ({
+      set: (key: string, value: string) => {
+        values.set(key, value)
+      },
+      getString: (key: string) => values.get(key),
+      remove: (key: string) => {
+        values.delete(key)
+      },
+    }),
+  }
+})
+
 jest.mock("react-native-safe-area-context", () => {
   return {
     SafeAreaProvider: ({ children }: { children: ReactNode }) => children,

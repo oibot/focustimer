@@ -15,6 +15,7 @@ import useTimerAccessibilityAnnouncements from "@/hooks/useTimerAccessibilityAnn
 import useTimerControls from "@/hooks/useTimerControls"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import useTimerModeEdgeSwipe from "@/hooks/useTimerModeEdgeSwipe"
+import { useStore } from "@/state/store"
 import { isTimerMode, TimerMode } from "@/types/timer"
 
 const TIMER_MODES = {
@@ -58,6 +59,7 @@ export default function TimerScene({
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
   const { startingMs, nextMode } = modeConfig[timerMode]
+  const keepScreenAwake = useStore((state) => state.keepScreenAwake)
   const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
   const focusLabel = t`Focus`
   const breakLabel = t`Break`
@@ -172,7 +174,9 @@ export default function TimerScene({
         </GestureDetector>
       ) : null}
 
-      {status === "running" ? <KeepAwakeWhileRunning /> : null}
+      {status === "running" && keepScreenAwake ? (
+        <KeepAwakeWhileRunning />
+      ) : null}
 
       <View
         testID="timer-mode-title"
