@@ -76,6 +76,10 @@ msgstr "Cancel"
 msgid "Changes the timer mode"
 msgstr "Changes the timer mode"
 
+#: src/app/(settings)/settings.tsx:12
+msgid "Display"
+msgstr "Display"
+
 #: src/components/home/TimerScene.tsx:135
 msgid "End"
 msgstr "End"
@@ -97,6 +101,14 @@ msgstr "Focus"
 msgid "Keep going"
 msgstr "Keep going"
 
+#: src/app/(settings)/settings.tsx:17
+msgid "Keep Screen Awake"
+msgstr "Keep Screen Awake"
+
+#: src/app/(settings)/settings.tsx:12
+#~ msgid "Keep screen awake while timer is running"
+#~ msgstr "Keep screen awake while timer is running"
+
 #: src/app/index.tsx:44
 msgid "Open settings"
 msgstr "Open settings"
@@ -112,6 +124,10 @@ msgstr "Paused"
 #: src/components/home/Timer.tsx:59
 msgid "Pauses the timer"
 msgstr "Pauses the timer"
+
+#: src/app/(settings)/settings.tsx:14
+msgid "Prevent the screen from turning off while a timer is running."
+msgstr "Prevent the screen from turning off while a timer is running."
 
 #: src/app/index.tsx:63
 msgid "Reset the timer before changing the mode"
