@@ -1,8 +1,9 @@
 import { useLingui } from "@lingui/react/macro"
-import { Stack } from "expo-router"
+import { Stack, useRouter } from "expo-router"
 
 export default function SettingsLayout() {
   const { t } = useLingui()
+  const router = useRouter()
 
   return (
     <Stack>
@@ -18,7 +19,7 @@ export default function SettingsLayout() {
               label: t`Cancel`,
               icon: { type: "sfSymbol", name: "xmark" },
               onPress: () => {
-                console.log("close settings")
+                router.dismiss()
               },
             },
           ],
