@@ -9,8 +9,10 @@ import {
   Toggle,
 } from "@expo/ui/swift-ui"
 import { useLingui } from "@lingui/react/macro"
+import { useNavigation, usePreventRemove } from "@react-navigation/native"
 import { Stack, useRouter } from "expo-router"
 import { useEffectEvent, useState } from "react"
+import { Alert } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 import { useStore } from "@/state/store"
@@ -22,6 +24,7 @@ const MAX_BREAK_TIME_MINUTES = 20
 
 export default function Settings() {
   const { t } = useLingui()
+  const navigation = useNavigation()
   const router = useRouter()
   const store = useStore()
   const [breakTimeMinutes, setBreakTimeMinutes] = useState(
@@ -43,6 +46,28 @@ export default function Settings() {
     breakTimeMinutes === 1
       ? t`${breakTimeMinutes} minute`
       : t`${breakTimeMinutes} minutes`
+  const hasUnsavedChanges =
+    breakTimeMinutes !== store.breakTimeMinutes ||
+    focusTimeMinutes !== store.focusTimeMinutes ||
+    liveActivitiesEnabled !== store.liveActivitiesEnabled ||
+    keepScreenAwake !== store.keepScreenAwake
+
+  const showDiscardChangesAlert = useEffectEvent(
+    (onDiscard: () => void = () => {}) => {
+      Alert.alert(
+        t`Discard changes?`,
+        t`You have unsaved changes. Are you sure you want to discard them?`,
+        [
+          { text: t`Keep editing`, style: "cancel" },
+          {
+            text: t`Discard`,
+            style: "destructive",
+            onPress: onDiscard,
+          },
+        ],
+      )
+    },
+  )
 
   const handleSave = useEffectEvent(() => {
     useStore.setState({
@@ -52,6 +77,12 @@ export default function Settings() {
       keepScreenAwake,
     })
     router.dismiss()
+  })
+
+  usePreventRemove(hasUnsavedChanges, ({ data }) => {
+    showDiscardChangesAlert(() => {
+      navigation.dispatch(data.action)
+    })
   })
 
   return (
