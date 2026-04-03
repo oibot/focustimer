@@ -19,13 +19,15 @@ const setPlatformOS = (os: "ios" | "android") => {
 let appStateHandler: ((state: string) => void) | null = null
 
 const renderLiveActivityHook = (props: {
+  enabled?: boolean
   status: TimerStatus
   remainingMs: number
   strings?: LiveActivityStrings
 }) =>
   renderHook(
-    ({ status, remainingMs, strings }: typeof props) =>
+    ({ enabled, status, remainingMs, strings }: typeof props) =>
       useTimerLiveActivity({
+        enabled: enabled ?? true,
         strings:
           strings ??
           ({
@@ -211,15 +213,40 @@ describe("useTimerLiveActivity", () => {
     expect(updateActivityMock).not.toHaveBeenCalled()
   })
 
-  it("does nothing on android", async () => {
-    setPlatformOS("android")
-
+  it("ends an active activity when the setting is disabled while still running", async () => {
     const { rerender } = renderLiveActivityHook({
+      enabled: true,
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ status: "running", remainingMs: 5000 })
+    rerender({ enabled: true, status: "running", remainingMs: 5000 })
+
+    await waitFor(() => {
+      expect(startActivityMock).toHaveBeenCalled()
+    })
+
+    expect(endActivityMock).not.toHaveBeenCalled()
+
+    rerender({ enabled: false, status: "running", remainingMs: 4000 })
+
+    await waitFor(() => {
+      expect(endActivityMock).toHaveBeenCalledWith(4, false)
+    })
+
+    expect(updateActivityMock).not.toHaveBeenCalled()
+  })
+
+  it("does nothing on android", async () => {
+    setPlatformOS("android")
+
+    const { rerender } = renderLiveActivityHook({
+      enabled: true,
+      status: "idle",
+      remainingMs: 5000,
+    })
+
+    rerender({ enabled: true, status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).not.toHaveBeenCalled()

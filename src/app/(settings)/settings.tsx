@@ -30,6 +30,9 @@ export default function Settings() {
   const [focusTimeMinutes, setFocusTimeMinutes] = useState(
     store.focusTimeMinutes,
   )
+  const [liveActivitiesEnabled, setLiveActivitiesEnabled] = useState(
+    store.liveActivitiesEnabled,
+  )
   const [keepScreenAwake, setKeepScreenAwake] = useState(store.keepScreenAwake)
 
   const focusTimeLabel =
@@ -45,6 +48,7 @@ export default function Settings() {
     useStore.setState({
       breakTimeMinutes,
       focusTimeMinutes,
+      liveActivitiesEnabled,
       keepScreenAwake,
     })
     router.dismiss()
@@ -110,6 +114,21 @@ export default function Settings() {
               onValueChange={(value) => {
                 setBreakTimeMinutes(value)
               }}
+            />
+          </Section>
+
+          <Section
+            title={t`Live Activities`}
+            footer={
+              <Text>
+                {t`Show the running timer on the Lock Screen and in the Dynamic Island.`}
+              </Text>
+            }
+          >
+            <Toggle
+              label={t`Enable Live Activities`}
+              isOn={liveActivitiesEnabled}
+              onIsOnChange={setLiveActivitiesEnabled}
             />
           </Section>
 

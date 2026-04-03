@@ -40,6 +40,7 @@ export default function TimerScene({
   const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
   const keepScreenAwake = useStore((state) => state.keepScreenAwake)
+  const liveActivitiesEnabled = useStore((state) => state.liveActivitiesEnabled)
   const { startingMs, nextMode } = config[timerMode]
   const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
   const focusLabel = t`Focus`
@@ -84,6 +85,7 @@ export default function TimerScene({
     status,
   })
   useTimerLiveActivity({
+    enabled: liveActivitiesEnabled,
     strings: liveActivityStrings,
     status,
     remainingMs,

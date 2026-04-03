@@ -12,6 +12,7 @@ import { AppState, Platform } from "react-native"
 import type { TimerStatus } from "@/types/timer"
 
 type UseTimerLiveActivityParams = {
+  enabled: boolean
   strings: LiveActivityStrings
   status: TimerStatus
   remainingMs: number
@@ -20,6 +21,7 @@ type UseTimerLiveActivityParams = {
 const toSeconds = (ms: number) => Math.max(0, Math.ceil(ms / 1000))
 
 export default function useTimerLiveActivity({
+  enabled,
   strings,
   status,
   remainingMs,
@@ -53,6 +55,13 @@ export default function useTimerLiveActivity({
     prevStatusRef.current = status
     prevRemainingMsRef.current = remainingMs
 
+    if (!enabled) {
+      if (!hasActivityRef.current) return
+      void endActivity(toSeconds(remainingMs), false)
+      hasActivityRef.current = false
+      return
+    }
+
     if (status === "running" && prevStatus !== "running") {
       if (!areActivitiesEnabled()) {
         hasActivityRef.current = false
@@ -78,7 +87,7 @@ export default function useTimerLiveActivity({
     ) {
       void updateActivity(toSeconds(remainingMs), true)
     }
-  }, [remainingMs, status, strings])
+  }, [enabled, remainingMs, status, strings])
 
   useEffect(() => {
     if (Platform.OS !== "ios") return
