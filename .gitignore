@@ -45,3 +45,5 @@ yarn-error.*
 # generated target files
 /targets/widget/generated.entitlements
 /.agent-shell/
+/.aso-appstore-screenshots/
+/screenshots/
