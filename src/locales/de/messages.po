@@ -91,15 +91,15 @@ msgstr "Ändert den Timer-Modus"
 
 #: src/app/(settings)/settings.tsx:54
 msgid "Cheering"
-msgstr ""
+msgstr "Jubel"
 
 #: src/app/(settings)/settings.tsx:167
 msgid "Choose the sound that plays when a focus or break timer finishes."
-msgstr ""
+msgstr "Wähle den Ton, der abgespielt wird, wenn ein Fokus- oder Pausentimer endet."
 
 #: src/app/(settings)/settings.tsx:172
 msgid "Completion Sound"
-msgstr ""
+msgstr "Abschlusston"
 
 #: src/app/(settings)/settings.tsx:75
 msgid "Discard"
@@ -161,11 +161,11 @@ msgstr "Live-Aktivitäten"
 
 #: src/app/(settings)/settings.tsx:55
 msgid "Marimba"
-msgstr ""
+msgstr "Marimba"
 
 #: src/app/(settings)/settings.tsx:56
 msgid "Off"
-msgstr ""
+msgstr "Aus"
 
 #: src/app/index.tsx:47
 msgid "Open settings"
@@ -237,11 +237,11 @@ msgstr "Zeigt Timer- und App-Einstellungen an"
 
 #: src/app/(settings)/settings.tsx:57
 msgid "Soft Chime"
-msgstr ""
+msgstr "Sanfter Glockenton"
 
 #: src/app/(settings)/settings.tsx:164
 msgid "Sounds"
-msgstr ""
+msgstr "Töne"
 
 #: src/components/home/Timer.tsx:52
 msgid "Start"
@@ -297,7 +297,7 @@ msgstr "Zum Fokusmodus wechseln"
 
 #: src/app/(settings)/settings.tsx:58
 msgid "Trumpets"
-msgstr ""
+msgstr "Trompeten"
 
 #: src/app/(settings)/settings.tsx:25
 #~ msgid "Used for new focus sessions."
