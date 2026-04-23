@@ -331,6 +331,23 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("short")
   })
 
+  it("loads the selected custom sound asset", () => {
+    useStore.setState({ completionSound: "trumpets" })
+
+    renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(mockUseAudioPlayer).toHaveBeenCalledWith(
+      require("../../../assets/sounds/trumpets.mp3"),
+    )
+  })
+
   it("plays audio when a break finishes", () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()

@@ -52,7 +52,10 @@ export default function Settings() {
       : t`${breakTimeMinutes} minutes`
   const completionSoundLabels: Record<CompletionSound, string> = {
     cheering: t`Cheering`,
+    marimba: t`Marimba`,
     off: t`Off`,
+    softChime: t`Soft Chime`,
+    trumpets: t`Trumpets`,
   }
   const hasUnsavedChanges =
     breakTimeMinutes !== store.breakTimeMinutes ||
