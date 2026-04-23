@@ -13,6 +13,7 @@ import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { useTimer } from "@/hooks/useTimer"
 import * as useTimerControlsModule from "@/hooks/useTimerControls"
 import { messages as enMessages } from "@/locales/en/messages"
+import { useStore } from "@/state/store"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
@@ -52,6 +53,13 @@ describe("TimerScene", () => {
   })
 
   beforeEach(() => {
+    useStore.setState({
+      breakTimeMinutes: 5,
+      completionSound: "cheering",
+      focusTimeMinutes: 25,
+      keepScreenAwake: true,
+      liveActivitiesEnabled: true,
+    })
     mockUseTimer.mockReturnValue({ ...baseTimerState })
     mockUseScreenReaderEnabled.mockReturnValue(false)
   })
@@ -288,6 +296,37 @@ describe("TimerScene", () => {
 
     expect(player.seekTo).toHaveBeenCalledWith(0)
     expect(player.play).toHaveBeenCalledTimes(1)
+    expect(cancelTimer).toHaveBeenCalledTimes(1)
+    expect(onDone).toHaveBeenCalledWith("short")
+  })
+
+  it("does not play audio when completion sound is off", () => {
+    const cancelTimer = jest.fn()
+    const onDone = jest.fn()
+
+    useStore.setState({ completionSound: "off" })
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "done",
+      cancelTimer,
+    })
+
+    renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={onDone}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
+      play: jest.Mock
+      seekTo: jest.Mock
+    }
+
+    expect(player.seekTo).not.toHaveBeenCalled()
+    expect(player.play).not.toHaveBeenCalled()
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onDone).toHaveBeenCalledWith("short")
   })

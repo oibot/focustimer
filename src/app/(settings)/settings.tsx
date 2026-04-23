@@ -2,12 +2,14 @@ import {
   Form,
   Host,
   HStack,
+  Picker,
   Section,
   Slider,
   Spacer,
   Text,
   Toggle,
 } from "@expo/ui/swift-ui"
+import { tag } from "@expo/ui/swift-ui/modifiers"
 import { useLingui } from "@lingui/react/macro"
 import { useNavigation, usePreventRemove } from "@react-navigation/native"
 import { Stack, useRouter } from "expo-router"
@@ -15,6 +17,7 @@ import { useEffectEvent, useState } from "react"
 import { Alert } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
+import { type CompletionSound, completionSoundOptions } from "@/sounds"
 import { useStore } from "@/state/store"
 
 const MIN_FOCUS_TIME_MINUTES = 10
@@ -30,6 +33,7 @@ export default function Settings() {
   const [breakTimeMinutes, setBreakTimeMinutes] = useState(
     store.breakTimeMinutes,
   )
+  const [completionSound, setCompletionSound] = useState(store.completionSound)
   const [focusTimeMinutes, setFocusTimeMinutes] = useState(
     store.focusTimeMinutes,
   )
@@ -46,8 +50,13 @@ export default function Settings() {
     breakTimeMinutes === 1
       ? t`${breakTimeMinutes} minute`
       : t`${breakTimeMinutes} minutes`
+  const completionSoundLabels: Record<CompletionSound, string> = {
+    cheering: t`Cheering`,
+    off: t`Off`,
+  }
   const hasUnsavedChanges =
     breakTimeMinutes !== store.breakTimeMinutes ||
+    completionSound !== store.completionSound ||
     focusTimeMinutes !== store.focusTimeMinutes ||
     liveActivitiesEnabled !== store.liveActivitiesEnabled ||
     keepScreenAwake !== store.keepScreenAwake
@@ -72,6 +81,7 @@ export default function Settings() {
   const handleSave = useEffectEvent(() => {
     useStore.setState({
       breakTimeMinutes,
+      completionSound,
       focusTimeMinutes,
       liveActivitiesEnabled,
       keepScreenAwake,
@@ -146,6 +156,28 @@ export default function Settings() {
                 setBreakTimeMinutes(value)
               }}
             />
+          </Section>
+          <Section
+            title={t`Sounds`}
+            footer={
+              <Text>
+                {t`Choose the sound that plays when a focus or break timer finishes.`}
+              </Text>
+            }
+          >
+            <Picker
+              label={t`Completion Sound`}
+              selection={completionSound}
+              onSelectionChange={(value) => {
+                setCompletionSound(value as CompletionSound)
+              }}
+            >
+              {completionSoundOptions.map((sound) => (
+                <Text key={sound} modifiers={[tag(sound)]}>
+                  {completionSoundLabels[sound]}
+                </Text>
+              ))}
+            </Picker>
           </Section>
 
           <Section

@@ -132,7 +132,10 @@ describe("useBackgroundTimerNotifications", () => {
       ({ status, remainingMs }: { status: TimerStatus; remainingMs: number }) =>
         useBackgroundTimerNotifications({ status, remainingMs }),
       {
-        initialProps: { status: "running", remainingMs: 1500 },
+        initialProps: {
+          status: "running" as TimerStatus,
+          remainingMs: 1500,
+        },
       },
     )
 
@@ -159,7 +162,10 @@ describe("useBackgroundTimerNotifications", () => {
     "does not schedule when status is %s",
     async (status) => {
       renderHook(() =>
-        useBackgroundTimerNotifications({ status, remainingMs: 1000 }),
+        useBackgroundTimerNotifications({
+          status,
+          remainingMs: 1000,
+        }),
       )
 
       await waitFor(() => {
@@ -178,7 +184,10 @@ describe("useBackgroundTimerNotifications", () => {
     ;(AppState as { currentState?: string }).currentState = "background"
 
     renderHook(() =>
-      useBackgroundTimerNotifications({ status: "running", remainingMs: 0 }),
+      useBackgroundTimerNotifications({
+        status: "running",
+        remainingMs: 0,
+      }),
     )
 
     await waitFor(() => {
@@ -196,7 +205,10 @@ describe("useBackgroundTimerNotifications", () => {
       .mockResolvedValueOnce("notif-5")
 
     renderHook(() =>
-      useBackgroundTimerNotifications({ status: "running", remainingMs: 2000 }),
+      useBackgroundTimerNotifications({
+        status: "running",
+        remainingMs: 2000,
+      }),
     )
 
     await waitFor(() => {
@@ -229,7 +241,10 @@ describe("useBackgroundTimerNotifications", () => {
       ({ status, remainingMs }: { status: TimerStatus; remainingMs: number }) =>
         useBackgroundTimerNotifications({ status, remainingMs }),
       {
-        initialProps: { status: "running", remainingMs: 2000 },
+        initialProps: {
+          status: "running" as TimerStatus,
+          remainingMs: 2000,
+        },
       },
     )
 

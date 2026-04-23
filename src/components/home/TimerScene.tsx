@@ -15,6 +15,7 @@ import useTimerAccessibilityAnnouncements from "@/hooks/useTimerAccessibilityAnn
 import useTimerControls from "@/hooks/useTimerControls"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import useTimerModeEdgeSwipe from "@/hooks/useTimerModeEdgeSwipe"
+import { completionSoundConfig } from "@/sounds"
 import { useStore } from "@/state/store"
 import { isTimerMode, TimerMode, type TimerModeConfig } from "@/types/timer"
 
@@ -37,10 +38,12 @@ export default function TimerScene({
   onModeChange,
 }: TimerSceneProps) {
   const { t } = useLingui()
-  const player = useAudioPlayer(require("../../../assets/sounds/focus-end.mp3"))
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
+  const completionSound = useStore((state) => state.completionSound)
   const keepScreenAwake = useStore((state) => state.keepScreenAwake)
   const liveActivitiesEnabled = useStore((state) => state.liveActivitiesEnabled)
+  const selectedCompletionSound = completionSoundConfig[completionSound]
+  const player = useAudioPlayer(selectedCompletionSound.audioSource)
   const { startingMs, nextMode } = config[timerMode]
   const cancelLabel = timerMode === "short" ? t`Stop` : t`Cancel`
   const focusLabel = t`Focus`
@@ -99,8 +102,10 @@ export default function TimerScene({
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
-      player.seekTo(0)
-      player.play()
+      if (selectedCompletionSound.audioSource !== null) {
+        player.seekTo(0)
+        player.play()
+      }
       cancelTimer()
       onDone(nextMode)
       return
@@ -108,7 +113,7 @@ export default function TimerScene({
     if (status !== "done") {
       hasShownDoneRef.current = false
     }
-  }, [cancelTimer, nextMode, onDone, player, status, timerMode])
+  }, [cancelTimer, nextMode, onDone, player, selectedCompletionSound, status])
 
   const handleCancel = () => {
     if (timerMode === "focus") {
