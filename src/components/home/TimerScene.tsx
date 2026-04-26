@@ -94,7 +94,6 @@ export default function TimerScene({
     remainingMs,
   })
 
-  // TODO: should we sync the startingMs, or put this logic in the timer provider?
   useLayoutEffect(() => {
     setStartingMs(startingMs)
   }, [setStartingMs, startingMs])
