@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Animated, Easing, Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
@@ -22,7 +22,7 @@ type RollingDigitProps = {
 
 function RollingDigit({ value, countsDown, animate }: RollingDigitProps) {
   const startIndex = BASE_INDEX + value
-  const animatedIndex = useRef(new Animated.Value(startIndex)).current
+  const [animatedIndex] = useState(() => new Animated.Value(startIndex))
   const indexRef = useRef(startIndex)
   const prevValueRef = useRef(value)
 

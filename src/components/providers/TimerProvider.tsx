@@ -65,9 +65,11 @@ export default function TimerProvider({
         ? "idle"
         : "paused"
 
-  startingMsRef.current = startingMs
-  remainingMsRef.current = remainingMs
-  isRunningRef.current = isRunning
+  useEffect(() => {
+    startingMsRef.current = startingMs
+    remainingMsRef.current = remainingMs
+    isRunningRef.current = isRunning
+  }, [isRunning, remainingMs, startingMs])
 
   useEffect(() => {
     if (!isRunning) return

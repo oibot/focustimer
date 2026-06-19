@@ -41,16 +41,6 @@ const config: ExpoConfig = {
       usesNonExemptEncryption: false,
     },
     icon,
-    splash: {
-      image: "./assets/splash/splash-icon-light.png",
-      resizeMode: "contain",
-      backgroundColor: "#F2F2F7",
-      dark: {
-        image: "./assets/splash/splash-icon-dark.png",
-        resizeMode: "contain",
-        backgroundColor: "#1C1C1E",
-      },
-    },
     appleTeamId: "DCY46V87K7",
     entitlements: {
       "com.apple.security.application-groups": [appGroup],
@@ -73,6 +63,19 @@ const config: ExpoConfig = {
   plugins: [
     "@bacons/apple-targets",
     "expo-router",
+    [
+      "expo-splash-screen",
+      {
+        image: "./assets/splash/splash-icon-light.png",
+        resizeMode: "contain",
+        backgroundColor: "#F2F2F7",
+        dark: {
+          image: "./assets/splash/splash-icon-dark.png",
+          backgroundColor: "#1C1C1E",
+        },
+      },
+    ],
+    "expo-status-bar",
     [
       "expo-audio",
       {

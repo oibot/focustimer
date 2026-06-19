@@ -11,9 +11,9 @@ import {
 } from "@expo/ui/swift-ui"
 import { tag } from "@expo/ui/swift-ui/modifiers"
 import { useLingui } from "@lingui/react/macro"
-import { useNavigation, usePreventRemove } from "@react-navigation/native"
 import { Stack, useRouter } from "expo-router"
-import { useEffectEvent, useState } from "react"
+import { useNavigation, usePreventRemove } from "expo-router/react-navigation"
+import { useCallback, useState } from "react"
 import { Alert } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
@@ -64,7 +64,7 @@ export default function Settings() {
     liveActivitiesEnabled !== store.liveActivitiesEnabled ||
     keepScreenAwake !== store.keepScreenAwake
 
-  const showDiscardChangesAlert = useEffectEvent(
+  const showDiscardChangesAlert = useCallback(
     (onDiscard: () => void = () => {}) => {
       Alert.alert(
         t`Discard changes?`,
@@ -79,9 +79,10 @@ export default function Settings() {
         ],
       )
     },
+    [t],
   )
 
-  const handleSave = useEffectEvent(() => {
+  const handleSave = useCallback(() => {
     useStore.setState({
       breakTimeMinutes,
       completionSound,
@@ -90,7 +91,14 @@ export default function Settings() {
       keepScreenAwake,
     })
     router.dismiss()
-  })
+  }, [
+    breakTimeMinutes,
+    completionSound,
+    focusTimeMinutes,
+    keepScreenAwake,
+    liveActivitiesEnabled,
+    router,
+  ])
 
   usePreventRemove(hasUnsavedChanges, ({ data }) => {
     showDiscardChangesAlert(() => {

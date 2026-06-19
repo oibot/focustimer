@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 import { Animated, Easing } from "react-native"
 
 type UseTimerControlsAnimationOptions = {
@@ -12,7 +12,7 @@ export default function useTimerControlsAnimation({
   durationMs = 1000,
   offsetY = 8,
 }: UseTimerControlsAnimationOptions) {
-  const opacity = useRef(new Animated.Value(visible ? 1 : 0)).current
+  const [opacity] = useState(() => new Animated.Value(visible ? 1 : 0))
 
   useEffect(() => {
     Animated.timing(opacity, {

@@ -56,6 +56,7 @@ export default function useTimerControls({
 
   useEffect(() => {
     if (timerMode !== "focus") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- keeps controls visible outside focus mode in response to mode changes.
       setShowControls(true)
       wasRunningRef.current = status === "running"
       return

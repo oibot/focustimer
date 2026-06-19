@@ -31,7 +31,9 @@ export default function useTimerLiveActivity({
   const remainingMsRef = useRef(remainingMs)
   const prevRemainingMsRef = useRef(remainingMs)
 
-  remainingMsRef.current = remainingMs
+  useEffect(() => {
+    remainingMsRef.current = remainingMs
+  }, [remainingMs])
 
   useEffect(() => {
     if (Platform.OS !== "ios") return
