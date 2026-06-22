@@ -313,3 +313,63 @@ bunx tsc --noEmit
 bun extract
 bun compile
 ```
+---
+
+## Step 7: Update React Native Testing Library
+
+### Goal
+
+Update the test tooling after the feature work, because the current testing setup uses deprecated APIs/packages.
+
+### Current state
+
+- `@testing-library/react-native@12.4.2`
+- `@testing-library/jest-native@5.4.3`
+
+`@testing-library/jest-native` is deprecated. Its matchers are built into React Native Testing Library v12.4+.
+
+### Implementation notes
+
+Update React Native Testing Library:
+
+```sh
+bun add -d @testing-library/react-native@^14.0.0
+```
+
+Remove deprecated Jest Native package:
+
+```sh
+bun remove @testing-library/jest-native
+```
+
+Update `src/test/setupTests.ts`:
+
+```ts
+import "@testing-library/react-native/extend-expect"
+```
+
+instead of:
+
+```ts
+import "@testing-library/jest-native/extend-expect"
+```
+
+When writing tests, prefer importing `act` from React:
+
+```ts
+import { act } from "react"
+```
+
+instead of importing it from `@testing-library/react-native`.
+
+### Unit tests
+
+Run the full suite and fix any migration issues:
+
+```sh
+bun run test
+```
+
+### Manual UI test
+
+No manual UI behavior expected. This is test tooling only.

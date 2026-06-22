@@ -16,6 +16,11 @@ jest.mock("expo-keep-awake", () => ({
   useKeepAwake: jest.fn(),
 }))
 
+jest.mock("expo-brightness", () => ({
+  getBrightnessAsync: jest.fn(),
+  setBrightnessAsync: jest.fn(),
+}))
+
 jest.mock("expo-audio", () => ({
   useAudioPlayer: jest.fn(() => ({
     play: jest.fn(),
