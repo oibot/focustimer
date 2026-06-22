@@ -4,6 +4,8 @@ import { createJSONStorage, persist, StateStorage } from "zustand/middleware"
 
 import type { CompletionSound } from "@/sounds"
 
+export const DEFAULT_DIMMED_BRIGHTNESS_PERCENT = 15
+
 const storage = createMMKV()
 
 const zustandStorage: StateStorage = {
@@ -19,14 +21,18 @@ const zustandStorage: StateStorage = {
 type StoreState = {
   breakTimeMinutes: number
   completionSound: CompletionSound
+  dimmedBrightnessPercent: number
   focusTimeMinutes: number
   liveActivitiesEnabled: boolean
   keepScreenAwake: boolean
+  screenDimmingEnabled: boolean
   setBreakTimeMinutes: (nextValue: number) => void
   setCompletionSound: (nextValue: CompletionSound) => void
+  setDimmedBrightnessPercent: (nextValue: number) => void
   setFocusTimeMinutes: (nextValue: number) => void
   setLiveActivitiesEnabled: (nextValue: boolean) => void
   setKeepScreenAwake: (nextValue: boolean) => void
+  setScreenDimmingEnabled: (nextValue: boolean) => void
 }
 
 export const useStore = create<StoreState>()(
@@ -34,14 +40,19 @@ export const useStore = create<StoreState>()(
     (set) => ({
       breakTimeMinutes: 5,
       completionSound: "cheering",
+      dimmedBrightnessPercent: DEFAULT_DIMMED_BRIGHTNESS_PERCENT,
       focusTimeMinutes: 25,
       liveActivitiesEnabled: true,
       keepScreenAwake: true,
+      screenDimmingEnabled: false,
       setBreakTimeMinutes: (nextValue) => {
         set({ breakTimeMinutes: nextValue })
       },
       setCompletionSound: (nextValue) => {
         set({ completionSound: nextValue })
+      },
+      setDimmedBrightnessPercent: (nextValue) => {
+        set({ dimmedBrightnessPercent: nextValue })
       },
       setFocusTimeMinutes: (nextValue) => {
         set({ focusTimeMinutes: nextValue })
@@ -51,6 +62,14 @@ export const useStore = create<StoreState>()(
       },
       setKeepScreenAwake: (nextValue) => {
         set({ keepScreenAwake: nextValue })
+      },
+      setScreenDimmingEnabled: (nextValue) => {
+        set({
+          screenDimmingEnabled: nextValue,
+          ...(nextValue
+            ? {}
+            : { dimmedBrightnessPercent: DEFAULT_DIMMED_BRIGHTNESS_PERCENT }),
+        })
       },
     }),
     {

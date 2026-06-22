@@ -18,12 +18,14 @@ import { Alert } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 import { type CompletionSound, completionSoundOptions } from "@/sounds"
-import { useStore } from "@/state/store"
+import { DEFAULT_DIMMED_BRIGHTNESS_PERCENT, useStore } from "@/state/store"
 
 const MIN_FOCUS_TIME_MINUTES = 10
 const MAX_FOCUS_TIME_MINUTES = 60
 const MIN_BREAK_TIME_MINUTES = 5
 const MAX_BREAK_TIME_MINUTES = 20
+const MIN_DIMMED_BRIGHTNESS_PERCENT = 5
+const MAX_DIMMED_BRIGHTNESS_PERCENT = 20
 
 export default function Settings() {
   const { t } = useLingui()
@@ -34,6 +36,9 @@ export default function Settings() {
     store.breakTimeMinutes,
   )
   const [completionSound, setCompletionSound] = useState(store.completionSound)
+  const [dimmedBrightnessPercent, setDimmedBrightnessPercent] = useState(
+    store.dimmedBrightnessPercent,
+  )
   const [focusTimeMinutes, setFocusTimeMinutes] = useState(
     store.focusTimeMinutes,
   )
@@ -41,6 +46,9 @@ export default function Settings() {
     store.liveActivitiesEnabled,
   )
   const [keepScreenAwake, setKeepScreenAwake] = useState(store.keepScreenAwake)
+  const [screenDimmingEnabled, setScreenDimmingEnabled] = useState(
+    store.screenDimmingEnabled,
+  )
 
   const focusTimeLabel =
     focusTimeMinutes === 1
@@ -57,12 +65,15 @@ export default function Settings() {
     softChime: t`Soft Chime`,
     trumpets: t`Trumpets`,
   }
+  const dimmedBrightnessLabel = t`${dimmedBrightnessPercent}%`
   const hasUnsavedChanges =
     breakTimeMinutes !== store.breakTimeMinutes ||
     completionSound !== store.completionSound ||
+    dimmedBrightnessPercent !== store.dimmedBrightnessPercent ||
     focusTimeMinutes !== store.focusTimeMinutes ||
     liveActivitiesEnabled !== store.liveActivitiesEnabled ||
-    keepScreenAwake !== store.keepScreenAwake
+    keepScreenAwake !== store.keepScreenAwake ||
+    screenDimmingEnabled !== store.screenDimmingEnabled
 
   const showDiscardChangesAlert = useCallback(
     (onDiscard: () => void = () => {}) => {
@@ -86,18 +97,22 @@ export default function Settings() {
     useStore.setState({
       breakTimeMinutes,
       completionSound,
+      dimmedBrightnessPercent,
       focusTimeMinutes,
       liveActivitiesEnabled,
       keepScreenAwake,
+      screenDimmingEnabled,
     })
     router.dismiss()
   }, [
     breakTimeMinutes,
     completionSound,
+    dimmedBrightnessPercent,
     focusTimeMinutes,
     keepScreenAwake,
     liveActivitiesEnabled,
     router,
+    screenDimmingEnabled,
   ])
 
   usePreventRemove(hasUnsavedChanges, ({ data }) => {
@@ -217,6 +232,39 @@ export default function Settings() {
               isOn={keepScreenAwake}
               onIsOnChange={setKeepScreenAwake}
             />
+          </Section>
+
+          <Section
+            footer={<Text>{t`Dim the screen when the timer is running`}</Text>}
+          >
+            <Toggle
+              label={t`Dim screen when timer runs`}
+              isOn={screenDimmingEnabled}
+              onIsOnChange={(nextValue) => {
+                setScreenDimmingEnabled(nextValue)
+                if (!nextValue) {
+                  setDimmedBrightnessPercent(DEFAULT_DIMMED_BRIGHTNESS_PERCENT)
+                }
+              }}
+            />
+            {screenDimmingEnabled ? (
+              <>
+                <HStack>
+                  <Text>{t`Dimmed brightness`}</Text>
+                  <Spacer />
+                  <Text>{dimmedBrightnessLabel}</Text>
+                </HStack>
+                <Slider
+                  min={MIN_DIMMED_BRIGHTNESS_PERCENT}
+                  max={MAX_DIMMED_BRIGHTNESS_PERCENT}
+                  step={1}
+                  value={dimmedBrightnessPercent}
+                  onValueChange={(value) => {
+                    setDimmedBrightnessPercent(Math.round(value))
+                  }}
+                />
+              </>
+            ) : null}
           </Section>
         </Form>
       </Host>
