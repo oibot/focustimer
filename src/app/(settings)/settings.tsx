@@ -18,14 +18,17 @@ import { Alert } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
 import { type CompletionSound, completionSoundOptions } from "@/sounds"
-import { DEFAULT_DIMMED_BRIGHTNESS_PERCENT, useStore } from "@/state/store"
+import { useStore } from "@/state/store"
+import {
+  DIMMED_BRIGHTNESS_DEFAULT_PERCENT,
+  DIMMED_BRIGHTNESS_MAX_PERCENT,
+  DIMMED_BRIGHTNESS_MIN_PERCENT,
+} from "@/utils/screenDimming"
 
 const MIN_FOCUS_TIME_MINUTES = 10
 const MAX_FOCUS_TIME_MINUTES = 60
 const MIN_BREAK_TIME_MINUTES = 5
 const MAX_BREAK_TIME_MINUTES = 20
-const MIN_DIMMED_BRIGHTNESS_PERCENT = 5
-const MAX_DIMMED_BRIGHTNESS_PERCENT = 20
 
 export default function Settings() {
   const { t } = useLingui()
@@ -243,7 +246,7 @@ export default function Settings() {
               onIsOnChange={(nextValue) => {
                 setScreenDimmingEnabled(nextValue)
                 if (!nextValue) {
-                  setDimmedBrightnessPercent(DEFAULT_DIMMED_BRIGHTNESS_PERCENT)
+                  setDimmedBrightnessPercent(DIMMED_BRIGHTNESS_DEFAULT_PERCENT)
                 }
               }}
             />
@@ -255,8 +258,8 @@ export default function Settings() {
                   <Text>{dimmedBrightnessLabel}</Text>
                 </HStack>
                 <Slider
-                  min={MIN_DIMMED_BRIGHTNESS_PERCENT}
-                  max={MAX_DIMMED_BRIGHTNESS_PERCENT}
+                  min={DIMMED_BRIGHTNESS_MIN_PERCENT}
+                  max={DIMMED_BRIGHTNESS_MAX_PERCENT}
                   step={1}
                   value={dimmedBrightnessPercent}
                   onValueChange={(value) => {

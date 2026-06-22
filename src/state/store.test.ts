@@ -1,10 +1,11 @@
-import { DEFAULT_DIMMED_BRIGHTNESS_PERCENT, useStore } from "@/state/store"
+import { useStore } from "@/state/store"
+import { DIMMED_BRIGHTNESS_DEFAULT_PERCENT } from "@/utils/screenDimming"
 
 const resetStore = () => {
   useStore.setState({
     breakTimeMinutes: 5,
     completionSound: "cheering",
-    dimmedBrightnessPercent: DEFAULT_DIMMED_BRIGHTNESS_PERCENT,
+    dimmedBrightnessPercent: DIMMED_BRIGHTNESS_DEFAULT_PERCENT,
     focusTimeMinutes: 25,
     liveActivitiesEnabled: true,
     keepScreenAwake: true,
@@ -20,7 +21,7 @@ describe("useStore", () => {
   it("uses the default screen dimming settings", () => {
     expect(useStore.getState().screenDimmingEnabled).toBe(false)
     expect(useStore.getState().dimmedBrightnessPercent).toBe(
-      DEFAULT_DIMMED_BRIGHTNESS_PERCENT,
+      DIMMED_BRIGHTNESS_DEFAULT_PERCENT,
     )
   })
 
@@ -40,7 +41,7 @@ describe("useStore", () => {
 
     expect(useStore.getState().screenDimmingEnabled).toBe(false)
     expect(useStore.getState().dimmedBrightnessPercent).toBe(
-      DEFAULT_DIMMED_BRIGHTNESS_PERCENT,
+      DIMMED_BRIGHTNESS_DEFAULT_PERCENT,
     )
   })
 })

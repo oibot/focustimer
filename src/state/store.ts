@@ -3,8 +3,7 @@ import { create } from "zustand"
 import { createJSONStorage, persist, StateStorage } from "zustand/middleware"
 
 import type { CompletionSound } from "@/sounds"
-
-export const DEFAULT_DIMMED_BRIGHTNESS_PERCENT = 15
+import { DIMMED_BRIGHTNESS_DEFAULT_PERCENT } from "@/utils/screenDimming"
 
 const storage = createMMKV()
 
@@ -40,7 +39,7 @@ export const useStore = create<StoreState>()(
     (set) => ({
       breakTimeMinutes: 5,
       completionSound: "cheering",
-      dimmedBrightnessPercent: DEFAULT_DIMMED_BRIGHTNESS_PERCENT,
+      dimmedBrightnessPercent: DIMMED_BRIGHTNESS_DEFAULT_PERCENT,
       focusTimeMinutes: 25,
       liveActivitiesEnabled: true,
       keepScreenAwake: true,
@@ -68,7 +67,7 @@ export const useStore = create<StoreState>()(
           screenDimmingEnabled: nextValue,
           ...(nextValue
             ? {}
-            : { dimmedBrightnessPercent: DEFAULT_DIMMED_BRIGHTNESS_PERCENT }),
+            : { dimmedBrightnessPercent: DIMMED_BRIGHTNESS_DEFAULT_PERCENT }),
         })
       },
     }),
