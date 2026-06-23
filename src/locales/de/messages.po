@@ -33,15 +33,15 @@ msgstr ""
 #~ msgid "{0} seconds"
 #~ msgstr "{0} Sekunden"
 
-#: src/app/(settings)/settings.tsx:59
+#: src/app/(settings)/settings.tsx:62
 msgid "{breakTimeMinutes} minute"
 msgstr "{breakTimeMinutes} Minute"
 
-#: src/app/(settings)/settings.tsx:60
+#: src/app/(settings)/settings.tsx:63
 msgid "{breakTimeMinutes} minutes"
 msgstr "{breakTimeMinutes} Minuten"
 
-#: src/app/(settings)/settings.tsx:68
+#: src/app/(settings)/settings.tsx:71
 msgid "{dimmedBrightnessPercent}%"
 msgstr "{dimmedBrightnessPercent}%"
 
@@ -49,11 +49,11 @@ msgstr "{dimmedBrightnessPercent}%"
 msgid "{duration} remaining"
 msgstr "Noch {duration}"
 
-#: src/app/(settings)/settings.tsx:55
+#: src/app/(settings)/settings.tsx:58
 msgid "{focusTimeMinutes} minute"
 msgstr "{focusTimeMinutes} Minute"
 
-#: src/app/(settings)/settings.tsx:56
+#: src/app/(settings)/settings.tsx:59
 msgid "{focusTimeMinutes} minutes"
 msgstr "{focusTimeMinutes} Minuten"
 
@@ -73,15 +73,15 @@ msgstr "{seconds} Sekunde"
 msgid "{seconds} seconds"
 msgstr "{seconds} Sekunden"
 
-#: src/app/(settings)/settings.tsx:172
+#: src/app/(settings)/settings.tsx:175
 #: src/app/index.tsx:18
-#: src/components/home/TimerScene.tsx:50
+#: src/components/home/TimerScene.tsx:55
 msgid "Break"
 msgstr "Pause"
 
-#: src/app/(settings)/settings.tsx:134
+#: src/app/(settings)/settings.tsx:137
 #: src/components/home/TimerDoneScene.tsx:31
-#: src/components/home/TimerScene.tsx:48
+#: src/components/home/TimerScene.tsx:53
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -93,51 +93,51 @@ msgstr "Abbrechen"
 msgid "Changes the timer mode"
 msgstr "Ändert den Timer-Modus"
 
-#: src/app/(settings)/settings.tsx:62
+#: src/app/(settings)/settings.tsx:65
 msgid "Cheering"
 msgstr "Jubel"
 
-#: src/app/(settings)/settings.tsx:190
+#: src/app/(settings)/settings.tsx:193
 msgid "Choose the sound that plays when a focus or break timer finishes."
 msgstr "Wähle den Ton, der abgespielt wird, wenn ein Fokus- oder Pausentimer endet."
 
-#: src/app/(settings)/settings.tsx:195
+#: src/app/(settings)/settings.tsx:198
 msgid "Completion Sound"
 msgstr "Abschlusston"
 
 #: src/app/(settings)/settings.tsx:241
-msgid "Dim screen when timer runs"
-msgstr "Bildschirm dimmen, wenn der Timer läuft"
+#~ msgid "Dim screen when timer runs"
+#~ msgstr "Bildschirm dimmen, wenn der Timer läuft"
 
-#: src/app/(settings)/settings.tsx:238
+#: src/app/(settings)/settings.tsx:241
 msgid "Dim the screen when the timer is running"
 msgstr "Dimmt den Bildschirm, wenn der Timer läuft"
 
-#: src/app/(settings)/settings.tsx:248
+#: src/app/(settings)/settings.tsx:256
 msgid "Dimmed brightness"
 msgstr "Gedimmte Helligkeit"
 
-#: src/app/(settings)/settings.tsx:86
+#: src/app/(settings)/settings.tsx:89
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: src/app/(settings)/settings.tsx:81
+#: src/app/(settings)/settings.tsx:84
 msgid "Discard changes?"
 msgstr "Änderungen verwerfen?"
 
-#: src/app/(settings)/settings.tsx:225
+#: src/app/(settings)/settings.tsx:228
 msgid "Display"
 msgstr "Anzeige"
 
-#: src/app/(settings)/settings.tsx:218
+#: src/app/(settings)/settings.tsx:221
 msgid "Enable Live Activities"
 msgstr "Live-Aktivitäten aktivieren"
 
-#: src/components/home/TimerScene.tsx:124
+#: src/components/home/TimerScene.tsx:146
 msgid "End"
 msgstr "Beenden"
 
-#: src/components/home/TimerScene.tsx:120
+#: src/components/home/TimerScene.tsx:135
 msgid "End focus session"
 msgstr "Fokussitzung beenden"
 
@@ -145,9 +145,9 @@ msgstr "Fokussitzung beenden"
 #~ msgid "Ended"
 #~ msgstr "Beendet"
 
-#: src/app/(settings)/settings.tsx:156
+#: src/app/(settings)/settings.tsx:159
 #: src/app/index.tsx:18
-#: src/components/home/TimerScene.tsx:49
+#: src/components/home/TimerScene.tsx:54
 msgid "Focus"
 msgstr "Fokus"
 
@@ -155,15 +155,15 @@ msgstr "Fokus"
 #~ msgid "Focus Timer"
 #~ msgstr "Fokus-Timer"
 
-#: src/app/(settings)/settings.tsx:84
+#: src/app/(settings)/settings.tsx:87
 msgid "Keep editing"
 msgstr "Weiter bearbeiten"
 
-#: src/components/home/TimerScene.tsx:123
+#: src/components/home/TimerScene.tsx:139
 msgid "Keep going"
 msgstr "Weitermachen"
 
-#: src/app/(settings)/settings.tsx:231
+#: src/app/(settings)/settings.tsx:234
 msgid "Keep Screen Awake"
 msgstr "Bildschirm wach halten"
 
@@ -171,15 +171,15 @@ msgstr "Bildschirm wach halten"
 #~ msgid "Keep screen awake while timer is running"
 #~ msgstr "Bildschirm eingeschaltet lassen, solange der Timer läuft"
 
-#: src/app/(settings)/settings.tsx:210
+#: src/app/(settings)/settings.tsx:213
 msgid "Live Activities"
 msgstr "Live-Aktivitäten"
 
-#: src/app/(settings)/settings.tsx:63
+#: src/app/(settings)/settings.tsx:66
 msgid "Marimba"
 msgstr "Marimba"
 
-#: src/app/(settings)/settings.tsx:64
+#: src/app/(settings)/settings.tsx:67
 msgid "Off"
 msgstr "Aus"
 
@@ -191,7 +191,7 @@ msgstr "Einstellungen öffnen"
 msgid "Pause"
 msgstr "Pausieren"
 
-#: src/components/home/TimerScene.tsx:54
+#: src/components/home/TimerScene.tsx:59
 msgid "Paused"
 msgstr "Pausiert"
 
@@ -199,7 +199,7 @@ msgstr "Pausiert"
 msgid "Pauses the timer"
 msgstr "Pausiert den Timer"
 
-#: src/app/(settings)/settings.tsx:227
+#: src/app/(settings)/settings.tsx:230
 msgid "Prevent the screen from turning off while a timer is running."
 msgstr "Verhindert, dass sich der Bildschirm ausschaltet, solange ein Timer läuft."
 
@@ -219,15 +219,19 @@ msgstr "Fortsetzen"
 msgid "Resumes the timer"
 msgstr "Setzt den Timer fort"
 
-#: src/components/home/TimerScene.tsx:53
+#: src/components/home/TimerScene.tsx:58
 msgid "Running"
 msgstr "Läuft"
 
-#: src/app/(settings)/settings.tsx:144
+#: src/app/(settings)/settings.tsx:147
 msgid "Save"
 msgstr "Speichern"
 
-#: src/components/home/TimerScene.tsx:56
+#: src/app/(settings)/settings.tsx:244
+msgid "Screen dimming"
+msgstr "Bildschirmdimmung"
+
+#: src/components/home/TimerScene.tsx:61
 msgid "Session paused"
 msgstr "Sitzung pausiert"
 
@@ -239,7 +243,7 @@ msgstr "Einstellungen"
 #~ msgid "Show the running timer on the Lock Screen and in the Dynamic Island, and stop active Live Activities when disabled."
 #~ msgstr "Zeige den laufenden Timer auf dem Sperrbildschirm und in der Dynamic Island an und beende aktive Live-Aktivitäten, wenn sie deaktiviert werden."
 
-#: src/app/(settings)/settings.tsx:213
+#: src/app/(settings)/settings.tsx:216
 msgid "Show the running timer on the Lock Screen and in the Dynamic Island."
 msgstr "Zeige den laufenden Timer auf dem Sperrbildschirm und in der Dynamic Island an."
 
@@ -251,11 +255,11 @@ msgstr "Zeige den laufenden Timer auf dem Sperrbildschirm und in der Dynamic Isl
 msgid "Shows timer and app preferences"
 msgstr "Zeigt Timer- und App-Einstellungen an"
 
-#: src/app/(settings)/settings.tsx:65
+#: src/app/(settings)/settings.tsx:68
 msgid "Soft Chime"
 msgstr "Sanfter Glockenton"
 
-#: src/app/(settings)/settings.tsx:187
+#: src/app/(settings)/settings.tsx:190
 msgid "Sounds"
 msgstr "Töne"
 
@@ -283,11 +287,11 @@ msgstr "Fokus-Timer starten"
 #~ msgid "Starts the timer"
 #~ msgstr "Startet den Timer"
 
-#: src/components/home/TimerScene.tsx:55
+#: src/components/home/TimerScene.tsx:60
 msgid "Stay focused"
 msgstr "Bleib fokussiert"
 
-#: src/components/home/TimerScene.tsx:48
+#: src/components/home/TimerScene.tsx:53
 msgid "Stop"
 msgstr "Stoppen"
 
@@ -311,7 +315,7 @@ msgstr "Zum Fokusmodus wechseln"
 #~ msgid "Timer mode"
 #~ msgstr "Timer-Modus"
 
-#: src/app/(settings)/settings.tsx:66
+#: src/app/(settings)/settings.tsx:69
 msgid "Trumpets"
 msgstr "Trompeten"
 
@@ -319,10 +323,10 @@ msgstr "Trompeten"
 #~ msgid "Used for new focus sessions."
 #~ msgstr "Wird für neue Fokus-Sitzungen verwendet."
 
-#: src/app/(settings)/settings.tsx:82
+#: src/app/(settings)/settings.tsx:85
 msgid "You have unsaved changes. Are you sure you want to discard them?"
 msgstr "Du hast ungespeicherte Änderungen. Möchtest du sie wirklich verwerfen?"
 
-#: src/components/home/TimerScene.tsx:121
+#: src/components/home/TimerScene.tsx:136
 msgid "Your current focus timer will reset."
 msgstr "Der aktuelle Fokus-Timer wird zurückgesetzt."

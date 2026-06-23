@@ -28,7 +28,7 @@ Add setters for both values.
 Settings UI:
 
 - Add section at the end of the settings list.
-- Toggle label: **Dim screen when timer runs**
+- Toggle label: **Screen dimming**
 - Footer/helper text: **Dim the screen when the timer is running**
 - Slider visible only when enabled.
 - Slider row title: **Dimmed brightness**

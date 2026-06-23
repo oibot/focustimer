@@ -241,7 +241,7 @@ export default function Settings() {
             footer={<Text>{t`Dim the screen when the timer is running`}</Text>}
           >
             <Toggle
-              label={t`Dim screen when timer runs`}
+              label={t`Screen dimming`}
               isOn={screenDimmingEnabled}
               onIsOnChange={(nextValue) => {
                 setScreenDimmingEnabled(nextValue)

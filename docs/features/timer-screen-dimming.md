@@ -12,7 +12,7 @@ Add the setting at the end of the settings list.
 
 ### Toggle
 
-- Label: **Dim screen when timer runs**
+- Label: **Screen dimming**
 - Helper text: **Dim the screen when the timer is running**
 - Default: disabled
 
