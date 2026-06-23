@@ -2,13 +2,14 @@ import { useLingui } from "@lingui/react/macro"
 import { useAudioPlayer } from "expo-audio"
 import { useKeepAwake } from "expo-keep-awake"
 import type { LiveActivityStrings } from "local:live-activities-controller"
-import { useEffect, useLayoutEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Alert, Text, View } from "react-native"
 import { GestureDetector } from "react-native-gesture-handler"
 import { StyleSheet } from "react-native-unistyles"
 
 import Timer from "@/components/home/Timer"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
+import useScreenDimming from "@/hooks/useScreenDimming"
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { useTimer } from "@/hooks/useTimer"
 import useTimerAccessibilityAnnouncements from "@/hooks/useTimerAccessibilityAnnouncements"
@@ -40,8 +41,12 @@ export default function TimerScene({
   const { t } = useLingui()
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
   const completionSound = useStore((state) => state.completionSound)
+  const dimmedBrightnessPercent = useStore(
+    (state) => state.dimmedBrightnessPercent,
+  )
   const keepScreenAwake = useStore((state) => state.keepScreenAwake)
   const liveActivitiesEnabled = useStore((state) => state.liveActivitiesEnabled)
+  const screenDimmingEnabled = useStore((state) => state.screenDimmingEnabled)
   const selectedCompletionSound = completionSoundConfig[completionSound]
   const player = useAudioPlayer(selectedCompletionSound.audioSource)
   const { startingMs, nextMode } = config[timerMode]
@@ -64,9 +69,18 @@ export default function TimerScene({
     canCancel,
   } = useTimer()
 
+  const [isFocusCancelAlertVisible, setIsFocusCancelAlertVisible] =
+    useState(false)
+
+  const { resetDimming } = useScreenDimming({
+    enabled: screenDimmingEnabled,
+    dimmedBrightnessPercent,
+    shouldDim: status === "running" && !isFocusCancelAlertVisible,
+  })
   const { showControls, tapGesture } = useTimerControls({
     status,
     timerMode,
+    onRunningTimerTap: resetDimming,
   })
   const isScreenReaderEnabled = useScreenReaderEnabled()
   const handleTimerModeChange = (nextMode: TimerMode) => {
@@ -116,13 +130,32 @@ export default function TimerScene({
 
   const handleCancel = () => {
     if (timerMode === "focus") {
+      setIsFocusCancelAlertVisible(true)
       Alert.alert(
         t`End focus session`,
         t`Your current focus timer will reset.`,
         [
-          { text: t`Keep going`, style: "cancel" },
-          { text: t`End`, style: "destructive", onPress: cancelTimer },
+          {
+            text: t`Keep going`,
+            style: "cancel",
+            onPress: () => {
+              setIsFocusCancelAlertVisible(false)
+            },
+          },
+          {
+            text: t`End`,
+            style: "destructive",
+            onPress: () => {
+              setIsFocusCancelAlertVisible(false)
+              cancelTimer()
+            },
+          },
         ],
+        {
+          onDismiss: () => {
+            setIsFocusCancelAlertVisible(false)
+          },
+        },
       )
       return
     }
@@ -130,7 +163,7 @@ export default function TimerScene({
     cancelTimer()
     onDone(nextMode)
   }
-  const showsTapGesture = status === "running" && timerMode === "focus"
+  const showsTapGesture = status === "running"
 
   return (
     <View style={styles.container}>

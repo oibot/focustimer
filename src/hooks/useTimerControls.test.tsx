@@ -15,13 +15,20 @@ type HarnessProps = {
   status: TimerStatus
   timerMode: TimerMode
   autoHideDelay?: number
+  onRunningTimerTap?: () => void
 }
 
-const Harness = ({ status, timerMode, autoHideDelay }: HarnessProps) => {
+const Harness = ({
+  status,
+  timerMode,
+  autoHideDelay,
+  onRunningTimerTap,
+}: HarnessProps) => {
   const { showControls, tapGesture } = useTimerControls({
     status,
     timerMode,
     autoHideDelay,
+    onRunningTimerTap,
   })
 
   return (
@@ -146,6 +153,23 @@ describe("useTimerControls", () => {
     await waitFor(() => {
       expect(queryByText("controls")).toBeTruthy()
     })
+  })
+
+  it("calls the running timer tap callback while running", async () => {
+    const onRunningTimerTap = jest.fn()
+    render(
+      <Harness
+        status="running"
+        timerMode="short"
+        onRunningTimerTap={onRunningTimerTap}
+      />,
+    )
+
+    act(() => {
+      fireTapGesture()
+    })
+
+    expect(onRunningTimerTap).toHaveBeenCalledTimes(1)
   })
 
   it("shows controls when focus timer pauses", async () => {

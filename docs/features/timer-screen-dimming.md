@@ -63,8 +63,11 @@ Restore the previous brightness immediately when:
 - timer stops/resets/skips
 - app leaves the active foreground state
 - user taps the timer screen
+- the focus cancel confirmation alert appears
 
 When the timer ends, the last pre-dim brightness percentage should be restored.
+
+Dimming should remain disabled while the focus cancel confirmation alert is visible. If the timer is still running after the alert is dismissed, the 5 second dimming delay starts again.
 
 ### Tapping the screen
 

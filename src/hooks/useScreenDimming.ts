@@ -14,17 +14,22 @@ type UseScreenDimmingParams = {
   delayMs?: number
 }
 
+export type UseScreenDimmingResult = {
+  resetDimming: () => void
+}
+
 export default function useScreenDimming({
   enabled,
   dimmedBrightnessPercent,
   shouldDim,
   delayMs = SCREEN_DIMMING_DELAY_MS,
-}: UseScreenDimmingParams) {
+}: UseScreenDimmingParams): UseScreenDimmingResult {
   const originalBrightnessRef = useRef<number | null>(null)
   const dimTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [isAppActive, setIsAppActive] = useState(
     AppState.currentState === "active",
   )
+  const [resetCount, setResetCount] = useState(0)
 
   const clearDimTimeout = useCallback(() => {
     if (dimTimeoutRef.current === null) return
@@ -41,6 +46,11 @@ export default function useScreenDimming({
     originalBrightnessRef.current = null
     void Brightness.setBrightnessAsync(originalBrightness)
   }, [clearDimTimeout])
+
+  const resetDimming = useCallback(() => {
+    restoreBrightness()
+    setResetCount((current) => current + 1)
+  }, [restoreBrightness])
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
@@ -87,6 +97,7 @@ export default function useScreenDimming({
     dimmedBrightnessPercent,
     enabled,
     isAppActive,
+    resetCount,
     restoreBrightness,
     shouldDim,
   ])
@@ -96,4 +107,6 @@ export default function useScreenDimming({
       restoreBrightness()
     }
   }, [restoreBrightness])
+
+  return { resetDimming }
 }

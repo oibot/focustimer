@@ -7,6 +7,7 @@ type UseTimerControlsParams = {
   status: TimerStatus
   timerMode: TimerMode
   autoHideDelay?: number
+  onRunningTimerTap?: () => void
 }
 
 export const TIMER_CONTROLS_TAP_GESTURE_ID = "timer-controls-tap"
@@ -16,6 +17,7 @@ export default function useTimerControls({
   status,
   timerMode,
   autoHideDelay = DEFAULT_AUTO_HIDE_DELAY,
+  onRunningTimerTap,
 }: UseTimerControlsParams) {
   const [showControls, setShowControls] = useState(true)
   const wasRunningRef = useRef(false)
@@ -32,8 +34,9 @@ export default function useTimerControls({
     .withTestId(TIMER_CONTROLS_TAP_GESTURE_ID)
     .runOnJS(true)
     .onStart(() => {
-      if (timerMode !== "focus") return
       if (status !== "running") return
+      onRunningTimerTap?.()
+      if (timerMode !== "focus") return
       setShowControls((prev) => !prev)
     })
 

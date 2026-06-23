@@ -247,6 +247,45 @@ describe("useScreenDimming", () => {
     })
   })
 
+  it("restores brightness and reschedules dimming when reset", async () => {
+    const { result } = renderUseScreenDimming({
+      enabled: true,
+      dimmedBrightnessPercent: 15,
+      shouldDim: true,
+      delayMs: 1000,
+    })
+
+    await dimAfterDelay()
+
+    act(() => {
+      result.current.resetDimming()
+    })
+
+    await waitFor(() => {
+      expect(mockSetBrightnessAsync).toHaveBeenNthCalledWith(1, 0.15)
+      expect(mockSetBrightnessAsync).toHaveBeenNthCalledWith(2, 0.8)
+    })
+
+    mockGetBrightnessAsync.mockClear()
+    mockSetBrightnessAsync.mockClear()
+
+    act(() => {
+      jest.advanceTimersByTime(999)
+    })
+
+    expect(mockGetBrightnessAsync).not.toHaveBeenCalled()
+    expect(mockSetBrightnessAsync).not.toHaveBeenCalled()
+
+    act(() => {
+      jest.advanceTimersByTime(1)
+    })
+
+    await waitFor(() => {
+      expect(mockGetBrightnessAsync).toHaveBeenCalledTimes(1)
+      expect(mockSetBrightnessAsync).toHaveBeenCalledWith(0.15)
+    })
+  })
+
   it("reschedules dimming when the app becomes active again", async () => {
     renderUseScreenDimming({
       enabled: true,

@@ -1,6 +1,6 @@
 import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
-import { fireEvent, render } from "@testing-library/react-native"
+import { act, fireEvent, render, waitFor } from "@testing-library/react-native"
 import { useAudioPlayer } from "expo-audio"
 import { useKeepAwake } from "expo-keep-awake"
 import type { ReactElement } from "react"
@@ -9,6 +9,7 @@ import { Gesture } from "react-native-gesture-handler"
 
 import TimerScene from "@/components/home/TimerScene"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
+import useScreenDimming from "@/hooks/useScreenDimming"
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { useTimer } from "@/hooks/useTimer"
 import * as useTimerControlsModule from "@/hooks/useTimerControls"
@@ -17,9 +18,13 @@ import { useStore } from "@/state/store"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
+jest.mock("@/hooks/useScreenDimming")
 jest.mock("@/hooks/useScreenReaderEnabled")
 
 const mockUseTimer = useTimer as jest.MockedFunction<typeof useTimer>
+const mockUseScreenDimming = useScreenDimming as jest.MockedFunction<
+  typeof useScreenDimming
+>
 const mockUseScreenReaderEnabled =
   useScreenReaderEnabled as jest.MockedFunction<typeof useScreenReaderEnabled>
 const mockUseKeepAwake = useKeepAwake as jest.MockedFunction<
@@ -56,11 +61,14 @@ describe("TimerScene", () => {
     useStore.setState({
       breakTimeMinutes: 5,
       completionSound: "cheering",
+      dimmedBrightnessPercent: 15,
       focusTimeMinutes: 25,
       keepScreenAwake: true,
       liveActivitiesEnabled: true,
+      screenDimmingEnabled: false,
     })
     mockUseTimer.mockReturnValue({ ...baseTimerState })
+    mockUseScreenDimming.mockReturnValue({ resetDimming: jest.fn() })
     mockUseScreenReaderEnabled.mockReturnValue(false)
   })
 
@@ -169,13 +177,13 @@ describe("TimerScene", () => {
     expect(queryByTestId("timer-tap-gesture-background")).toBeNull()
   })
 
-  it("does not render the tap gesture background in short mode", () => {
+  it("renders the tap gesture background in short mode while running", () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "running",
     })
 
-    const { queryByTestId } = renderWithI18n(
+    const { getByTestId } = renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="short"
@@ -184,7 +192,7 @@ describe("TimerScene", () => {
       />,
     )
 
-    expect(queryByTestId("timer-tap-gesture-background")).toBeNull()
+    expect(getByTestId("timer-tap-gesture-background")).toBeTruthy()
   })
 
   it("shows the cancel button while paused", () => {
@@ -268,6 +276,137 @@ describe("TimerScene", () => {
     )
 
     expect(mockUseKeepAwake).toHaveBeenCalled()
+  })
+
+  it("wires disabled screen dimming while idle", () => {
+    renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(mockUseScreenDimming).toHaveBeenCalledWith({
+      enabled: false,
+      dimmedBrightnessPercent: 15,
+      shouldDim: false,
+    })
+  })
+
+  it("enables screen dimming while the focus timer runs", () => {
+    useStore.setState({
+      dimmedBrightnessPercent: 12,
+      screenDimmingEnabled: true,
+    })
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(mockUseScreenDimming).toHaveBeenCalledWith({
+      enabled: true,
+      dimmedBrightnessPercent: 12,
+      shouldDim: true,
+    })
+  })
+
+  it("enables screen dimming while the break timer runs", () => {
+    useStore.setState({
+      dimmedBrightnessPercent: 10,
+      screenDimmingEnabled: true,
+    })
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="short"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(mockUseScreenDimming).toHaveBeenCalledWith({
+      enabled: true,
+      dimmedBrightnessPercent: 10,
+      shouldDim: true,
+    })
+  })
+
+  it("does not dim while paused", () => {
+    useStore.setState({ screenDimmingEnabled: true })
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "paused",
+    })
+
+    renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(mockUseScreenDimming).toHaveBeenCalledWith({
+      enabled: true,
+      dimmedBrightnessPercent: 15,
+      shouldDim: false,
+    })
+  })
+
+  it("does not dim while the focus cancel alert is visible", async () => {
+    useStore.setState({ screenDimmingEnabled: true })
+    const useTimerControlsSpy = jest.spyOn(useTimerControlsModule, "default")
+    useTimerControlsSpy.mockReturnValue({
+      showControls: true,
+      tapGesture: Gesture.Tap(),
+    })
+    jest.spyOn(Alert, "alert").mockImplementation(() => {})
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    const { getByText } = renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={jest.fn()}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(mockUseScreenDimming).toHaveBeenLastCalledWith({
+      enabled: true,
+      dimmedBrightnessPercent: 15,
+      shouldDim: true,
+    })
+
+    fireEvent.press(getByText("Cancel").parent!)
+
+    await waitFor(() => {
+      expect(mockUseScreenDimming).toHaveBeenLastCalledWith({
+        enabled: true,
+        dimmedBrightnessPercent: 15,
+        shouldDim: false,
+      })
+    })
   })
 
   it("plays audio and notifies when done", () => {
@@ -412,12 +551,15 @@ describe("TimerScene", () => {
         expect.objectContaining({ text: "Keep going", style: "cancel" }),
         expect.objectContaining({ text: "End", style: "destructive" }),
       ]),
+      expect.objectContaining({ onDismiss: expect.any(Function) }),
     )
     const buttons = alertSpy.mock.calls[0]?.[2]
     const confirm = Array.isArray(buttons)
       ? buttons.find((button) => button.style === "destructive")
       : undefined
-    confirm?.onPress?.()
+    act(() => {
+      confirm?.onPress?.()
+    })
 
     expect(cancelTimer).toHaveBeenCalledTimes(1)
   })

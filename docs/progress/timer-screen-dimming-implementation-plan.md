@@ -222,6 +222,10 @@ Activate screen dimming while focus or break timers are running.
 
 - `src/components/home/TimerScene.tsx`
 - `src/components/home/TimerScene.test.tsx`
+- `src/hooks/useScreenDimming.ts`
+- `src/hooks/useScreenDimming.test.tsx`
+- `src/hooks/useTimerControls.ts`
+- `src/hooks/useTimerControls.test.tsx`
 
 ### Implementation notes
 
@@ -252,6 +256,12 @@ useScreenDimming({
 
 Dimming is independent of focus controls visibility.
 
+The screen dimming hook should expose a reset callback so tapping the screen restores brightness immediately and starts the same delay again while the timer continues running.
+
+The timer tap gesture should be available while either focus or break timers are running.
+
+Dimming should pause while the focus cancel confirmation alert is visible. If the alert is dismissed and the timer is still running, the normal 5 second dimming delay should start again.
+
 ### Unit tests
 
 Mock `useScreenDimming` in `TimerScene` tests and cover:
@@ -262,6 +272,9 @@ Mock `useScreenDimming` in `TimerScene` tests and cover:
 4. Focus paused -> `shouldDim: false`.
 5. Focus idle -> `shouldDim: false`.
 6. Timer done -> `shouldDim: false`.
+7. Tapping while running calls the dimming reset callback.
+8. Resetting dimming restores brightness and re-schedules the delay.
+9. Focus cancel alert visible -> `shouldDim: false`.
 
 ### Manual UI test
 
