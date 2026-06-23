@@ -29,7 +29,7 @@ const renderUseScreenDimming = (params: RenderParams) =>
   })
 
 const dimAfterDelay = async () => {
-  act(() => {
+  await act(() => {
     jest.advanceTimersByTime(1000)
   })
 
@@ -60,8 +60,8 @@ describe("useScreenDimming", () => {
     mockSetBrightnessAsync.mockResolvedValue()
   })
 
-  afterEach(() => {
-    cleanup()
+  afterEach(async () => {
+    await cleanup()
     if (appStateCurrentStateDescriptor) {
       Object.defineProperty(
         AppState,
@@ -75,14 +75,14 @@ describe("useScreenDimming", () => {
   })
 
   it("does nothing when disabled", async () => {
-    renderUseScreenDimming({
+    await renderUseScreenDimming({
       enabled: false,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
       delayMs: 1000,
     })
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1000)
     })
 
@@ -91,14 +91,14 @@ describe("useScreenDimming", () => {
   })
 
   it("does nothing before the delay completes", async () => {
-    renderUseScreenDimming({
+    await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
       delayMs: 1000,
     })
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(999)
     })
 
@@ -107,14 +107,14 @@ describe("useScreenDimming", () => {
   })
 
   it("dims after the delay completes while active", async () => {
-    renderUseScreenDimming({
+    await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
       delayMs: 1000,
     })
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1000)
     })
 
@@ -127,14 +127,14 @@ describe("useScreenDimming", () => {
   it("keeps current brightness when it is lower than configured brightness", async () => {
     mockGetBrightnessAsync.mockResolvedValue(0.1)
 
-    renderUseScreenDimming({
+    await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
       delayMs: 1000,
     })
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1000)
     })
 
@@ -144,21 +144,21 @@ describe("useScreenDimming", () => {
   })
 
   it("cancels pending dimming when it should no longer dim before the delay completes", async () => {
-    const { rerender } = renderUseScreenDimming({
+    const { rerender } = await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
       delayMs: 1000,
     })
 
-    rerender({
+    await rerender({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: false,
       delayMs: 1000,
     })
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1000)
     })
 
@@ -167,7 +167,7 @@ describe("useScreenDimming", () => {
   })
 
   it("restores brightness when it should no longer dim after dimming", async () => {
-    const { rerender } = renderUseScreenDimming({
+    const { rerender } = await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
@@ -176,7 +176,7 @@ describe("useScreenDimming", () => {
 
     await dimAfterDelay()
 
-    rerender({
+    await rerender({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: false,
@@ -190,7 +190,7 @@ describe("useScreenDimming", () => {
   })
 
   it("restores brightness on unmount", async () => {
-    const { unmount } = renderUseScreenDimming({
+    const { unmount } = await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
@@ -199,7 +199,7 @@ describe("useScreenDimming", () => {
 
     await dimAfterDelay()
 
-    unmount()
+    await unmount()
 
     await waitFor(() => {
       expect(mockSetBrightnessAsync).toHaveBeenNthCalledWith(1, 0.15)
@@ -208,7 +208,7 @@ describe("useScreenDimming", () => {
   })
 
   it("restores brightness when the app becomes inactive", async () => {
-    renderUseScreenDimming({
+    await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
@@ -217,7 +217,7 @@ describe("useScreenDimming", () => {
 
     await dimAfterDelay()
 
-    act(() => {
+    await act(() => {
       appStateChangeHandler?.("inactive")
     })
 
@@ -228,7 +228,7 @@ describe("useScreenDimming", () => {
   })
 
   it("restores brightness when the app moves to the background", async () => {
-    renderUseScreenDimming({
+    await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
@@ -237,7 +237,7 @@ describe("useScreenDimming", () => {
 
     await dimAfterDelay()
 
-    act(() => {
+    await act(() => {
       appStateChangeHandler?.("background")
     })
 
@@ -248,7 +248,7 @@ describe("useScreenDimming", () => {
   })
 
   it("restores brightness and reschedules dimming when reset", async () => {
-    const { result } = renderUseScreenDimming({
+    const { result } = await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
@@ -257,7 +257,7 @@ describe("useScreenDimming", () => {
 
     await dimAfterDelay()
 
-    act(() => {
+    await act(() => {
       result.current.resetDimming()
     })
 
@@ -269,14 +269,14 @@ describe("useScreenDimming", () => {
     mockGetBrightnessAsync.mockClear()
     mockSetBrightnessAsync.mockClear()
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(999)
     })
 
     expect(mockGetBrightnessAsync).not.toHaveBeenCalled()
     expect(mockSetBrightnessAsync).not.toHaveBeenCalled()
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1)
     })
 
@@ -287,7 +287,7 @@ describe("useScreenDimming", () => {
   })
 
   it("reschedules dimming when the app becomes active again", async () => {
-    renderUseScreenDimming({
+    await renderUseScreenDimming({
       enabled: true,
       dimmedBrightnessPercent: 15,
       shouldDim: true,
@@ -296,7 +296,7 @@ describe("useScreenDimming", () => {
 
     await dimAfterDelay()
 
-    act(() => {
+    await act(() => {
       appStateChangeHandler?.("inactive")
     })
 
@@ -307,18 +307,18 @@ describe("useScreenDimming", () => {
     mockGetBrightnessAsync.mockClear()
     mockSetBrightnessAsync.mockClear()
 
-    act(() => {
+    await act(() => {
       appStateChangeHandler?.("active")
     })
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(999)
     })
 
     expect(mockGetBrightnessAsync).not.toHaveBeenCalled()
     expect(mockSetBrightnessAsync).not.toHaveBeenCalled()
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1)
     })
 

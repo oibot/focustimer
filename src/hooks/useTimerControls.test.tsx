@@ -56,7 +56,7 @@ describe("useTimerControls", () => {
   })
 
   it("hides controls when focus timer starts running", async () => {
-    const { queryByText } = render(
+    const { queryByText } = await render(
       <Harness status="running" timerMode="focus" />,
     )
 
@@ -66,7 +66,7 @@ describe("useTimerControls", () => {
   })
 
   it("toggles controls on tap while running", async () => {
-    const { queryByText } = render(
+    const { queryByText } = await render(
       <Harness status="running" timerMode="focus" autoHideDelay={5000} />,
     )
 
@@ -75,7 +75,7 @@ describe("useTimerControls", () => {
     })
 
     // First tap shows controls
-    act(() => {
+    await act(() => {
       fireTapGesture()
     })
 
@@ -84,7 +84,7 @@ describe("useTimerControls", () => {
     })
 
     // Second tap hides controls
-    act(() => {
+    await act(() => {
       fireTapGesture()
     })
 
@@ -93,7 +93,7 @@ describe("useTimerControls", () => {
     })
 
     // Third tap shows controls again
-    act(() => {
+    await act(() => {
       fireTapGesture()
     })
 
@@ -103,7 +103,7 @@ describe("useTimerControls", () => {
   })
 
   it("auto-hides controls after delay while running", async () => {
-    const { queryByText } = render(
+    const { queryByText } = await render(
       <Harness status="running" timerMode="focus" autoHideDelay={1000} />,
     )
 
@@ -112,7 +112,7 @@ describe("useTimerControls", () => {
     })
 
     // Tap to show controls
-    act(() => {
+    await act(() => {
       fireTapGesture()
     })
 
@@ -121,14 +121,14 @@ describe("useTimerControls", () => {
     })
 
     // Advance time but not enough to trigger auto-hide
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(500)
     })
 
     expect(queryByText("controls")).toBeTruthy()
 
     // Advance time to trigger auto-hide
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(600)
     })
 
@@ -138,7 +138,7 @@ describe("useTimerControls", () => {
   })
 
   it("keeps controls visible in short mode", async () => {
-    const { queryByText } = render(
+    const { queryByText } = await render(
       <Harness status="running" timerMode="short" />,
     )
 
@@ -146,7 +146,7 @@ describe("useTimerControls", () => {
       expect(queryByText("controls")).toBeTruthy()
     })
 
-    act(() => {
+    await act(() => {
       fireTapGesture()
     })
 
@@ -157,7 +157,7 @@ describe("useTimerControls", () => {
 
   it("calls the running timer tap callback while running", async () => {
     const onRunningTimerTap = jest.fn()
-    render(
+    await render(
       <Harness
         status="running"
         timerMode="short"
@@ -165,7 +165,7 @@ describe("useTimerControls", () => {
       />,
     )
 
-    act(() => {
+    await act(() => {
       fireTapGesture()
     })
 
@@ -173,7 +173,7 @@ describe("useTimerControls", () => {
   })
 
   it("shows controls when focus timer pauses", async () => {
-    const { queryByText, rerender } = render(
+    const { queryByText, rerender } = await render(
       <Harness status="running" timerMode="focus" />,
     )
 
@@ -181,7 +181,7 @@ describe("useTimerControls", () => {
       expect(queryByText("controls")).toBeNull()
     })
 
-    rerender(<Harness status="paused" timerMode="focus" />)
+    await rerender(<Harness status="paused" timerMode="focus" />)
 
     await waitFor(() => {
       expect(queryByText("controls")).toBeTruthy()

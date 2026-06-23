@@ -44,8 +44,8 @@ describe("useTimerAccessibilityAnnouncements", () => {
     jest.restoreAllMocks()
   })
 
-  it("does not announce when the timer starts", () => {
-    const { rerender } = renderHook(
+  it("does not announce when the timer starts", async () => {
+    const { rerender } = await renderHook(
       (props: HookProps) => useTimerAccessibilityAnnouncements(props),
       {
         initialProps: {
@@ -57,7 +57,7 @@ describe("useTimerAccessibilityAnnouncements", () => {
       },
     )
 
-    rerender({
+    await rerender({
       enabled: true,
       remainingMs: 25 * 60 * 1000,
       status: "running",
@@ -67,8 +67,8 @@ describe("useTimerAccessibilityAnnouncements", () => {
     expect(announceForAccessibilityWithOptions).not.toHaveBeenCalled()
   })
 
-  it("announces each five-minute milestone above the final five minutes", () => {
-    const { rerender } = renderHook(
+  it("announces each five-minute milestone above the final five minutes", async () => {
+    const { rerender } = await renderHook(
       (props: HookProps) => useTimerAccessibilityAnnouncements(props),
       {
         initialProps: {
@@ -80,7 +80,7 @@ describe("useTimerAccessibilityAnnouncements", () => {
       },
     )
 
-    rerender({
+    await rerender({
       enabled: true,
       remainingMs: 20 * 60 * 1000,
       status: "running",
@@ -92,8 +92,8 @@ describe("useTimerAccessibilityAnnouncements", () => {
     )
   })
 
-  it("announces each minute inside the final five minutes", () => {
-    const { rerender } = renderHook(
+  it("announces each minute inside the final five minutes", async () => {
+    const { rerender } = await renderHook(
       (props: HookProps) => useTimerAccessibilityAnnouncements(props),
       {
         initialProps: {
@@ -105,17 +105,17 @@ describe("useTimerAccessibilityAnnouncements", () => {
       },
     )
 
-    rerender({
+    await rerender({
       enabled: true,
       remainingMs: 5 * 60 * 1000,
       status: "running",
     })
-    rerender({
+    await rerender({
       enabled: true,
       remainingMs: 4 * 60 * 1000 + 1000,
       status: "running",
     })
-    rerender({
+    await rerender({
       enabled: true,
       remainingMs: 4 * 60 * 1000,
       status: "running",
@@ -133,8 +133,8 @@ describe("useTimerAccessibilityAnnouncements", () => {
     )
   })
 
-  it("does not announce on non-milestone ticks", () => {
-    const { rerender } = renderHook(
+  it("does not announce on non-milestone ticks", async () => {
+    const { rerender } = await renderHook(
       (props: HookProps) => useTimerAccessibilityAnnouncements(props),
       {
         initialProps: {
@@ -146,7 +146,7 @@ describe("useTimerAccessibilityAnnouncements", () => {
       },
     )
 
-    rerender({
+    await rerender({
       enabled: true,
       remainingMs: 20 * 60 * 1000 + 58 * 1000,
       status: "running",
@@ -155,8 +155,8 @@ describe("useTimerAccessibilityAnnouncements", () => {
     expect(announceForAccessibilityWithOptions).not.toHaveBeenCalled()
   })
 
-  it("does not announce when resuming from pause", () => {
-    const { rerender } = renderHook(
+  it("does not announce when resuming from pause", async () => {
+    const { rerender } = await renderHook(
       (props: HookProps) => useTimerAccessibilityAnnouncements(props),
       {
         initialProps: {
@@ -168,7 +168,7 @@ describe("useTimerAccessibilityAnnouncements", () => {
       },
     )
 
-    rerender({
+    await rerender({
       enabled: true,
       remainingMs: 14 * 60 * 1000 + 30 * 1000,
       status: "running",
@@ -177,8 +177,8 @@ describe("useTimerAccessibilityAnnouncements", () => {
     expect(announceForAccessibilityWithOptions).not.toHaveBeenCalled()
   })
 
-  it("does not announce when the screen reader is off", () => {
-    const { rerender } = renderHook(
+  it("does not announce when the screen reader is off", async () => {
+    const { rerender } = await renderHook(
       (props: HookProps) => useTimerAccessibilityAnnouncements(props),
       {
         initialProps: {
@@ -190,7 +190,7 @@ describe("useTimerAccessibilityAnnouncements", () => {
       },
     )
 
-    rerender({
+    await rerender({
       enabled: false,
       remainingMs: 25 * 60 * 1000,
       status: "running",

@@ -35,8 +35,8 @@ describe("TimerDoneScene", () => {
     jest.clearAllMocks()
   })
 
-  it("shows focus label when next mode is focus", () => {
-    const { getByText } = renderWithI18n(
+  it("shows focus label when next mode is focus", async () => {
+    const { getByText } = await renderWithI18n(
       <TimerDoneScene
         nextMode="focus"
         onStart={jest.fn()}
@@ -47,8 +47,8 @@ describe("TimerDoneScene", () => {
     expect(getByText("Start Focus")).toBeTruthy()
   })
 
-  it("shows break label when next mode is short", () => {
-    const { getByText } = renderWithI18n(
+  it("shows break label when next mode is short", async () => {
+    const { getByText } = await renderWithI18n(
       <TimerDoneScene
         nextMode="short"
         onStart={jest.fn()}
@@ -59,9 +59,9 @@ describe("TimerDoneScene", () => {
     expect(getByText("Start Break")).toBeTruthy()
   })
 
-  it("calls onStart when the start button is pressed", () => {
+  it("calls onStart when the start button is pressed", async () => {
     const onStart = jest.fn()
-    const { getByText } = renderWithI18n(
+    const { getByText } = await renderWithI18n(
       <TimerDoneScene
         nextMode="focus"
         onStart={onStart}
@@ -69,12 +69,12 @@ describe("TimerDoneScene", () => {
       />,
     )
 
-    fireEvent.press(getByText("Start Focus").parent!)
+    await fireEvent.press(getByText("Start Focus").parent!)
 
     expect(onStart).toHaveBeenCalledTimes(1)
   })
 
-  it("cancels the timer and notifies parent", () => {
+  it("cancels the timer and notifies parent", async () => {
     const cancelTimer = jest.fn()
     const onCancel = jest.fn()
 
@@ -87,7 +87,7 @@ describe("TimerDoneScene", () => {
       canCancel: true,
     })
 
-    const { getByText } = renderWithI18n(
+    const { getByText } = await renderWithI18n(
       <TimerDoneScene
         nextMode="focus"
         onStart={jest.fn()}
@@ -95,7 +95,7 @@ describe("TimerDoneScene", () => {
       />,
     )
 
-    fireEvent.press(getByText("Cancel").parent!)
+    await fireEvent.press(getByText("Cancel").parent!)
 
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onCancel).toHaveBeenCalledTimes(1)

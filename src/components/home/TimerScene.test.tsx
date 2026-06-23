@@ -77,8 +77,8 @@ describe("TimerScene", () => {
     jest.restoreAllMocks()
   })
 
-  it("defaults to focus mode when mode is invalid", () => {
-    const { getByLabelText } = renderWithI18n(
+  it("defaults to focus mode when mode is invalid", async () => {
+    const { getByLabelText } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="unknown"
@@ -90,9 +90,9 @@ describe("TimerScene", () => {
     expect(getByLabelText("Start")).toBeTruthy()
   })
 
-  it("uses the short mode labels without stop button while idle", () => {
+  it("uses the short mode labels without stop button while idle", async () => {
     const { getByLabelText, getByTestId, queryByText, queryByTestId } =
-      renderWithI18n(
+      await renderWithI18n(
         <TimerScene
           config={baseConfig}
           mode="short"
@@ -107,8 +107,8 @@ describe("TimerScene", () => {
     expect(queryByText("Stop")).toBeNull()
   })
 
-  it("renders the right edge swipe zone in focus idle", () => {
-    const { getByTestId, queryByTestId } = renderWithI18n(
+  it("renders the right edge swipe zone in focus idle", async () => {
+    const { getByTestId, queryByTestId } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -121,13 +121,13 @@ describe("TimerScene", () => {
     expect(queryByTestId("timer-edge-swipe-left")).toBeNull()
   })
 
-  it("shows the stop button when short mode is running", () => {
+  it("shows the stop button when short mode is running", async () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "running",
     })
 
-    const { getByLabelText, getByText, queryByTestId } = renderWithI18n(
+    const { getByLabelText, getByText, queryByTestId } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="short"
@@ -142,14 +142,14 @@ describe("TimerScene", () => {
     expect(queryByTestId("timer-edge-swipe-right")).toBeNull()
   })
 
-  it("hides controls while running in focus mode", () => {
+  it("hides controls while running in focus mode", async () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "running",
     })
 
     const { queryByLabelText, queryByText, getByTestId, queryByTestId } =
-      renderWithI18n(
+      await renderWithI18n(
         <TimerScene
           config={baseConfig}
           mode="focus"
@@ -164,8 +164,8 @@ describe("TimerScene", () => {
     expect(queryByTestId("timer-controls")).toBeNull()
   })
 
-  it("does not render the tap gesture background while idle in focus mode", () => {
-    const { queryByTestId } = renderWithI18n(
+  it("does not render the tap gesture background while idle in focus mode", async () => {
+    const { queryByTestId } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -177,13 +177,13 @@ describe("TimerScene", () => {
     expect(queryByTestId("timer-tap-gesture-background")).toBeNull()
   })
 
-  it("renders the tap gesture background in short mode while running", () => {
+  it("renders the tap gesture background in short mode while running", async () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "running",
     })
 
-    const { getByTestId } = renderWithI18n(
+    const { getByTestId } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="short"
@@ -195,13 +195,13 @@ describe("TimerScene", () => {
     expect(getByTestId("timer-tap-gesture-background")).toBeTruthy()
   })
 
-  it("shows the cancel button while paused", () => {
+  it("shows the cancel button while paused", async () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "paused",
     })
 
-    const { getByLabelText, getByText } = renderWithI18n(
+    const { getByLabelText, getByText } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -214,7 +214,7 @@ describe("TimerScene", () => {
     expect(getByText("Cancel")).toBeTruthy()
   })
 
-  it("does not reset the duration again when status changes in the same mode", () => {
+  it("does not reset the duration again when status changes in the same mode", async () => {
     const testStartingMs = 123_456
     const setStartingMs = jest.fn()
     mockUseTimer.mockReturnValue({
@@ -222,7 +222,7 @@ describe("TimerScene", () => {
       setStartingMs,
     })
 
-    const { rerender } = renderWithI18n(
+    const { rerender } = await renderWithI18n(
       <TimerScene
         config={{
           focus: { startingMs: testStartingMs, nextMode: "short" },
@@ -243,7 +243,7 @@ describe("TimerScene", () => {
       setStartingMs,
     })
 
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <TimerScene
           config={{
@@ -260,13 +260,13 @@ describe("TimerScene", () => {
     expect(setStartingMs).toHaveBeenCalledTimes(1)
   })
 
-  it("keeps the screen awake while running", () => {
+  it("keeps the screen awake while running", async () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "running",
     })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -278,8 +278,8 @@ describe("TimerScene", () => {
     expect(mockUseKeepAwake).toHaveBeenCalled()
   })
 
-  it("wires disabled screen dimming while idle", () => {
-    renderWithI18n(
+  it("wires disabled screen dimming while idle", async () => {
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -295,7 +295,7 @@ describe("TimerScene", () => {
     })
   })
 
-  it("enables screen dimming while the focus timer runs", () => {
+  it("enables screen dimming while the focus timer runs", async () => {
     useStore.setState({
       dimmedBrightnessPercent: 12,
       screenDimmingEnabled: true,
@@ -305,7 +305,7 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -321,7 +321,7 @@ describe("TimerScene", () => {
     })
   })
 
-  it("enables screen dimming while the break timer runs", () => {
+  it("enables screen dimming while the break timer runs", async () => {
     useStore.setState({
       dimmedBrightnessPercent: 10,
       screenDimmingEnabled: true,
@@ -331,7 +331,7 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="short"
@@ -347,14 +347,14 @@ describe("TimerScene", () => {
     })
   })
 
-  it("does not dim while paused", () => {
+  it("does not dim while paused", async () => {
     useStore.setState({ screenDimmingEnabled: true })
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "paused",
     })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -383,7 +383,7 @@ describe("TimerScene", () => {
       status: "running",
     })
 
-    const { getByText } = renderWithI18n(
+    const { getByText } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -398,7 +398,7 @@ describe("TimerScene", () => {
       shouldDim: true,
     })
 
-    fireEvent.press(getByText("Cancel").parent!)
+    await fireEvent.press(getByText("Cancel").parent!)
 
     await waitFor(() => {
       expect(mockUseScreenDimming).toHaveBeenLastCalledWith({
@@ -409,7 +409,7 @@ describe("TimerScene", () => {
     })
   })
 
-  it("plays audio and notifies when done", () => {
+  it("plays audio and notifies when done", async () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()
 
@@ -419,7 +419,7 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -439,7 +439,7 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("short")
   })
 
-  it("does not play audio when completion sound is off", () => {
+  it("does not play audio when completion sound is off", async () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()
 
@@ -450,7 +450,7 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -470,10 +470,10 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("short")
   })
 
-  it("loads the selected custom sound asset", () => {
+  it("loads the selected custom sound asset", async () => {
     useStore.setState({ completionSound: "trumpets" })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -487,7 +487,7 @@ describe("TimerScene", () => {
     )
   })
 
-  it("plays audio when a break finishes", () => {
+  it("plays audio when a break finishes", async () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()
 
@@ -497,7 +497,7 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="short"
@@ -517,7 +517,7 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("focus")
   })
 
-  it("cancels the timer when canceling focus", () => {
+  it("cancels the timer when canceling focus", async () => {
     const cancelTimer = jest.fn()
     const useTimerControlsSpy = jest.spyOn(useTimerControlsModule, "default")
     useTimerControlsSpy.mockReturnValue({
@@ -532,7 +532,7 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    const { getByText } = renderWithI18n(
+    const { getByText } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -541,7 +541,7 @@ describe("TimerScene", () => {
       />,
     )
 
-    fireEvent.press(getByText("Cancel").parent!)
+    await fireEvent.press(getByText("Cancel").parent!)
 
     expect(alertSpy).toHaveBeenCalledTimes(1)
     expect(alertSpy).toHaveBeenCalledWith(
@@ -557,14 +557,14 @@ describe("TimerScene", () => {
     const confirm = Array.isArray(buttons)
       ? buttons.find((button) => button.style === "destructive")
       : undefined
-    act(() => {
+    await act(() => {
       confirm?.onPress?.()
     })
 
     expect(cancelTimer).toHaveBeenCalledTimes(1)
   })
 
-  it("cancels and finishes the timer when stopping short mode", () => {
+  it("cancels and finishes the timer when stopping short mode", async () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()
 
@@ -574,7 +574,7 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    const { getByText } = renderWithI18n(
+    const { getByText } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="short"
@@ -588,7 +588,7 @@ describe("TimerScene", () => {
       seekTo: jest.Mock
     }
 
-    fireEvent.press(getByText("Stop").parent!)
+    await fireEvent.press(getByText("Stop").parent!)
 
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onDone).toHaveBeenCalledWith("focus")
@@ -596,13 +596,13 @@ describe("TimerScene", () => {
     expect(player.play).not.toHaveBeenCalled()
   })
 
-  it("wires background notifications", () => {
+  it("wires background notifications", async () => {
     const mockNotifications =
       useBackgroundTimerNotifications as jest.MockedFunction<
         typeof useBackgroundTimerNotifications
       >
 
-    renderWithI18n(
+    await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -617,13 +617,13 @@ describe("TimerScene", () => {
     })
   })
 
-  it("does not render an edge swipe zone while paused in focus", () => {
+  it("does not render an edge swipe zone while paused in focus", async () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "paused",
     })
 
-    const { queryByTestId } = renderWithI18n(
+    const { queryByTestId } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
@@ -636,13 +636,13 @@ describe("TimerScene", () => {
     expect(queryByTestId("timer-edge-swipe-right")).toBeNull()
   })
 
-  it("does not render an edge swipe zone while paused in short", () => {
+  it("does not render an edge swipe zone while paused in short", async () => {
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "paused",
     })
 
-    const { queryByTestId } = renderWithI18n(
+    const { queryByTestId } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="short"

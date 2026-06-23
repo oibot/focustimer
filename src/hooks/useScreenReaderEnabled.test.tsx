@@ -47,7 +47,7 @@ describe("useScreenReaderEnabled", () => {
       >
     ).mockResolvedValue(true)
 
-    const { getByText } = render(<Harness />)
+    const { getByText } = await render(<Harness />)
 
     await waitFor(() => {
       expect(getByText("enabled")).toBeTruthy()
@@ -55,13 +55,13 @@ describe("useScreenReaderEnabled", () => {
   })
 
   it("updates when the screen reader state changes", async () => {
-    const { getByText } = render(<Harness />)
+    const { getByText } = await render(<Harness />)
 
     await waitFor(() => {
       expect(getByText("disabled")).toBeTruthy()
     })
 
-    act(() => {
+    await act(() => {
       accessibilityListener?.(true)
     })
 
@@ -76,7 +76,7 @@ describe("useScreenReaderEnabled", () => {
         typeof AccessibilityInfo.isScreenReaderEnabled
       >
 
-    const { getByText } = render(<Harness />)
+    const { getByText } = await render(<Harness />)
 
     await waitFor(() => {
       expect(getByText("disabled")).toBeTruthy()
@@ -93,10 +93,10 @@ describe("useScreenReaderEnabled", () => {
     })
   })
 
-  it("removes the subscription on unmount", () => {
-    const { unmount } = render(<Harness />)
+  it("removes the subscription on unmount", async () => {
+    const { unmount } = await render(<Harness />)
 
-    unmount()
+    await unmount()
 
     expect(removeAccessibility).toHaveBeenCalledTimes(1)
     expect(removeAppState).toHaveBeenCalledTimes(1)

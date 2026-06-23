@@ -358,7 +358,7 @@ bun remove @testing-library/jest-native
 Update `src/test/setupTests.ts`:
 
 ```ts
-import "@testing-library/react-native/extend-expect"
+import "@testing-library/react-native"
 ```
 
 instead of:
@@ -366,6 +366,8 @@ instead of:
 ```ts
 import "@testing-library/jest-native/extend-expect"
 ```
+
+React Native Testing Library v14 uses async rendering APIs, so update tests to await `render`, `renderHook`, `rerender`, `unmount`, `fireEvent`, and `act`.
 
 When writing tests, prefer importing `act` from React:
 

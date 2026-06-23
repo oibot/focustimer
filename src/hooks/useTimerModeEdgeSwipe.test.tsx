@@ -56,106 +56,118 @@ describe("useTimerModeEdgeSwipe", () => {
     jest.clearAllMocks()
   })
 
-  it("exposes the right edge in focus idle", () => {
-    const { getByText } = render(<Harness status="idle" timerMode="focus" />)
+  it("exposes the right edge in focus idle", async () => {
+    const { getByText } = await render(
+      <Harness status="idle" timerMode="focus" />,
+    )
 
     expect(getByText("right")).toBeTruthy()
   })
 
-  it("does not expose an edge in focus paused", () => {
-    const { getByText } = render(<Harness status="paused" timerMode="focus" />)
+  it("does not expose an edge in focus paused", async () => {
+    const { getByText } = await render(
+      <Harness status="paused" timerMode="focus" />,
+    )
 
     expect(getByText("none")).toBeTruthy()
   })
 
-  it("exposes the left edge in short idle", () => {
-    const { getByText } = render(<Harness status="idle" timerMode="short" />)
+  it("exposes the left edge in short idle", async () => {
+    const { getByText } = await render(
+      <Harness status="idle" timerMode="short" />,
+    )
 
     expect(getByText("left")).toBeTruthy()
   })
 
-  it("does not expose an edge in short paused", () => {
-    const { getByText } = render(<Harness status="paused" timerMode="short" />)
+  it("does not expose an edge in short paused", async () => {
+    const { getByText } = await render(
+      <Harness status="paused" timerMode="short" />,
+    )
 
     expect(getByText("none")).toBeTruthy()
   })
 
-  it("does not expose an edge while running", () => {
-    const { getByText } = render(<Harness status="running" timerMode="focus" />)
+  it("does not expose an edge while running", async () => {
+    const { getByText } = await render(
+      <Harness status="running" timerMode="focus" />,
+    )
 
     expect(getByText("none")).toBeTruthy()
   })
 
-  it("does not expose an edge while done", () => {
-    const { getByText } = render(<Harness status="done" timerMode="short" />)
+  it("does not expose an edge while done", async () => {
+    const { getByText } = await render(
+      <Harness status="done" timerMode="short" />,
+    )
 
     expect(getByText("none")).toBeTruthy()
   })
 
-  it("switches from focus to short on a left swipe from the right edge", () => {
+  it("switches from focus to short on a left swipe from the right edge", async () => {
     const onModeChange = jest.fn()
 
-    render(
+    await render(
       <Harness status="idle" timerMode="focus" onModeChange={onModeChange} />,
     )
 
-    act(() => {
+    await act(() => {
       fireEdgeSwipeGesture({ translationX: -60 })
     })
 
     expect(onModeChange).toHaveBeenCalledWith("short")
   })
 
-  it("switches from short to focus on a right swipe from the left edge", () => {
+  it("switches from short to focus on a right swipe from the left edge", async () => {
     const onModeChange = jest.fn()
 
-    render(
+    await render(
       <Harness status="idle" timerMode="short" onModeChange={onModeChange} />,
     )
 
-    act(() => {
+    await act(() => {
       fireEdgeSwipeGesture({ translationX: 60 })
     })
 
     expect(onModeChange).toHaveBeenCalledWith("focus")
   })
 
-  it("ignores the wrong swipe direction", () => {
+  it("ignores the wrong swipe direction", async () => {
     const onModeChange = jest.fn()
 
-    render(
+    await render(
       <Harness status="idle" timerMode="focus" onModeChange={onModeChange} />,
     )
 
-    act(() => {
+    await act(() => {
       fireEdgeSwipeGesture({ translationX: 60 })
     })
 
     expect(onModeChange).not.toHaveBeenCalled()
   })
 
-  it("ignores swipes shorter than the trigger distance", () => {
+  it("ignores swipes shorter than the trigger distance", async () => {
     const onModeChange = jest.fn()
 
-    render(
+    await render(
       <Harness status="idle" timerMode="short" onModeChange={onModeChange} />,
     )
 
-    act(() => {
+    await act(() => {
       fireEdgeSwipeGesture({ translationX: 30 })
     })
 
     expect(onModeChange).not.toHaveBeenCalled()
   })
 
-  it("ignores large vertical movement", () => {
+  it("ignores large vertical movement", async () => {
     const onModeChange = jest.fn()
 
-    render(
+    await render(
       <Harness status="idle" timerMode="focus" onModeChange={onModeChange} />,
     )
 
-    act(() => {
+    await act(() => {
       fireEdgeSwipeGesture({ translationX: -60, translationY: 32 })
     })
 

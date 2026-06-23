@@ -33,50 +33,50 @@ describe("Timer", () => {
   const renderWithI18n = (ui: React.ReactElement) =>
     render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>)
 
-  it("reads full minutes remaining for VoiceOver", () => {
-    const { getByLabelText } = renderWithI18n(<Timer {...baseProps} />)
+  it("reads full minutes remaining for VoiceOver", async () => {
+    const { getByLabelText } = await renderWithI18n(<Timer {...baseProps} />)
     expect(getByLabelText("25 minutes remaining")).toBeTruthy()
   })
 
-  it("reads 00:00 as zero seconds remaining", () => {
-    const { getByLabelText } = renderWithI18n(
+  it("reads 00:00 as zero seconds remaining", async () => {
+    const { getByLabelText } = await renderWithI18n(
       <Timer {...baseProps} remainingMs={0} />,
     )
     expect(getByLabelText("0 seconds remaining")).toBeTruthy()
   })
 
-  it("reads both minutes and seconds when both are present", () => {
-    const { getByLabelText } = renderWithI18n(
+  it("reads both minutes and seconds when both are present", async () => {
+    const { getByLabelText } = await renderWithI18n(
       <Timer {...baseProps} remainingMs={10 * 60 * 1000 + 30 * 1000} />,
     )
 
     expect(getByLabelText("10 minutes 30 seconds remaining")).toBeTruthy()
   })
 
-  it("reads seconds only when less than a minute remains", () => {
-    const { getByLabelText } = renderWithI18n(
+  it("reads seconds only when less than a minute remains", async () => {
+    const { getByLabelText } = await renderWithI18n(
       <Timer {...baseProps} remainingMs={45 * 1000} />,
     )
 
     expect(getByLabelText("45 seconds remaining")).toBeTruthy()
   })
 
-  it("reads singular seconds correctly", () => {
-    const { getByLabelText } = renderWithI18n(
+  it("reads singular seconds correctly", async () => {
+    const { getByLabelText } = await renderWithI18n(
       <Timer {...baseProps} remainingMs={1000} />,
     )
 
     expect(getByLabelText("1 second remaining")).toBeTruthy()
   })
 
-  it("does not expose the compact timer string as the accessibility label", () => {
-    const { queryByLabelText } = renderWithI18n(<Timer {...baseProps} />)
+  it("does not expose the compact timer string as the accessibility label", async () => {
+    const { queryByLabelText } = await renderWithI18n(<Timer {...baseProps} />)
 
     expect(queryByLabelText("25:00")).toBeNull()
   })
 
-  it("keeps the visible timer digits when plain rendering is requested", () => {
-    const { getByLabelText, getByText } = renderWithI18n(
+  it("keeps the visible timer digits when plain rendering is requested", async () => {
+    const { getByLabelText, getByText } = await renderWithI18n(
       <Timer {...baseProps} usePlainTime />,
     )
 
@@ -84,24 +84,24 @@ describe("Timer", () => {
     expect(getByText(":", { includeHiddenElements: true })).toBeTruthy()
   })
 
-  it("exposes the timer as one accessible text element", () => {
-    const { getAllByRole } = renderWithI18n(<Timer {...baseProps} />)
+  it("exposes the timer as one accessible text element", async () => {
+    const { getAllByRole } = await renderWithI18n(<Timer {...baseProps} />)
 
     expect(getAllByRole("text")).toHaveLength(1)
   })
 
-  it("shows Start, Pause, and Resume labels", () => {
-    const { getByLabelText, rerender } = renderWithI18n(
+  it("shows Start, Pause, and Resume labels", async () => {
+    const { getByLabelText, rerender } = await renderWithI18n(
       <Timer {...baseProps} />,
     )
     expect(getByLabelText("Start")).toBeTruthy()
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer {...baseProps} status="running" />
       </I18nProvider>,
     )
     expect(getByLabelText("Pause")).toBeTruthy()
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer {...baseProps} status="paused" />
       </I18nProvider>,
@@ -109,12 +109,14 @@ describe("Timer", () => {
     expect(getByLabelText("Resume")).toBeTruthy()
   })
 
-  it("uses mode-specific start hints", () => {
-    const { getByA11yHint, rerender } = renderWithI18n(<Timer {...baseProps} />)
+  it("uses mode-specific start hints", async () => {
+    const { getByA11yHint, rerender } = await renderWithI18n(
+      <Timer {...baseProps} />,
+    )
 
     expect(getByA11yHint("Start focus timer")).toBeTruthy()
 
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer {...baseProps} timerMode="short" />
       </I18nProvider>,
@@ -123,10 +125,12 @@ describe("Timer", () => {
     expect(getByA11yHint("Start break timer")).toBeTruthy()
   })
 
-  it("shows cancel only while running", () => {
-    const { queryByText, rerender } = renderWithI18n(<Timer {...baseProps} />)
+  it("shows cancel only while running", async () => {
+    const { queryByText, rerender } = await renderWithI18n(
+      <Timer {...baseProps} />,
+    )
     expect(queryByText("Cancel")).toBeNull()
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer {...baseProps} status="running" />
       </I18nProvider>,
@@ -134,8 +138,8 @@ describe("Timer", () => {
     expect(queryByText("Cancel")).toBeTruthy()
   })
 
-  it("shows cancel while paused", () => {
-    const { getByText } = renderWithI18n(
+  it("shows cancel while paused", async () => {
+    const { getByText } = await renderWithI18n(
       <Timer {...baseProps} status="paused" canCancel />,
     )
 
@@ -143,8 +147,8 @@ describe("Timer", () => {
     expect(getByText("Cancel").parent!).toBeEnabled()
   })
 
-  it("shows a disabled cancel button when requested for accessibility", () => {
-    const { getByText } = renderWithI18n(
+  it("shows a disabled cancel button when requested for accessibility", async () => {
+    const { getByText } = await renderWithI18n(
       <Timer {...baseProps} showDisabledCancel />,
     )
 
@@ -152,40 +156,41 @@ describe("Timer", () => {
     expect(getByText("Cancel").parent!).toBeDisabled()
   })
 
-  it("disables cancel when running and cannot cancel", () => {
-    const { getByText } = renderWithI18n(
+  it("disables cancel when running and cannot cancel", async () => {
+    const { getByText } = await renderWithI18n(
       <Timer {...baseProps} status="running" canCancel={false} />,
     )
     expect(getByText("Cancel").parent!).toBeDisabled()
   })
 
-  it("hides controls when requested", () => {
-    const { queryByLabelText, queryByText, queryByTestId } = renderWithI18n(
-      <Timer {...baseProps} status="running" showControls={false} />,
-    )
+  it("hides controls when requested", async () => {
+    const { queryByLabelText, queryByText, queryByTestId } =
+      await renderWithI18n(
+        <Timer {...baseProps} status="running" showControls={false} />,
+      )
     expect(queryByLabelText("Pause")).toBeNull()
     expect(queryByText("Cancel")).toBeNull()
     expect(queryByTestId("timer-controls")).toBeNull()
   })
 
-  it("enables cancel by default while running", () => {
-    const { getByText } = renderWithI18n(
+  it("enables cancel by default while running", async () => {
+    const { getByText } = await renderWithI18n(
       <Timer {...baseProps} status="running" />,
     )
     expect(getByText("Cancel").parent!).toBeEnabled()
   })
 
-  it("calls handlers on press", () => {
+  it("calls handlers on press", async () => {
     const onToggle = jest.fn()
     const onCancel = jest.fn()
-    const { getByLabelText, getByText, rerender } = renderWithI18n(
+    const { getByLabelText, getByText, rerender } = await renderWithI18n(
       <Timer {...baseProps} onToggle={onToggle} onCancel={onCancel} />,
     )
 
-    fireEvent.press(getByLabelText("Start"))
+    await fireEvent.press(getByLabelText("Start"))
     expect(onToggle).toHaveBeenCalledTimes(1)
 
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer
           {...baseProps}
@@ -195,28 +200,28 @@ describe("Timer", () => {
         />
       </I18nProvider>,
     )
-    fireEvent.press(getByText("Cancel").parent!)
+    await fireEvent.press(getByText("Cancel").parent!)
     expect(onCancel).toHaveBeenCalledTimes(1)
   })
 
-  it("uses a custom cancel label when provided", () => {
-    const { getByText } = renderWithI18n(
+  it("uses a custom cancel label when provided", async () => {
+    const { getByText } = await renderWithI18n(
       <Timer {...baseProps} status="running" cancelLabel="Reset" canCancel />,
     )
     expect(getByText("Reset")).toBeTruthy()
   })
 
-  it("moves accessibility focus to the timer when starting", () => {
+  it("moves accessibility focus to the timer when starting", async () => {
     jest
       .spyOn(ReactNative.AccessibilityInfo, "setAccessibilityFocus")
       .mockImplementation()
     jest.spyOn(ReactNative, "findNodeHandle").mockReturnValue(42)
 
-    const { rerender } = renderWithI18n(
+    const { rerender } = await renderWithI18n(
       <Timer {...baseProps} shouldFocusReadoutOnStart />,
     )
 
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer {...baseProps} status="running" shouldFocusReadoutOnStart />
       </I18nProvider>,
@@ -229,17 +234,17 @@ describe("Timer", () => {
     ).toHaveBeenCalledWith(42)
   })
 
-  it("moves accessibility focus to the timer when resuming", () => {
+  it("moves accessibility focus to the timer when resuming", async () => {
     jest
       .spyOn(ReactNative.AccessibilityInfo, "setAccessibilityFocus")
       .mockImplementation()
     jest.spyOn(ReactNative, "findNodeHandle").mockReturnValue(42)
 
-    const { rerender } = renderWithI18n(
+    const { rerender } = await renderWithI18n(
       <Timer {...baseProps} status="paused" shouldFocusReadoutOnStart />,
     )
 
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer {...baseProps} status="running" shouldFocusReadoutOnStart />
       </I18nProvider>,
@@ -252,15 +257,15 @@ describe("Timer", () => {
     ).toHaveBeenCalledWith(42)
   })
 
-  it("does not move accessibility focus when the option is off", () => {
+  it("does not move accessibility focus when the option is off", async () => {
     jest
       .spyOn(ReactNative.AccessibilityInfo, "setAccessibilityFocus")
       .mockImplementation()
     jest.spyOn(ReactNative, "findNodeHandle").mockReturnValue(42)
 
-    const { rerender } = renderWithI18n(<Timer {...baseProps} />)
+    const { rerender } = await renderWithI18n(<Timer {...baseProps} />)
 
-    rerender(
+    await rerender(
       <I18nProvider i18n={i18n}>
         <Timer {...baseProps} status="running" />
       </I18nProvider>,

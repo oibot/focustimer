@@ -78,7 +78,7 @@ describe("useTimerLiveActivity", () => {
   })
 
   it("reconciles expired activities on mount", async () => {
-    renderLiveActivityHook({
+    await renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
     })
@@ -89,7 +89,7 @@ describe("useTimerLiveActivity", () => {
   })
 
   it("reconciles expired activities when the app becomes active", async () => {
-    renderLiveActivityHook({
+    await renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
     })
@@ -98,8 +98,8 @@ describe("useTimerLiveActivity", () => {
       expect(appStateHandler).not.toBeNull()
     })
 
-    act(() => appStateHandler?.("background"))
-    act(() => appStateHandler?.("active"))
+    await act(() => appStateHandler?.("background"))
+    await act(() => appStateHandler?.("active"))
 
     await waitFor(() => {
       expect(reconcileExpiredActivitiesMock).toHaveBeenCalledTimes(2)
@@ -107,12 +107,12 @@ describe("useTimerLiveActivity", () => {
   })
 
   it("starts when running begins", async () => {
-    const { rerender } = renderLiveActivityHook({
+    const { rerender } = await renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ status: "running", remainingMs: 5000 })
+    await rerender({ status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).toHaveBeenCalledWith(
@@ -127,7 +127,7 @@ describe("useTimerLiveActivity", () => {
       )
     })
 
-    rerender({ status: "running", remainingMs: 4000 })
+    await rerender({ status: "running", remainingMs: 4000 })
 
     await waitFor(() => {
       expect(updateActivityMock).not.toHaveBeenCalled()
@@ -135,18 +135,18 @@ describe("useTimerLiveActivity", () => {
   })
 
   it("updates when remaining time increases while running", async () => {
-    const { rerender } = renderLiveActivityHook({
+    const { rerender } = await renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ status: "running", remainingMs: 5000 })
+    await rerender({ status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).toHaveBeenCalled()
     })
 
-    rerender({ status: "running", remainingMs: 8000 })
+    await rerender({ status: "running", remainingMs: 8000 })
 
     await waitFor(() => {
       expect(updateActivityMock).toHaveBeenCalledWith(8, true)
@@ -154,18 +154,18 @@ describe("useTimerLiveActivity", () => {
   })
 
   it("ends when running stops", async () => {
-    const { rerender } = renderLiveActivityHook({
+    const { rerender } = await renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ status: "running", remainingMs: 5000 })
+    await rerender({ status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).toHaveBeenCalled()
     })
 
-    rerender({ status: "paused", remainingMs: 3000 })
+    await rerender({ status: "paused", remainingMs: 3000 })
 
     await waitFor(() => {
       expect(endActivityMock).toHaveBeenCalledWith(3, false)
@@ -173,18 +173,18 @@ describe("useTimerLiveActivity", () => {
   })
 
   it("ends when unmounting with an active activity", async () => {
-    const { rerender, unmount } = renderLiveActivityHook({
+    const { rerender, unmount } = await renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ status: "running", remainingMs: 5000 })
+    await rerender({ status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).toHaveBeenCalled()
     })
 
-    unmount()
+    await unmount()
 
     await waitFor(() => {
       expect(endActivityMock).toHaveBeenCalledWith(5, false)
@@ -194,18 +194,18 @@ describe("useTimerLiveActivity", () => {
   it("does not start when activities are disabled", async () => {
     areActivitiesEnabledMock.mockReturnValue(false)
 
-    const { rerender } = renderLiveActivityHook({
+    const { rerender } = await renderLiveActivityHook({
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ status: "running", remainingMs: 5000 })
+    await rerender({ status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).not.toHaveBeenCalled()
     })
 
-    rerender({ status: "paused", remainingMs: 4000 })
+    await rerender({ status: "paused", remainingMs: 4000 })
 
     await waitFor(() => {
       expect(endActivityMock).not.toHaveBeenCalled()
@@ -214,13 +214,13 @@ describe("useTimerLiveActivity", () => {
   })
 
   it("ends an active activity when the setting is disabled while still running", async () => {
-    const { rerender } = renderLiveActivityHook({
+    const { rerender } = await renderLiveActivityHook({
       enabled: true,
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ enabled: true, status: "running", remainingMs: 5000 })
+    await rerender({ enabled: true, status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).toHaveBeenCalled()
@@ -228,7 +228,7 @@ describe("useTimerLiveActivity", () => {
 
     expect(endActivityMock).not.toHaveBeenCalled()
 
-    rerender({ enabled: false, status: "running", remainingMs: 4000 })
+    await rerender({ enabled: false, status: "running", remainingMs: 4000 })
 
     await waitFor(() => {
       expect(endActivityMock).toHaveBeenCalledWith(4, false)
@@ -240,13 +240,13 @@ describe("useTimerLiveActivity", () => {
   it("does nothing on android", async () => {
     setPlatformOS("android")
 
-    const { rerender } = renderLiveActivityHook({
+    const { rerender } = await renderLiveActivityHook({
       enabled: true,
       status: "idle",
       remainingMs: 5000,
     })
 
-    rerender({ enabled: true, status: "running", remainingMs: 5000 })
+    await rerender({ enabled: true, status: "running", remainingMs: 5000 })
 
     await waitFor(() => {
       expect(startActivityMock).not.toHaveBeenCalled()

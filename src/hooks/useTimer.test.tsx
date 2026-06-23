@@ -17,7 +17,7 @@ describe("useTimer", () => {
     jest.clearAllMocks()
   })
 
-  it("exposes timer state and actions", () => {
+  it("exposes timer state and actions", async () => {
     const setStartingMs = jest.fn()
     const toggleTimer = jest.fn()
     const cancelTimer = jest.fn()
@@ -37,7 +37,7 @@ describe("useTimer", () => {
       },
     } as React.ContextType<typeof TimerContext>)
 
-    const { result } = renderHook(() => useTimer())
+    const { result } = await renderHook(() => useTimer())
 
     expect(result.current.remainingMs).toBe(5000)
     expect(result.current.status).toBe(status)
@@ -47,7 +47,7 @@ describe("useTimer", () => {
     expect(result.current.canCancel).toBe(false)
   })
 
-  it("marks canCancel true as soon as the timer starts", () => {
+  it("marks canCancel true as soon as the timer starts", async () => {
     mockUseContext.mockReturnValue({
       state: {
         startingMs: 6000,
@@ -62,12 +62,12 @@ describe("useTimer", () => {
       },
     } as React.ContextType<typeof TimerContext>)
 
-    const { result } = renderHook(() => useTimer())
+    const { result } = await renderHook(() => useTimer())
 
     expect(result.current.canCancel).toBe(true)
   })
 
-  it("marks canCancel true when paused", () => {
+  it("marks canCancel true when paused", async () => {
     mockUseContext.mockReturnValue({
       state: {
         startingMs: 6000,
@@ -82,7 +82,7 @@ describe("useTimer", () => {
       },
     } as React.ContextType<typeof TimerContext>)
 
-    const { result } = renderHook(() => useTimer())
+    const { result } = await renderHook(() => useTimer())
 
     expect(result.current.canCancel).toBe(true)
   })
