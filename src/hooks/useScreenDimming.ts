@@ -1,5 +1,6 @@
 import * as Brightness from "expo-brightness"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { AppState } from "react-native"
 
 import {
   getDimmedBrightnessTarget,
@@ -21,6 +22,9 @@ export default function useScreenDimming({
 }: UseScreenDimmingParams) {
   const originalBrightnessRef = useRef<number | null>(null)
   const dimTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [isAppActive, setIsAppActive] = useState(
+    AppState.currentState === "active",
+  )
 
   const clearDimTimeout = useCallback(() => {
     if (dimTimeoutRef.current === null) return
@@ -39,9 +43,19 @@ export default function useScreenDimming({
   }, [clearDimTimeout])
 
   useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      setIsAppActive(nextAppState === "active")
+    })
+
+    return () => {
+      subscription.remove()
+    }
+  }, [])
+
+  useEffect(() => {
     let cancelled = false
 
-    if (!enabled || !shouldDim) {
+    if (!enabled || !shouldDim || !isAppActive) {
       restoreBrightness()
       return
     }
@@ -72,6 +86,7 @@ export default function useScreenDimming({
     delayMs,
     dimmedBrightnessPercent,
     enabled,
+    isAppActive,
     restoreBrightness,
     shouldDim,
   ])
