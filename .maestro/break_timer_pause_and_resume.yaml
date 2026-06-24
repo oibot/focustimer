@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: break_timer_pause_and_resume
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- tapOn:
+    text: "Break"
+- tapOn:
+    id: "timer-toggle-button"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Pause"
+    enabled: true
+- tapOn:
+    id: "timer-toggle-button"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Resume"
+    enabled: true
+- assertVisible:
+    id: "timer-cancel-button"
+    text: "Stop"
+    enabled: true
+- assertVisible:
+    text: "Focus"
+    enabled: false
+- tapOn:
+    id: "timer-toggle-button"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Pause"
+    enabled: true
+- assertVisible:
+    id: "timer-cancel-button"
+    text: "Stop"
+    enabled: true
