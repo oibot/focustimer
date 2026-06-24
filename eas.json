@@ -18,6 +18,15 @@
         "APP_VARIANT": "test"
       }
     },
+    "simulator": {
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "test"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
     "production": {
       "autoIncrement": true,
       "env": {
