@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+name: focus_timer_cancel_end_resets_to_idle
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- tapOn:
+    id: "timer-toggle-button"
+- tapOn:
+    id: "timer-tap-gesture-background"
+- tapOn:
+    id: "timer-cancel-button"
+- assertVisible: "End focus session"
+- assertVisible: "Your current focus timer will reset."
+- tapOn:
+    text: "End"
+    retryTapIfNoChange: true
+    waitToSettleTimeoutMs: 1000
+    repeat: 2
+    delay: 300
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Start"
+    enabled: true
+- assertNotVisible:
+    id: "timer-cancel-button"
+- assertVisible:
+    text: "Break"
+    enabled: true

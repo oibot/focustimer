@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: focus_timer_pause_shows_resume_and_cancel
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- tapOn:
+    id: "timer-toggle-button"
+- tapOn:
+    id: "timer-tap-gesture-background"
+- tapOn:
+    id: "timer-toggle-button"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Resume"
+    enabled: true
+- assertVisible:
+    id: "timer-cancel-button"
+    text: "Cancel"
+    enabled: true
+- assertVisible:
+    text: "Break"
+    enabled: false

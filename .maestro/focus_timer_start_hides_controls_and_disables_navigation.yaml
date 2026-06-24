@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: focus_timer_start_hides_controls_and_disables_navigation
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- tapOn:
+    id: "timer-toggle-button"
+- assertNotVisible:
+    id: "timer-toggle-button"
+- assertNotVisible:
+    id: "timer-cancel-button"
+- assertVisible:
+    text: "Break"
+    enabled: false
