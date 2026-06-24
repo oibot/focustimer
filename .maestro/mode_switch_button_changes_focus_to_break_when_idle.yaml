@@ -1,20 +1,16 @@
 appId: ${APP_ID}
-name: notification_permission_denied_still_opens_timer
+name: mode_switch_button_changes_focus_to_break_when_idle
 ---
-- launchApp:
-    clearState: true
-    permissions:
-      notifications: deny
 - runFlow:
-    when:
-      visible: "^Don.t [Aa]llow$"
-    commands:
-      - tapOn: "^Don.t [Aa]llow$"
+    file: common/launch_app_allow_notifications.yaml
 - assertVisible:
     id: "timer-mode-title"
     text: "Focus"
+- tapOn:
+    text: "Break"
 - assertVisible:
-    id: "timer-readout"
+    id: "timer-mode-title"
+    text: "Break"
 - assertVisible:
     id: "timer-toggle-button"
     text: "Start"
@@ -22,5 +18,5 @@ name: notification_permission_denied_still_opens_timer
 - assertNotVisible:
     id: "timer-cancel-button"
 - assertVisible:
-    text: "Break"
+    text: "Focus"
     enabled: true

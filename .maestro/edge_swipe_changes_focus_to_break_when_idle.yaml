@@ -1,0 +1,20 @@
+appId: ${APP_ID}
+name: edge_swipe_changes_focus_to_break_when_idle
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- assertVisible:
+    id: "timer-edge-swipe-right"
+- swipe:
+    from:
+      id: "timer-edge-swipe-right"
+    direction: LEFT
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Break"
+- assertVisible:
+    text: "Focus"
+    enabled: true
