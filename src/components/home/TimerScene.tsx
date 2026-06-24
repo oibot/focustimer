@@ -1,13 +1,10 @@
 import { useLingui } from "@lingui/react/macro"
 import { useAudioPlayer } from "expo-audio"
-import { useKeepAwake } from "expo-keep-awake"
 import type { LiveActivityStrings } from "local:live-activities-controller"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { Alert, Text, View } from "react-native"
-import { GestureDetector } from "react-native-gesture-handler"
-import { StyleSheet } from "react-native-unistyles"
+import { Alert } from "react-native"
 
-import Timer from "@/components/home/Timer"
+import TimerView from "@/components/home/TimerView"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
 import useScreenDimming from "@/hooks/useScreenDimming"
 import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
@@ -25,11 +22,6 @@ type TimerSceneProps = {
   mode?: string
   onDone: (nextMode: string) => void
   onModeChange: (nextMode: string) => void
-}
-
-function KeepAwakeWhileRunning() {
-  useKeepAwake()
-  return null
 }
 
 export default function TimerScene({
@@ -163,124 +155,28 @@ export default function TimerScene({
     cancelTimer()
     onDone(nextMode)
   }
-  const showsTapGesture = status === "running"
 
   return (
-    <View style={styles.container}>
-      {showsTapGesture ? (
-        <GestureDetector gesture={tapGesture}>
-          <View
-            testID="timer-tap-gesture-background"
-            style={styles.background}
-          />
-        </GestureDetector>
-      ) : null}
-      {activeEdge ? (
-        <GestureDetector gesture={edgeSwipeGesture}>
-          <View
-            testID={
-              activeEdge === "left"
-                ? "timer-edge-swipe-left"
-                : "timer-edge-swipe-right"
-            }
-            style={[
-              styles.edgeSwipeZone,
-              activeEdge === "left"
-                ? styles.edgeSwipeZoneLeft
-                : styles.edgeSwipeZoneRight,
-            ]}
-            accessible={false}
-          />
-        </GestureDetector>
-      ) : null}
-
-      {status === "running" && keepScreenAwake ? (
-        <KeepAwakeWhileRunning />
-      ) : null}
-
-      <View
-        testID="timer-mode-title"
-        pointerEvents="none"
-        accessible
-        accessibilityRole="header"
-        accessibilityLabel={timerMode === "focus" ? focusLabel : breakLabel}
-        style={styles.titleContainer}
-      >
-        <Text style={styles.titleText}>
-          {timerMode === "focus" ? focusLabel : breakLabel}
-        </Text>
-      </View>
-
-      <View style={styles.timerContainer} pointerEvents="box-none">
-        <Timer
-          remainingMs={remainingMs}
-          status={status}
-          timerMode={timerMode}
-          onToggle={toggleTimer}
-          onCancel={handleCancel}
-          cancelLabel={cancelLabel}
-          canCancel={canCancel}
-          showControls={
-            isScreenReaderEnabled || timerMode !== "focus" || showControls
-          }
-          showDisabledCancel={isScreenReaderEnabled}
-          animateDigits={!isScreenReaderEnabled}
-          usePlainTime={isScreenReaderEnabled}
-          shouldFocusReadoutOnStart={isScreenReaderEnabled}
-        />
-      </View>
-    </View>
+    <TimerView
+      activeEdge={activeEdge}
+      animateDigits={!isScreenReaderEnabled}
+      breakLabel={breakLabel}
+      canCancel={canCancel}
+      cancelLabel={cancelLabel}
+      edgeSwipeGesture={edgeSwipeGesture}
+      focusLabel={focusLabel}
+      isScreenReaderEnabled={isScreenReaderEnabled}
+      keepScreenAwake={keepScreenAwake}
+      onCancel={handleCancel}
+      onToggle={toggleTimer}
+      remainingMs={remainingMs}
+      showControls={
+        isScreenReaderEnabled || timerMode !== "focus" || showControls
+      }
+      status={status}
+      tapGesture={tapGesture}
+      timerMode={timerMode}
+      usePlainTime={isScreenReaderEnabled}
+    />
   )
 }
-
-const styles = StyleSheet.create((theme, rt) => ({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  background: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-  },
-  edgeSwipeZone: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    width: 64,
-    backgroundColor: "transparent",
-    zIndex: 1,
-  },
-  edgeSwipeZoneLeft: {
-    left: 0,
-  },
-  edgeSwipeZoneRight: {
-    right: 0,
-  },
-  titleContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    paddingTop: rt.insets.top + 12,
-    paddingHorizontal: 24,
-    zIndex: 1,
-  },
-  titleText: {
-    color: theme.colors.primary,
-    fontSize: 32,
-    fontWeight: "600",
-    textAlign: "left",
-  },
-  timerContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-}))

@@ -18,7 +18,7 @@ export default function useTimerModeEdgeSwipe({
   timerMode,
   onModeChange,
 }: UseTimerModeEdgeSwipeParams) {
-  const activeEdge =
+  const activeEdge: "left" | "right" | null =
     status === "idle" ? (timerMode === "focus" ? "right" : "left") : null
 
   const edgeSwipeGesture = Gesture.Pan()
