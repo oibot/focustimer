@@ -42,7 +42,7 @@ The main suite should run in the default app locale and cover behavior. Locale-s
 
 ### Timer completion
 
-These cases likely need a test-only short duration or debug setup so the timer can complete quickly.
+These cases use the test-only `focusonly://e2e-setup` route to configure short timer durations before starting the timer. The route is guarded by `APP_VARIANT=test` and accepts `focusDurationMs`, `breakDurationMs`, `completionSound`, and optional `mode=short` query parameters.
 
 - `focus_timer_completion_opens_start_break_sheet`
 - `focus_timer_completion_start_break_enters_break_mode`

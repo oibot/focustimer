@@ -105,6 +105,7 @@ const config: ExpoConfig = {
     "expo-localization",
   ],
   extra: {
+    appVariant: variant ?? "production",
     eas: {
       projectId: "7db1fae9-e214-4dab-b8e0-5be5136c2455",
     },
