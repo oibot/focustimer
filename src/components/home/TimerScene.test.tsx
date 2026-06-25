@@ -439,6 +439,36 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("short")
   })
 
+  it("continues the completion flow when audio playback fails", async () => {
+    const cancelTimer = jest.fn()
+    const onDone = jest.fn()
+    const error = new Error("Audio failed")
+
+    mockUseAudioPlayer.mockReturnValueOnce({
+      play: jest.fn(() => {
+        throw error
+      }),
+      seekTo: jest.fn(),
+    } as unknown as ReturnType<typeof useAudioPlayer>)
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "done",
+      cancelTimer,
+    })
+
+    await renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={onDone}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(cancelTimer).toHaveBeenCalledTimes(1)
+    expect(onDone).toHaveBeenCalledWith("short")
+  })
+
   it("does not play audio when completion sound is off", async () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()

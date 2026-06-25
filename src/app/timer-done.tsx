@@ -6,6 +6,7 @@ export default function Page() {
   const router = useRouter()
   const { next } = useLocalSearchParams<{ next?: string }>()
   const nextMode = next === "short" ? next : "focus"
+  const currentMode = nextMode === "focus" ? "short" : "focus"
 
   const handleStart = () => {
     router.dismissTo({
@@ -15,7 +16,10 @@ export default function Page() {
   }
 
   const handleCancel = () => {
-    router.dismiss()
+    router.dismissTo({
+      pathname: "/",
+      params: { mode: currentMode },
+    })
   }
 
   return (

@@ -9,5 +9,9 @@ name: break_timer_stop_opens_start_focus_done_sheet
     id: "timer-toggle-button"
 - tapOn:
     id: "timer-cancel-button"
-- assertVisible: "Start Focus"
-- assertVisible: "Cancel"
+- assertVisible:
+    id: "timer-done-start-button"
+    text: "Start Focus"
+- assertVisible:
+    id: "timer-done-cancel-button"
+    text: "Cancel"

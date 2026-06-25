@@ -1,28 +1,26 @@
 appId: ${APP_ID}
-name: break_timer_stop_cancel_returns_to_break_timer
+name: break_timer_completion_start_focus_enters_focus_mode
 ---
 - runFlow:
     file: common/launch_app_allow_notifications.yaml
-- tapOn:
-    text: "Break"
+- runFlow:
+    file: common/setup_short_break_timer.yaml
 - tapOn:
     id: "timer-toggle-button"
+- extendedWaitUntil:
+    visible:
+      id: "timer-done-start-button"
+      text: "Start Focus"
+    timeout: 7000
 - tapOn:
-    id: "timer-cancel-button"
-- assertVisible:
     id: "timer-done-start-button"
-    text: "Start Focus"
-- tapOn:
-    id: "timer-done-cancel-button"
 - assertVisible:
     id: "timer-mode-title"
-    text: "Break"
+    text: "Focus"
 - assertVisible:
     id: "timer-toggle-button"
     text: "Start"
     enabled: true
-- assertNotVisible:
-    id: "timer-cancel-button"
 - assertVisible:
-    text: "Focus"
+    text: "Break"
     enabled: true

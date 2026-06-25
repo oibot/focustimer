@@ -1,4 +1,5 @@
 import { useLingui } from "@lingui/react/macro"
+import * as Sentry from "@sentry/react-native"
 import { useAudioPlayer } from "expo-audio"
 import type { LiveActivityStrings } from "local:live-activities-controller"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -108,8 +109,12 @@ export default function TimerScene({
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
       if (selectedCompletionSound.audioSource !== null) {
-        player.seekTo(0)
-        player.play()
+        try {
+          player.seekTo(0)
+          player.play()
+        } catch (error) {
+          Sentry.captureException(error)
+        }
       }
       cancelTimer()
       onDone(nextMode)

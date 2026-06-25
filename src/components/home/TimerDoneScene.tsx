@@ -27,8 +27,16 @@ export default function TimerDoneScene({
 
   return (
     <View style={styles.container}>
-      <PrimaryButton label={buttonLabel} onPress={onStart} />
-      <DestructiveButton label={t`Cancel`} onPress={handleCancel} />
+      <PrimaryButton
+        testID="timer-done-start-button"
+        label={buttonLabel}
+        onPress={onStart}
+      />
+      <DestructiveButton
+        testID="timer-done-cancel-button"
+        label={t`Cancel`}
+        onPress={handleCancel}
+      />
     </View>
   )
 }

@@ -102,7 +102,7 @@ Do not duplicate the full E2E suite for every locale. Use the default locale for
 
 ## Implemented Maestro coverage
 
-Current flows in `.maestro/` cover the Launch / Home timer, Focus timer, Timer mode switching, and Break timer cases:
+Current flows in `.maestro/` cover the Launch / Home timer, Focus timer, Timer mode switching, Break timer, and Timer completion cases:
 
 - `launch_shows_focus_timer_default_state`
 - `notification_permission_denied_still_opens_timer`
@@ -124,5 +124,12 @@ Current flows in `.maestro/` cover the Launch / Home timer, Focus timer, Timer m
 - `break_timer_pause_and_resume`
 - `break_timer_stop_opens_start_focus_done_sheet`
 - `break_timer_stop_cancel_returns_to_break_timer`
+- `focus_timer_completion_opens_start_break_sheet`
+- `focus_timer_completion_start_break_enters_break_mode`
+- `focus_timer_completion_cancel_returns_to_timer`
+- `break_timer_completion_opens_start_focus_sheet`
+- `break_timer_completion_start_focus_enters_focus_mode`
+- `completion_sound_off_does_not_block_completion_flow`
+- `completion_sound_selected_does_not_block_completion_flow`
 
-Main missing areas are settings, completion sheets, persistence, and focused translation smoke tests.
+Main missing areas are settings, persistence, and focused translation smoke tests.

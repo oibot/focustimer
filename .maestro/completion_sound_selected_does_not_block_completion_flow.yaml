@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: completion_sound_selected_does_not_block_completion_flow
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- openLink: "focusonly://e2e-setup?focusDurationMs=1500&breakDurationMs=1500&completionSound=cheering"
+- runFlow:
+    when:
+      visible: "^Open$"
+    commands:
+      - tapOn: "^Open$"
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- tapOn:
+    id: "timer-toggle-button"
+- extendedWaitUntil:
+    visible:
+      id: "timer-done-start-button"
+      text: "Start Break"
+    timeout: 7000

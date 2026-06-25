@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+---
+- openLink: "focusonly://e2e-setup?focusDurationMs=1500&breakDurationMs=1500&completionSound=off&mode=short"
+- runFlow:
+    when:
+      visible: "^Open$"
+    commands:
+      - tapOn: "^Open$"
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Break"
