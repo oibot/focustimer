@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: mode_switch_button_disabled_while_timer_running
+tags:
+  - mode-switching
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/start_focus_timer.yaml
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- assertVisible:
+    text: "Break"
+    enabled: false
+- assertNotVisible:
+    id: "timer-toggle-button"
+- assertNotVisible:
+    id: "timer-cancel-button"

@@ -1,0 +1,13 @@
+appId: ${APP_ID}
+---
+- tapOn:
+    id: "timer-toggle-button"
+- extendedWaitUntil:
+    visible:
+      text: "Break"
+      enabled: false
+    timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: "timer-tap-gesture-background"
+    timeout: 5000

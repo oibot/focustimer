@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+name: settings_save_without_changes_returns_home
+tags:
+  - settings
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/open_settings.yaml
+- tapOn: "Save"
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Start"

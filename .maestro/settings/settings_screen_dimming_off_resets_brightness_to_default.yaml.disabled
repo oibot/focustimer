@@ -1,0 +1,39 @@
+# Temporarily commented out: dimming settings Maestro test.
+# appId: ${APP_ID}
+# name: settings_screen_dimming_off_resets_brightness_to_default
+# ---
+# - runFlow:
+#     file: ../common/launch_app_allow_notifications.yaml
+# - runFlow:
+#     file: ../common/open_settings.yaml
+# - scrollUntilVisible:
+#     element: "Screen dimming"
+#     direction: DOWN
+# - tapOn:
+#     text: "0"
+#     childOf:
+#       id: "settings-screen-dimming-toggle"
+# - scrollUntilVisible:
+#     element: "15%"
+#     direction: DOWN
+# - swipe:
+#     id: "settings-screen-dimming-brightness-slider"
+#     start: "50%,80%"
+#     end: "50%,20%"
+# - assertVisible: "5%"
+# - scrollUntilVisible:
+#     element: "Screen dimming"
+#     direction: UP
+#     centerElement: true
+# - tapOn:
+#     text: "1"
+#     childOf:
+#       id: "settings-screen-dimming-toggle"
+# - assertNotVisible: "5%"
+# - tapOn:
+#     text: "0"
+#     childOf:
+#       id: "settings-screen-dimming-toggle"
+# - scrollUntilVisible:
+#     element: "15%"
+#     direction: DOWN

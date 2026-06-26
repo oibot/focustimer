@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: settings_break_duration_change_persists_after_save
+tags:
+  - settings
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/open_settings.yaml
+- assertVisible: "5 minutes"
+- swipe:
+    start: "16%, 35%"
+    end: "73%, 35%"
+    duration: 800
+- assertVisible: "20 minutes"
+- tapOn: "Save"
+- runFlow:
+    file: ../common/open_settings.yaml
+- assertVisible: "20 minutes"

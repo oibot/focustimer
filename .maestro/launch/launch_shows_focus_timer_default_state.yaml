@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: launch_shows_focus_timer_default_state
+tags:
+  - launch
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- assertVisible:
+    id: "timer-readout"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Start"
+    enabled: true
+- assertNotVisible:
+    id: "timer-cancel-button"
+- assertVisible:
+    text: "Break"
+    enabled: true

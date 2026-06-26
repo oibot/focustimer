@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+name: settings_sections_are_visible
+tags:
+  - settings
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/open_settings.yaml
+- assertVisible: "Focus"
+- assertVisible: "Break"
+- scrollUntilVisible:
+    element: "Completion Sound"
+    direction: DOWN
+- assertVisible: "Sounds"
+- assertVisible: "Completion Sound"
+- scrollUntilVisible:
+    element: "Enable Live Activities"
+    direction: DOWN
+- assertVisible: "Live Activities"
+- scrollUntilVisible:
+    element: "Keep Screen Awake"
+    direction: DOWN
+- assertVisible: "Display"
+- scrollUntilVisible:
+    element: "Screen dimming"
+    direction: DOWN
+- assertVisible: "Screen dimming"

@@ -1,0 +1,20 @@
+# Temporarily commented out: dimming settings Maestro test.
+# appId: ${APP_ID}
+# name: settings_screen_dimming_toggle_shows_brightness_slider
+# ---
+# - runFlow:
+#     file: ../common/launch_app_allow_notifications.yaml
+# - runFlow:
+#     file: ../common/open_settings.yaml
+# - scrollUntilVisible:
+#     element: "Screen dimming"
+#     direction: DOWN
+#     centerElement: true
+# - assertNotVisible: "15%"
+# - tapOn:
+#     text: "0"
+#     childOf:
+#       id: "settings-screen-dimming-toggle"
+# - scrollUntilVisible:
+#     element: "15%"
+#     direction: DOWN

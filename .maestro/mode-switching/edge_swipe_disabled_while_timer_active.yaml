@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+name: edge_swipe_disabled_while_timer_active
+tags:
+  - mode-switching
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/start_focus_timer.yaml
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- assertNotVisible:
+    id: "timer-edge-swipe-right"
+- assertNotVisible:
+    id: "timer-edge-swipe-left"
+- swipe:
+    start: 95%, 50%
+    end: 10%, 50%
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- assertVisible:
+    text: "Break"
+    enabled: false

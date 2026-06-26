@@ -1,0 +1,50 @@
+flows:
+  - launch/*.yaml
+  - focus-timer/*.yaml
+  - break-timer/*.yaml
+  - mode-switching/*.yaml
+  - timer-completion/*.yaml
+  - settings/*.yaml
+
+executionOrder:
+  continueOnFailure: true
+  flowsOrder:
+    - launch_shows_focus_timer_default_state
+    - notification_permission_denied_still_opens_timer
+    - focus_timer_cancel_end_resets_to_idle
+    - focus_timer_cancel_keep_going_keeps_timer_running
+    - focus_timer_pause_shows_resume_and_cancel
+    - focus_timer_resume_continues_running
+    - focus_timer_start_hides_controls_and_disables_navigation
+    - focus_timer_tap_reveals_pause_and_cancel_controls
+    - break_timer_initial_state
+    - break_timer_pause_and_resume
+    - break_timer_start_keeps_controls_visible
+    - break_timer_stop_cancel_returns_to_break_timer
+    - break_timer_stop_opens_start_focus_done_sheet
+    - edge_swipe_changes_break_to_focus_when_idle
+    - edge_swipe_changes_focus_to_break_when_idle
+    - edge_swipe_disabled_while_timer_active
+    - mode_switch_button_changes_break_to_focus_when_idle
+    - mode_switch_button_changes_focus_to_break_when_idle
+    - mode_switch_button_disabled_while_timer_paused
+    - mode_switch_button_disabled_while_timer_running
+    - break_timer_completion_opens_start_focus_sheet
+    - break_timer_completion_start_focus_enters_focus_mode
+    - completion_sound_off_does_not_block_completion_flow
+    - completion_sound_selected_does_not_block_completion_flow
+    - focus_timer_completion_cancel_returns_to_timer
+    - focus_timer_completion_opens_start_break_sheet
+    - focus_timer_completion_start_break_enters_break_mode
+    - settings_break_duration_change_persists_after_save
+    - settings_cancel_without_changes_returns_home
+    - settings_completion_sound_picker_changes_and_persists
+    - settings_focus_duration_change_persists_after_save
+    - settings_keep_screen_awake_toggle_changes_and_persists
+    - settings_live_activities_toggle_changes_and_persists
+    - settings_open_from_idle_timer
+    - settings_save_without_changes_returns_home
+    - settings_sections_are_visible
+    - settings_unsaved_cancel_discard_returns_home
+    - settings_unsaved_cancel_keep_editing_stays_on_settings
+    - settings_values_persist_after_app_relaunch

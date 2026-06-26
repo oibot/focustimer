@@ -1,7 +1,12 @@
 appId: ${APP_ID}
 ---
 - launchApp:
+    stopApp: true
     clearState: true
     permissions:
       notifications: allow
+- extendedWaitUntil:
+    visible:
+      id: "timer-toggle-button"
+    timeout: 10000
 

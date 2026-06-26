@@ -1,0 +1,26 @@
+appId: ${APP_ID}
+name: focus_timer_resume_continues_running
+tags:
+  - focus-timer
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/start_focus_timer.yaml
+- tapOn:
+    id: "timer-tap-gesture-background"
+- tapOn:
+    id: "timer-toggle-button"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Resume"
+    enabled: true
+- tapOn:
+    id: "timer-toggle-button"
+- assertNotVisible:
+    id: "timer-toggle-button"
+- assertNotVisible:
+    id: "timer-cancel-button"
+- assertVisible:
+    text: "Break"
+    enabled: false

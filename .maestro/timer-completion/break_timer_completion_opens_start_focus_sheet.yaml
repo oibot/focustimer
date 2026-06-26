@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: break_timer_completion_opens_start_focus_sheet
+tags:
+  - timer-completion
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/setup_short_break_timer.yaml
+- tapOn:
+    id: "timer-toggle-button"
+- extendedWaitUntil:
+    visible:
+      id: "timer-done-start-button"
+      text: "Start Focus"
+    timeout: 7000
+- assertVisible:
+    id: "timer-done-cancel-button"
+    text: "Cancel"

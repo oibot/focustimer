@@ -1,9 +1,0 @@
-appId: ${APP_ID}
-name: settings_open_from_idle_timer
----
-- runFlow:
-    file: common/launch_app_allow_notifications.yaml
-- runFlow:
-    file: common/open_settings.yaml
-- assertVisible: "Focus"
-- assertVisible: "Break"

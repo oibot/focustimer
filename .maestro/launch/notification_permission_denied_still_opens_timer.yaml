@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+name: notification_permission_denied_still_opens_timer
+tags:
+  - launch
+---
+- launchApp:
+    stopApp: true
+    clearState: true
+    permissions:
+      notifications: deny
+- extendedWaitUntil:
+    visible:
+      id: "timer-toggle-button"
+    timeout: 10000
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"
+- assertVisible:
+    id: "timer-readout"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Start"
+    enabled: true
+- assertNotVisible:
+    id: "timer-cancel-button"
+- assertVisible:
+    text: "Break"
+    enabled: true

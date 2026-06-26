@@ -102,7 +102,19 @@ Do not duplicate the full E2E suite for every locale. Use the default locale for
 
 ## Implemented Maestro coverage
 
-Current flows in `.maestro/` cover the Launch / Home timer, Focus timer, Timer mode switching, Break timer, and Timer completion cases:
+Current flows in `.maestro/` are organized by feature folder:
+
+- `.maestro/launch/` — app launch and notification permission behavior
+- `.maestro/focus-timer/` — focus timer controls and cancellation
+- `.maestro/break-timer/` — break timer controls and stop behavior
+- `.maestro/mode-switching/` — toolbar and edge-swipe mode changes
+- `.maestro/timer-completion/` — completion sheets and completion sound flows
+- `.maestro/settings/` — settings navigation, persistence, and unsaved-change flows
+- `.maestro/common/` — reusable setup subflows
+
+`.maestro/config.yaml` defines the feature-folder inclusion patterns. This lets `maestro test .maestro` discover nested flows while keeping common subflows and disabled `.yaml.disabled` dimming flows out of the runnable suite.
+
+Implemented flows:
 
 - `launch_shows_focus_timer_default_state`
 - `notification_permission_denied_still_opens_timer`

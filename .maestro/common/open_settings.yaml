@@ -1,4 +1,9 @@
 appId: ${APP_ID}
 ---
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
 - tapOn: "Settings"
-- assertVisible: "Save"
+- extendedWaitUntil:
+    visible: "Save"
+    timeout: 10000

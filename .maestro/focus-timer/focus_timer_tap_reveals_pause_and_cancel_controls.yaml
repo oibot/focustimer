@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: focus_timer_tap_reveals_pause_and_cancel_controls
+tags:
+  - focus-timer
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/start_focus_timer.yaml
+- tapOn:
+    id: "timer-tap-gesture-background"
+- assertVisible:
+    id: "timer-toggle-button"
+    text: "Pause"
+    enabled: true
+- assertVisible:
+    id: "timer-cancel-button"
+    text: "Cancel"
+    enabled: true
+- assertVisible:
+    text: "Break"
+    enabled: false
