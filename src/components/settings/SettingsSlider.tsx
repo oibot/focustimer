@@ -7,6 +7,7 @@ type SettingsSliderProps = {
   max: number
   step: number
   minimumSystemImage: ImageProps["systemName"]
+  testID?: string
   onValueChange: (value: number) => void
 }
 
@@ -17,6 +18,7 @@ export function SettingsSlider({
   max,
   step,
   minimumSystemImage,
+  testID,
   onValueChange,
 }: SettingsSliderProps) {
   return (
@@ -25,6 +27,7 @@ export function SettingsSlider({
       max={max}
       step={step}
       value={value}
+      testID={testID}
       minimumValueLabel={<Image systemName={minimumSystemImage} size={18} />}
       maximumValueLabel={<Text>{valueLabel}</Text>}
       onValueChange={onValueChange}

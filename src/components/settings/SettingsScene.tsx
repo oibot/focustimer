@@ -153,6 +153,7 @@ export function SettingsScene() {
               value={focusTimeMinutes}
               valueLabel={focusTimeLabel}
               minimumSystemImage="timer"
+              testID="settings-focus-duration-slider"
               onValueChange={(value) => {
                 setFocusTimeMinutes(value)
               }}
@@ -166,6 +167,7 @@ export function SettingsScene() {
               value={breakTimeMinutes}
               valueLabel={breakTimeLabel}
               minimumSystemImage="timer"
+              testID="settings-break-duration-slider"
               onValueChange={(value) => {
                 setBreakTimeMinutes(value)
               }}
@@ -181,6 +183,7 @@ export function SettingsScene() {
           >
             <Picker
               label={t`Completion Sound`}
+              testID="settings-completion-sound-picker"
               selection={completionSound}
               onSelectionChange={(value) => {
                 setCompletionSound(value as CompletionSound)
@@ -204,6 +207,7 @@ export function SettingsScene() {
           >
             <Toggle
               label={t`Enable Live Activities`}
+              testID="settings-live-activities-toggle"
               isOn={liveActivitiesEnabled}
               onIsOnChange={setLiveActivitiesEnabled}
             />
@@ -217,6 +221,7 @@ export function SettingsScene() {
           >
             <Toggle
               label={t`Keep Screen Awake`}
+              testID="settings-keep-screen-awake-toggle"
               isOn={keepScreenAwake}
               onIsOnChange={setKeepScreenAwake}
             />
@@ -227,6 +232,7 @@ export function SettingsScene() {
           >
             <Toggle
               label={t`Screen dimming`}
+              testID="settings-screen-dimming-toggle"
               isOn={screenDimmingEnabled}
               onIsOnChange={(nextValue) => {
                 setScreenDimmingEnabled(nextValue)
@@ -243,6 +249,7 @@ export function SettingsScene() {
                 value={dimmedBrightnessPercent}
                 valueLabel={dimmedBrightnessLabel}
                 minimumSystemImage="sun.min"
+                testID="settings-screen-dimming-brightness-slider"
                 onValueChange={(value) => {
                   setDimmedBrightnessPercent(Math.round(value))
                 }}
