@@ -439,6 +439,53 @@ describe("TimerScene", () => {
     expect(onDone).toHaveBeenCalledWith("short")
   })
 
+  it("waits for audio seek before playing completion sound", async () => {
+    const cancelTimer = jest.fn()
+    const onDone = jest.fn()
+    let resolveSeek: () => void = () => {}
+    const seekPromise = new Promise<void>((resolve) => {
+      resolveSeek = resolve
+    })
+    const player = {
+      play: jest.fn(),
+      seekTo: jest.fn(() => seekPromise),
+    }
+
+    mockUseAudioPlayer.mockReturnValueOnce(
+      player as unknown as ReturnType<typeof useAudioPlayer>,
+    )
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "done",
+      cancelTimer,
+    })
+
+    await renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={onDone}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    expect(player.seekTo).toHaveBeenCalledWith(0)
+    expect(player.play).not.toHaveBeenCalled()
+    expect(cancelTimer).not.toHaveBeenCalled()
+    expect(onDone).not.toHaveBeenCalled()
+
+    await act(async () => {
+      resolveSeek()
+      await seekPromise
+    })
+
+    await waitFor(() => {
+      expect(player.play).toHaveBeenCalledTimes(1)
+      expect(cancelTimer).toHaveBeenCalledTimes(1)
+      expect(onDone).toHaveBeenCalledWith("short")
+    })
+  })
+
   it("continues the completion flow when audio playback fails", async () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()

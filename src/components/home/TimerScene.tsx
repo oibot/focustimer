@@ -108,16 +108,18 @@ export default function TimerScene({
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
-      if (selectedCompletionSound.audioSource !== null) {
-        try {
-          player.seekTo(0)
-          player.play()
-        } catch (error) {
-          Sentry.captureException(error)
+      void (async () => {
+        if (selectedCompletionSound.audioSource !== null) {
+          try {
+            await player.seekTo(0)
+            player.play()
+          } catch (error) {
+            Sentry.captureException(error)
+          }
         }
-      }
-      cancelTimer()
-      onDone(nextMode)
+        cancelTimer()
+        onDone(nextMode)
+      })()
       return
     }
     if (status !== "done") {
