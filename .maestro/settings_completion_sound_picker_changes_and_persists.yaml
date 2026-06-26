@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: settings_completion_sound_picker_changes_and_persists
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: common/open_settings.yaml
+- scrollUntilVisible:
+    element: "Completion Sound"
+    direction: DOWN
+- tapOn:
+    id: "settings-completion-sound-picker"
+- tapOn: "Marimba"
+- assertVisible: "Marimba"
+- tapOn: "Save"
+- runFlow:
+    file: common/open_settings.yaml
+- scrollUntilVisible:
+    element: "Marimba"
+    direction: DOWN
+- assertVisible: "Marimba"

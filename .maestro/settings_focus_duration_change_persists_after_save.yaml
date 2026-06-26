@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+name: settings_focus_duration_change_persists_after_save
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: common/open_settings.yaml
+- assertVisible: "25 minutes"
+- swipe:
+    start: "32%, 22%"
+    end: "16%, 22%"
+    duration: 800
+- assertVisible: "10 minutes"
+- tapOn: "Save"
+- runFlow:
+    file: common/open_settings.yaml
+- assertVisible: "10 minutes"

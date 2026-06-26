@@ -4,8 +4,4 @@ appId: ${APP_ID}
     clearState: true
     permissions:
       notifications: allow
-- runFlow:
-    when:
-      visible: "^Allow$"
-    commands:
-      - tapOn: "^Allow$"
+

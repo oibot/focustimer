@@ -1,4 +1,5 @@
 import { Image, type ImageProps, Slider, Text } from "@expo/ui/swift-ui"
+import { accessibilityIdentifier } from "@expo/ui/swift-ui/modifiers"
 
 type SettingsSliderProps = {
   value: number
@@ -31,6 +32,7 @@ export function SettingsSlider({
       minimumValueLabel={<Image systemName={minimumSystemImage} size={18} />}
       maximumValueLabel={<Text>{valueLabel}</Text>}
       onValueChange={onValueChange}
+      modifiers={[accessibilityIdentifier(testID ?? "")]}
     />
   )
 }

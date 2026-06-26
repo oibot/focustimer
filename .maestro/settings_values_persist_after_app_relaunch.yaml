@@ -1,0 +1,26 @@
+appId: ${APP_ID}
+name: settings_values_persist_after_app_relaunch
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: common/open_settings.yaml
+- scrollUntilVisible:
+    element: "Screen dimming"
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: "0"
+    childOf:
+      id: "settings-screen-dimming-toggle"
+- scrollUntilVisible:
+    element: "15%"
+    direction: DOWN
+- tapOn: "Save"
+- killApp
+- launchApp
+- runFlow:
+    file: common/open_settings.yaml
+- scrollUntilVisible:
+    element: "15%"
+    direction: DOWN

@@ -1,5 +1,5 @@
 import { Form, Host, Picker, Section, Text, Toggle } from "@expo/ui/swift-ui"
-import { tag } from "@expo/ui/swift-ui/modifiers"
+import { accessibilityIdentifier, tag } from "@expo/ui/swift-ui/modifiers"
 import { useLingui } from "@lingui/react/macro"
 import { Stack, useRouter } from "expo-router"
 import { useNavigation, usePreventRemove } from "expo-router/react-navigation"
@@ -208,6 +208,9 @@ export function SettingsScene() {
             <Toggle
               label={t`Enable Live Activities`}
               testID="settings-live-activities-toggle"
+              modifiers={[
+                accessibilityIdentifier("settings-live-activities-toggle"),
+              ]}
               isOn={liveActivitiesEnabled}
               onIsOnChange={setLiveActivitiesEnabled}
             />
@@ -222,6 +225,9 @@ export function SettingsScene() {
             <Toggle
               label={t`Keep Screen Awake`}
               testID="settings-keep-screen-awake-toggle"
+              modifiers={[
+                accessibilityIdentifier("settings-keep-screen-awake-toggle"),
+              ]}
               isOn={keepScreenAwake}
               onIsOnChange={setKeepScreenAwake}
             />
@@ -233,6 +239,9 @@ export function SettingsScene() {
             <Toggle
               label={t`Screen dimming`}
               testID="settings-screen-dimming-toggle"
+              modifiers={[
+                accessibilityIdentifier("settings-screen-dimming-toggle"),
+              ]}
               isOn={screenDimmingEnabled}
               onIsOnChange={(nextValue) => {
                 setScreenDimmingEnabled(nextValue)

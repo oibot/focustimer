@@ -131,5 +131,21 @@ Current flows in `.maestro/` cover the Launch / Home timer, Focus timer, Timer m
 - `break_timer_completion_start_focus_enters_focus_mode`
 - `completion_sound_off_does_not_block_completion_flow`
 - `completion_sound_selected_does_not_block_completion_flow`
+- `settings_open_from_idle_timer`
+- `settings_cancel_without_changes_returns_home`
+- `settings_sections_are_visible`
+- `settings_save_without_changes_returns_home`
+- `settings_unsaved_cancel_discard_returns_home`
+- `settings_unsaved_cancel_keep_editing_stays_on_settings`
+- `settings_focus_duration_change_persists_after_save`
+- `settings_break_duration_change_persists_after_save`
+- `settings_completion_sound_picker_changes_and_persists`
+- `settings_live_activities_toggle_changes_and_persists`
+- `settings_keep_screen_awake_toggle_changes_and_persists`
+- `settings_screen_dimming_toggle_shows_brightness_slider`
+- `settings_screen_dimming_toggle_off_hides_slider`
+- `settings_screen_dimming_off_resets_brightness_to_default`
+- `settings_screen_dimming_brightness_change_persists`
+- `settings_values_persist_after_app_relaunch`
 
-Main missing areas are settings, persistence, and focused translation smoke tests.
+Main missing areas are runtime settings behavior and focused translation smoke tests.

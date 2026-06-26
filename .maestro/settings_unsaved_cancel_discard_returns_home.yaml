@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: settings_unsaved_cancel_discard_returns_home
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: common/open_settings.yaml
+- scrollUntilVisible:
+    element: "Screen dimming"
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: "0"
+    childOf:
+      id: "settings-screen-dimming-toggle"
+- tapOn: "Cancel"
+- assertVisible: "Discard changes?"
+- assertVisible: "You have unsaved changes. Are you sure you want to discard them?"
+- tapOn: "Discard"
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"

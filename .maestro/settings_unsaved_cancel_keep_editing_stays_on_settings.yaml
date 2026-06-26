@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: settings_unsaved_cancel_keep_editing_stays_on_settings
+---
+- runFlow:
+    file: common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: common/open_settings.yaml
+- scrollUntilVisible:
+    element: "Screen dimming"
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: "0"
+    childOf:
+      id: "settings-screen-dimming-toggle"
+- tapOn: "Cancel"
+- assertVisible: "Discard changes?"
+- tapOn: "Keep editing"
+- assertVisible: "Screen dimming"
+- scrollUntilVisible:
+    element: "15%"
+    direction: DOWN
