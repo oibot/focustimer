@@ -7,6 +7,7 @@ import type { TimerStatus } from "@/types/timer"
 
 jest.mock("expo-notifications", () => ({
   cancelScheduledNotificationAsync: jest.fn(),
+  getAllScheduledNotificationsAsync: jest.fn(),
   scheduleNotificationAsync: jest.fn(),
   SchedulableTriggerInputTypes: {
     DATE: "date",
@@ -33,6 +34,9 @@ describe("useBackgroundTimerNotifications", () => {
     ;(
       Notifications.cancelScheduledNotificationAsync as jest.Mock
     ).mockResolvedValue(undefined)
+    ;(
+      Notifications.getAllScheduledNotificationsAsync as jest.Mock
+    ).mockResolvedValue([])
   })
 
   afterEach(() => {
@@ -63,6 +67,9 @@ describe("useBackgroundTimerNotifications", () => {
         title: "Timer done",
         body: "Time to switch modes.",
         sound: true,
+        data: {
+          kind: "de.totap.focustimer.notification.background-timer-done",
+        },
       })
       expect(call.trigger.type).toBe("date")
       expect(call.trigger.date.getTime()).toBe(
