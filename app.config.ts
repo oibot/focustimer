@@ -26,7 +26,7 @@ const config: ExpoConfig = {
   name,
   slug: "focusonly",
   scheme: "focusonly",
-  version: "1.7.1",
+  version: "1.7.2",
   runtimeVersion: {
     policy: "fingerprint",
   },
