@@ -234,7 +234,9 @@ export function SettingsScene() {
           </Section>
 
           <Section
-            footer={<Text>{t`Dim the screen when the timer is running`}</Text>}
+            footer={
+              <Text>{t`Dim the screen while a focus or break timer is running. Brightness restores when you tap the screen or switch apps.`}</Text>
+            }
           >
             <Toggle
               label={t`Screen dimming`}
