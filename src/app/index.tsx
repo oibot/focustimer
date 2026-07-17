@@ -32,6 +32,10 @@ export default function Page() {
     router.push("/settings")
   }
 
+  const handleStatisticsPress = () => {
+    router.push("/stats")
+  }
+
   return (
     <>
       <TimerScene
@@ -50,6 +54,23 @@ export default function Page() {
           onPress={handleSettingsPress}
         >
           {t`Settings`}
+        </Stack.Toolbar.Button>
+        <Stack.Toolbar.Button
+          icon="chart.bar"
+          accessibilityLabel={
+            hasActiveSession
+              ? t`Statistics unavailable while the timer is active`
+              : t`Open statistics`
+          }
+          accessibilityHint={
+            hasActiveSession
+              ? t`Reset the timer before opening statistics`
+              : t`Shows completed focus sessions by day`
+          }
+          disabled={hasActiveSession}
+          onPress={handleStatisticsPress}
+        >
+          {t`Statistics`}
         </Stack.Toolbar.Button>
         <Stack.Toolbar.Spacer />
         <Stack.Toolbar.Button

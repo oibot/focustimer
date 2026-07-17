@@ -71,6 +71,10 @@ function Layout() {
               <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="index" />
                 <Stack.Screen
+                  name="(stats)"
+                  options={{ headerShown: false, presentation: "modal" }}
+                />
+                <Stack.Screen
                   name="timer-done"
                   options={{
                     presentation: "formSheet",
