@@ -4,6 +4,10 @@
 
 This Project implements a focus timer for iOS using React Native with expo and Typescript.
 
+Whenever issues or tickets are mentioned, they refer to issues in the "Focus Only" team in Linear.
+
+Errors and crashes are tracked in the "Focus Only" project in Sentry.
+
 ## Do
 Before commiting check that everything works (if not don't commit and fix the warnings/errors).
 + `bun run test`
