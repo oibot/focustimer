@@ -1,4 +1,4 @@
-import { useStore } from "@/state/store"
+import { useSettingsStore } from "@/state/settings"
 import {
   applyE2ESetupParams,
   durationMsToStoreMinutes,
@@ -7,7 +7,7 @@ import {
 import { DIMMED_BRIGHTNESS_DEFAULT_PERCENT } from "@/utils/screenDimming"
 
 const resetStore = () => {
-  useStore.setState({
+  useSettingsStore.setState({
     breakTimeMinutes: 5,
     completionSound: "cheering",
     dimmedBrightnessPercent: DIMMED_BRIGHTNESS_DEFAULT_PERCENT,
@@ -40,9 +40,9 @@ describe("e2eSetup", () => {
       focusDurationMs: "1500",
     })
 
-    expect(useStore.getState().focusTimeMinutes).toBe(0.025)
-    expect(useStore.getState().breakTimeMinutes).toBe(2 / 60)
-    expect(useStore.getState().completionSound).toBe("off")
+    expect(useSettingsStore.getState().focusTimeMinutes).toBe(0.025)
+    expect(useSettingsStore.getState().breakTimeMinutes).toBe(2 / 60)
+    expect(useSettingsStore.getState().completionSound).toBe("off")
   })
 
   it("ignores invalid setup values", () => {
@@ -52,8 +52,8 @@ describe("e2eSetup", () => {
       focusDurationMs: "250",
     })
 
-    expect(useStore.getState().focusTimeMinutes).toBe(25)
-    expect(useStore.getState().breakTimeMinutes).toBe(5)
-    expect(useStore.getState().completionSound).toBe("cheering")
+    expect(useSettingsStore.getState().focusTimeMinutes).toBe(25)
+    expect(useSettingsStore.getState().breakTimeMinutes).toBe(5)
+    expect(useSettingsStore.getState().completionSound).toBe("cheering")
   })
 })

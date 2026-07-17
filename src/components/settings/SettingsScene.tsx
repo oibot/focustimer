@@ -9,7 +9,7 @@ import { StyleSheet } from "react-native-unistyles"
 
 import { SettingsSlider } from "@/components/settings/SettingsSlider"
 import { type CompletionSound, completionSoundOptions } from "@/sounds"
-import { useStore } from "@/state/store"
+import { useSettingsStore } from "@/state/settings"
 import {
   DIMMED_BRIGHTNESS_DEFAULT_PERCENT,
   DIMMED_BRIGHTNESS_MAX_PERCENT,
@@ -25,7 +25,7 @@ export function SettingsScene() {
   const { t } = useLingui()
   const navigation = useNavigation()
   const router = useRouter()
-  const store = useStore()
+  const store = useSettingsStore()
   const [breakTimeMinutes, setBreakTimeMinutes] = useState(
     store.breakTimeMinutes,
   )
@@ -88,7 +88,7 @@ export function SettingsScene() {
   )
 
   const handleSave = useCallback(() => {
-    useStore.setState({
+    useSettingsStore.setState({
       breakTimeMinutes,
       completionSound,
       dimmedBrightnessPercent,

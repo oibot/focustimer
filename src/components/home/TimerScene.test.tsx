@@ -14,7 +14,7 @@ import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { useTimer } from "@/hooks/useTimer"
 import * as useTimerControlsModule from "@/hooks/useTimerControls"
 import { messages as enMessages } from "@/locales/en/messages"
-import { useStore } from "@/state/store"
+import { useSettingsStore } from "@/state/settings"
 
 jest.mock("@/hooks/useTimer")
 jest.mock("@/hooks/useBackgroundTimerNotifications")
@@ -80,7 +80,7 @@ describe("TimerScene", () => {
 
   beforeEach(() => {
     appState = "active"
-    useStore.setState({
+    useSettingsStore.setState({
       breakTimeMinutes: 5,
       completionSound: "cheering",
       dimmedBrightnessPercent: 15,
@@ -318,7 +318,7 @@ describe("TimerScene", () => {
   })
 
   it("enables screen dimming while the focus timer runs", async () => {
-    useStore.setState({
+    useSettingsStore.setState({
       dimmedBrightnessPercent: 12,
       screenDimmingEnabled: true,
     })
@@ -344,7 +344,7 @@ describe("TimerScene", () => {
   })
 
   it("enables screen dimming while the break timer runs", async () => {
-    useStore.setState({
+    useSettingsStore.setState({
       dimmedBrightnessPercent: 10,
       screenDimmingEnabled: true,
     })
@@ -370,7 +370,7 @@ describe("TimerScene", () => {
   })
 
   it("does not dim while paused", async () => {
-    useStore.setState({ screenDimmingEnabled: true })
+    useSettingsStore.setState({ screenDimmingEnabled: true })
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "paused",
@@ -393,7 +393,7 @@ describe("TimerScene", () => {
   })
 
   it("does not dim while the focus cancel alert is visible", async () => {
-    useStore.setState({ screenDimmingEnabled: true })
+    useSettingsStore.setState({ screenDimmingEnabled: true })
     const useTimerControlsSpy = jest.spyOn(useTimerControlsModule, "default")
     useTimerControlsSpy.mockReturnValue({
       showControls: true,
@@ -573,7 +573,7 @@ describe("TimerScene", () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()
 
-    useStore.setState({ completionSound: "off" })
+    useSettingsStore.setState({ completionSound: "off" })
     mockUseTimer.mockReturnValue({
       ...baseTimerState,
       status: "done",
@@ -601,7 +601,7 @@ describe("TimerScene", () => {
   })
 
   it("loads the selected custom sound asset", async () => {
-    useStore.setState({ completionSound: "trumpets" })
+    useSettingsStore.setState({ completionSound: "trumpets" })
 
     await renderWithI18n(
       <TimerScene

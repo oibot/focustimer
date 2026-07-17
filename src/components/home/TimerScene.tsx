@@ -15,7 +15,7 @@ import useTimerControls from "@/hooks/useTimerControls"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import useTimerModeEdgeSwipe from "@/hooks/useTimerModeEdgeSwipe"
 import { completionSoundConfig } from "@/sounds"
-import { useStore } from "@/state/store"
+import { useSettingsStore } from "@/state/settings"
 import { isTimerMode, TimerMode, type TimerModeConfig } from "@/types/timer"
 
 type TimerSceneProps = {
@@ -33,13 +33,17 @@ export default function TimerScene({
 }: TimerSceneProps) {
   const { t } = useLingui()
   const timerMode: TimerMode = isTimerMode(mode) ? mode : "focus"
-  const completionSound = useStore((state) => state.completionSound)
-  const dimmedBrightnessPercent = useStore(
+  const completionSound = useSettingsStore((state) => state.completionSound)
+  const dimmedBrightnessPercent = useSettingsStore(
     (state) => state.dimmedBrightnessPercent,
   )
-  const keepScreenAwake = useStore((state) => state.keepScreenAwake)
-  const liveActivitiesEnabled = useStore((state) => state.liveActivitiesEnabled)
-  const screenDimmingEnabled = useStore((state) => state.screenDimmingEnabled)
+  const keepScreenAwake = useSettingsStore((state) => state.keepScreenAwake)
+  const liveActivitiesEnabled = useSettingsStore(
+    (state) => state.liveActivitiesEnabled,
+  )
+  const screenDimmingEnabled = useSettingsStore(
+    (state) => state.screenDimmingEnabled,
+  )
   const selectedCompletionSound = completionSoundConfig[completionSound]
   const player = useAudioPlayer(selectedCompletionSound.audioSource)
   const { startingMs, nextMode } = config[timerMode]

@@ -1,7 +1,7 @@
 import Constants from "expo-constants"
 
 import { type CompletionSound, completionSoundOptions } from "@/sounds"
-import { useStore } from "@/state/store"
+import { useSettingsStore } from "@/state/settings"
 
 const MS_PER_MINUTE = 60 * 1000
 const MIN_DURATION_MS = 500
@@ -46,7 +46,7 @@ export function applyE2ESetupParams(params: E2ESetupParams) {
   const focusDurationMs = parseDurationMs(params.focusDurationMs)
   const breakDurationMs = parseDurationMs(params.breakDurationMs)
   const completionSound = parseCompletionSound(params.completionSound)
-  const store = useStore.getState()
+  const store = useSettingsStore.getState()
 
   if (focusDurationMs !== null) {
     store.setFocusTimeMinutes(durationMsToStoreMinutes(focusDurationMs))

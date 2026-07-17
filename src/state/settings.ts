@@ -1,23 +1,11 @@
-import { createMMKV } from "react-native-mmkv"
 import { create } from "zustand"
-import { createJSONStorage, persist, StateStorage } from "zustand/middleware"
+import { createJSONStorage, persist } from "zustand/middleware"
 
 import type { CompletionSound } from "@/sounds"
+import { zustandStorage } from "@/state/storage"
 import { DIMMED_BRIGHTNESS_DEFAULT_PERCENT } from "@/utils/screenDimming"
 
-const storage = createMMKV()
-
-const zustandStorage: StateStorage = {
-  setItem: (name, value) => {
-    storage.set(name, value)
-  },
-  getItem: (name) => storage.getString(name) ?? null,
-  removeItem: (name) => {
-    storage.remove(name)
-  },
-}
-
-type StoreState = {
+type SettingsState = {
   breakTimeMinutes: number
   completionSound: CompletionSound
   dimmedBrightnessPercent: number
@@ -34,7 +22,7 @@ type StoreState = {
   setScreenDimmingEnabled: (nextValue: boolean) => void
 }
 
-export const useStore = create<StoreState>()(
+export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
       breakTimeMinutes: 5,

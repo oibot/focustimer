@@ -1,13 +1,13 @@
 import { useMemo } from "react"
 
-import { useStore } from "@/state/store"
+import { useSettingsStore } from "@/state/settings"
 import type { TimerModeConfig } from "@/types/timer"
 
 export default function useTimerModeConfig(
   modeConfig?: TimerModeConfig,
 ): TimerModeConfig {
-  const breakTimeMinutes = useStore((state) => state.breakTimeMinutes)
-  const focusTimeMinutes = useStore((state) => state.focusTimeMinutes)
+  const breakTimeMinutes = useSettingsStore((state) => state.breakTimeMinutes)
+  const focusTimeMinutes = useSettingsStore((state) => state.focusTimeMinutes)
 
   return useMemo(
     () =>
