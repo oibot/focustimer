@@ -4,7 +4,7 @@ import { act, fireEvent, render, waitFor } from "@testing-library/react-native"
 import { useAudioPlayer } from "expo-audio"
 import { useKeepAwake } from "expo-keep-awake"
 import type { ReactElement } from "react"
-import { Alert } from "react-native"
+import { Alert, AppState, type AppStateStatus } from "react-native"
 import { Gesture } from "react-native-gesture-handler"
 
 import TimerScene from "@/components/home/TimerScene"
@@ -51,13 +51,35 @@ const baseConfig = {
   short: { startingMs: 5 * 60 * 1000, nextMode: "focus" as const },
 }
 
+let appState: AppStateStatus = "active"
+let appStateCurrentStateDescriptor: PropertyDescriptor | undefined
+
 describe("TimerScene", () => {
   beforeAll(() => {
     i18n.load({ en: enMessages })
     i18n.activate("en")
+    appStateCurrentStateDescriptor = Object.getOwnPropertyDescriptor(
+      AppState,
+      "currentState",
+    )
+    Object.defineProperty(AppState, "currentState", {
+      configurable: true,
+      get: () => appState,
+    })
+  })
+
+  afterAll(() => {
+    if (appStateCurrentStateDescriptor) {
+      Object.defineProperty(
+        AppState,
+        "currentState",
+        appStateCurrentStateDescriptor,
+      )
+    }
   })
 
   beforeEach(() => {
+    appState = "active"
     useStore.setState({
       breakTimeMinutes: 5,
       completionSound: "cheering",
@@ -435,6 +457,37 @@ describe("TimerScene", () => {
 
     expect(player.seekTo).toHaveBeenCalledWith(0)
     expect(player.play).toHaveBeenCalledTimes(1)
+    expect(cancelTimer).toHaveBeenCalledTimes(1)
+    expect(onDone).toHaveBeenCalledWith("short")
+  })
+
+  it("does not play completion audio while backgrounded", async () => {
+    const cancelTimer = jest.fn()
+    const onDone = jest.fn()
+    appState = "background"
+
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "done",
+      cancelTimer,
+    })
+
+    await renderWithI18n(
+      <TimerScene
+        config={baseConfig}
+        mode="focus"
+        onDone={onDone}
+        onModeChange={jest.fn()}
+      />,
+    )
+
+    const player = mockUseAudioPlayer.mock.results[0].value as unknown as {
+      play: jest.Mock
+      seekTo: jest.Mock
+    }
+
+    expect(player.seekTo).not.toHaveBeenCalled()
+    expect(player.play).not.toHaveBeenCalled()
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onDone).toHaveBeenCalledWith("short")
   })

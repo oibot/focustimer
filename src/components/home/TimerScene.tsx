@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/react-native"
 import { useAudioPlayer } from "expo-audio"
 import type { LiveActivityStrings } from "local:live-activities-controller"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, AppState } from "react-native"
 
 import TimerView from "@/components/home/TimerView"
 import useBackgroundTimerNotifications from "@/hooks/useBackgroundTimerNotifications"
@@ -109,10 +109,15 @@ export default function TimerScene({
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
       void (async () => {
-        if (selectedCompletionSound.audioSource !== null) {
+        if (
+          selectedCompletionSound.audioSource !== null &&
+          AppState.currentState === "active"
+        ) {
           try {
             await player.seekTo(0)
-            player.play()
+            if (AppState.currentState === "active") {
+              player.play()
+            }
           } catch (error) {
             Sentry.captureException(error)
           }
