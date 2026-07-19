@@ -41,7 +41,7 @@ msgstr "{breakTimeMinutes} minute"
 msgid "{breakTimeMinutes} minutes"
 msgstr "{breakTimeMinutes} minutes"
 
-#: src/components/stats/DailyStatsRow.tsx:64
+#: src/components/stats/DailyStatsRow.tsx:67
 msgid "{dateLabel}, {sessionCountLabel}, {minutesLabel}"
 msgstr "{dateLabel}, {sessionCountLabel}, {minutesLabel}"
 
@@ -65,19 +65,23 @@ msgstr "{focusTimeMinutes} minute"
 msgid "{focusTimeMinutes} minutes"
 msgstr "{focusTimeMinutes} minutes"
 
-#: src/components/stats/DailyStatsRow.tsx:62
+#: src/components/stats/DailyStatsRow.tsx:103
+msgid "{formattedDuration}-minute focus session"
+msgstr "{formattedDuration}-minute focus session"
+
+#: src/components/stats/DailyStatsRow.tsx:65
 msgid "{formattedMinutes} minute"
 msgstr "{formattedMinutes} minute"
 
-#: src/components/stats/DailyStatsRow.tsx:63
+#: src/components/stats/DailyStatsRow.tsx:66
 msgid "{formattedMinutes} minutes"
 msgstr "{formattedMinutes} minutes"
 
-#: src/components/stats/DailyStatsRow.tsx:58
+#: src/components/stats/DailyStatsRow.tsx:61
 msgid "{formattedSessionCount} focus session"
 msgstr "{formattedSessionCount} focus session"
 
-#: src/components/stats/DailyStatsRow.tsx:59
+#: src/components/stats/DailyStatsRow.tsx:62
 msgid "{formattedSessionCount} focus sessions"
 msgstr "{formattedSessionCount} focus sessions"
 
@@ -125,7 +129,7 @@ msgstr "Cheering"
 msgid "Choose the sound that plays when a focus or break timer finishes."
 msgstr "Choose the sound that plays when a focus or break timer finishes."
 
-#: src/components/stats/StatisticsScene.tsx:98
+#: src/components/stats/StatisticsScene.tsx:99
 msgid "Close"
 msgstr "Close"
 
@@ -340,7 +344,7 @@ msgstr "Start focus timer"
 #~ msgstr "Starts the timer"
 
 #: src/app/index.tsx:73
-#: src/components/stats/StatisticsScene.tsx:94
+#: src/components/stats/StatisticsScene.tsx:95
 msgid "Statistics"
 msgstr "Statistics"
 
@@ -376,7 +380,7 @@ msgstr "Switch to focus mode"
 #~ msgid "Timer mode"
 #~ msgstr "Timer mode"
 
-#: src/components/stats/DailyStatsRow.tsx:55
+#: src/components/stats/DailyStatsRow.tsx:58
 msgid "Today"
 msgstr "Today"
 

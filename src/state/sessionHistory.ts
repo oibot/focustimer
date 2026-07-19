@@ -19,6 +19,7 @@ export type AddCompletedFocusSessionInput = Pick<
 export type DailyFocusSessionSummary = {
   dateKey: string
   sessionCount: number
+  sessionDurationsMs: number[]
   totalDurationMs: number
   totalMinutes: number
 }
@@ -76,6 +77,7 @@ export const getDailyFocusSessionSummaries = (
   return Array.from(sessionsByDate, ([dateKey, sessionsForDate]) => ({
     dateKey,
     sessionCount: sessionsForDate.length,
+    sessionDurationsMs: sessionsForDate.map((session) => session.durationMs),
     totalDurationMs: getTotalDurationMs(sessionsForDate),
     totalMinutes: getTotalMinutes(sessionsForDate),
   })).sort((left, right) => right.dateKey.localeCompare(left.dateKey))

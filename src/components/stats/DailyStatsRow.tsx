@@ -3,7 +3,10 @@ import { memo, useMemo } from "react"
 import { Text, View } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 
+import { SessionDurationDot } from "@/components/stats/session-duration-dot"
 import type { DailyFocusSessionSummary } from "@/state/sessionHistory"
+
+const MINUTE_MS = 60 * 1000
 
 type DailyStatsRowProps = {
   isToday: boolean
@@ -65,12 +68,14 @@ function DailyStatsRowComponent({ isToday, summary }: DailyStatsRowProps) {
 
   return (
     <View
-      accessible
-      accessibilityLabel={accessibilityLabel}
       testID={`daily-stats-row-${summary.dateKey}`}
       style={styles.container}
     >
-      <View style={styles.date}>
+      <View
+        accessible
+        accessibilityLabel={accessibilityLabel}
+        style={styles.date}
+      >
         <Text
           testID={`daily-stats-month-${summary.dateKey}`}
           style={styles.dateSmallLabel}
@@ -91,18 +96,21 @@ function DailyStatsRowComponent({ isToday, summary }: DailyStatsRowProps) {
         </Text>
       </View>
       <View style={styles.summary}>
-        <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-          style={styles.dots}
-        >
-          {Array.from({ length: summary.sessionCount }, (_, index) => (
-            <View
-              key={`${summary.dateKey}-${index}`}
-              testID={`session-dot-${summary.dateKey}`}
-              style={styles.dot}
-            />
-          ))}
+        <View style={styles.dots}>
+          {summary.sessionDurationsMs.map((durationMs, index) => {
+            const durationMinutes = durationMs / MINUTE_MS
+            const formattedDuration = numberFormatter.format(durationMinutes)
+            const durationLabel = t`${formattedDuration}-minute focus session`
+
+            return (
+              <SessionDurationDot
+                key={`${summary.dateKey}-${index}`}
+                accessibilityLabel={durationLabel}
+                durationMs={durationMs}
+                testID={`session-dot-${summary.dateKey}`}
+              />
+            )
+          })}
         </View>
       </View>
     </View>
@@ -141,15 +149,9 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: "center",
   },
   dots: {
-    minHeight: 12,
+    minHeight: 24,
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
-  },
-  dot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: theme.colors.primary,
+    gap: 12,
   },
 }))

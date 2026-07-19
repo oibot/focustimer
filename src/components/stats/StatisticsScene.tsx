@@ -65,6 +65,7 @@ export function StatisticsScene({ onClose }: StatisticsSceneProps) {
       summaries.unshift({
         dateKey: todayDateKey,
         sessionCount: 0,
+        sessionDurationsMs: [],
         totalDurationMs: 0,
         totalMinutes: 0,
       })

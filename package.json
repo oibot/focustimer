@@ -47,6 +47,7 @@
     "react-native-nitro-modules": "^0.35.2",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "4.25.2",
+    "react-native-svg": "15.15.4",
     "react-native-unistyles": "^3.0.22",
     "zustand": "^5.0.12"
   },

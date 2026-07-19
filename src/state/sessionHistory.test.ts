@@ -105,18 +105,21 @@ describe("session history helpers", () => {
       {
         dateKey: "2026-07-17",
         sessionCount: 2,
+        sessionDurationsMs: [25 * 60 * 1000, 5 * 60 * 1000],
         totalDurationMs: 30 * 60 * 1000,
         totalMinutes: 30,
       },
       {
         dateKey: "2026-07-16",
         sessionCount: 1,
+        sessionDurationsMs: [15 * 60 * 1000],
         totalDurationMs: 15 * 60 * 1000,
         totalMinutes: 15,
       },
       {
         dateKey: "2026-07-15",
         sessionCount: 1,
+        sessionDurationsMs: [25 * 60 * 1000],
         totalDurationMs: 25 * 60 * 1000,
         totalMinutes: 25,
       },

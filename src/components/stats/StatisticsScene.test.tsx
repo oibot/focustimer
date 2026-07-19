@@ -59,11 +59,11 @@ describe("StatisticsScene", () => {
     ).toBe("automatic")
   })
 
-  it("shows today's summary and one dot per completed session", async () => {
+  it("shows today's summary and a duration-aware dot per session", async () => {
     useSessionHistoryStore.setState({
       completedFocusSessions: [
-        createSession("morning", new Date(2026, 6, 17, 9), 25),
-        createSession("afternoon", new Date(2026, 6, 17, 14), 25),
+        createSession("morning", new Date(2026, 6, 17, 9), 15),
+        createSession("afternoon", new Date(2026, 6, 17, 14), 60),
       ],
     })
 
@@ -71,17 +71,15 @@ describe("StatisticsScene", () => {
       await renderWithI18n(<StatisticsScene onClose={jest.fn()} />)
     const todayRow = getByTestId("daily-stats-row-2026-07-17")
 
-    expect(getByLabelText("Today, 2 focus sessions, 50 minutes")).toBeTruthy()
+    expect(getByLabelText("Today, 2 focus sessions, 75 minutes")).toBeTruthy()
+    expect(getByLabelText("15-minute focus session")).toBeTruthy()
+    expect(getByLabelText("60-minute focus session")).toBeTruthy()
     expect(within(todayRow).getByText("JUL")).toBeTruthy()
     expect(within(todayRow).getByText("17")).toBeTruthy()
     expect(within(todayRow).getByText("FRI")).toBeTruthy()
     expect(within(todayRow).queryByText("2 focus sessions")).toBeNull()
-    expect(within(todayRow).queryByText("50 minutes")).toBeNull()
-    expect(
-      getAllByTestId("session-dot-2026-07-17", {
-        includeHiddenElements: true,
-      }),
-    ).toHaveLength(2)
+    expect(within(todayRow).queryByText("75 minutes")).toBeNull()
+    expect(getAllByTestId("session-dot-2026-07-17")).toHaveLength(2)
   })
 
   it("adds a zero-session Today row and orders previous days newest first", async () => {
