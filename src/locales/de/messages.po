@@ -41,6 +41,10 @@ msgstr "{breakTimeMinutes} Minute"
 msgid "{breakTimeMinutes} minutes"
 msgstr "{breakTimeMinutes} Minuten"
 
+#: src/components/stats/DailyStatsRow.tsx:36
+msgid "{dateLabel}, {sessionCountLabel}, {minutesLabel}"
+msgstr ""
+
 #: src/components/settings/SettingsScene.tsx:62
 msgid "{dimmedBrightnessPercent}%"
 msgstr "{dimmedBrightnessPercent}%"
@@ -56,6 +60,22 @@ msgstr "{focusTimeMinutes} Minute"
 #: src/components/settings/SettingsScene.tsx:50
 msgid "{focusTimeMinutes} minutes"
 msgstr "{focusTimeMinutes} Minuten"
+
+#: src/components/stats/DailyStatsRow.tsx:34
+msgid "{formattedMinutes} minute"
+msgstr ""
+
+#: src/components/stats/DailyStatsRow.tsx:35
+msgid "{formattedMinutes} minutes"
+msgstr ""
+
+#: src/components/stats/DailyStatsRow.tsx:30
+msgid "{formattedSessionCount} focus session"
+msgstr ""
+
+#: src/components/stats/DailyStatsRow.tsx:31
+msgid "{formattedSessionCount} focus sessions"
+msgstr ""
 
 #: src/hooks/useRemainingTimeLabel.ts:11
 msgid "{minutes} minute"
@@ -101,8 +121,12 @@ msgstr "Jubel"
 msgid "Choose the sound that plays when a focus or break timer finishes."
 msgstr "Wähle den Ton, der abgespielt wird, wenn ein Fokus- oder Pausentimer endet."
 
-#: src/components/stats/StatisticsScene.tsx:23
+#: src/components/stats/StatisticsScene.tsx:101
 msgid "Close"
+msgstr ""
+
+#: src/components/stats/StatisticsScene.tsx:43
+msgid "Complete a focus timer to see your statistics here."
 msgstr ""
 
 #: src/components/settings/SettingsScene.tsx:185
@@ -186,6 +210,10 @@ msgstr "Live-Aktivitäten"
 #: src/components/settings/SettingsScene.tsx:57
 msgid "Marimba"
 msgstr "Marimba"
+
+#: src/components/stats/StatisticsScene.tsx:40
+msgid "No focus sessions yet"
+msgstr ""
 
 #: src/components/settings/SettingsScene.tsx:58
 msgid "Off"
@@ -308,7 +336,7 @@ msgstr "Fokus-Timer starten"
 #~ msgstr "Startet den Timer"
 
 #: src/app/index.tsx:73
-#: src/components/stats/StatisticsScene.tsx:19
+#: src/components/stats/StatisticsScene.tsx:97
 msgid "Statistics"
 msgstr ""
 
@@ -343,6 +371,10 @@ msgstr "Zum Fokusmodus wechseln"
 #: src/components/home/TimerScene.tsx:55
 #~ msgid "Timer mode"
 #~ msgstr "Timer-Modus"
+
+#: src/components/stats/DailyStatsRow.tsx:26
+msgid "Today"
+msgstr ""
 
 #: src/components/settings/SettingsScene.tsx:60
 msgid "Trumpets"
