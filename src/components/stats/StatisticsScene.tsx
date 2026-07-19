@@ -6,32 +6,11 @@ import { StyleSheet } from "react-native-unistyles"
 
 import { DailyStatsRow } from "@/components/stats/DailyStatsRow"
 import {
-  type CompletedFocusSession,
   type DailyFocusSessionSummary,
   getDailyFocusSessionSummaries,
   getLocalDateKey,
   useSessionHistoryStore,
 } from "@/state/sessionHistory"
-
-const MINUTE_MS = 60 * 1000
-const PREVIEW_SESSION_COUNTS = [5, 3, 18, 4, 6, 2]
-
-// Temporary development-only history for previewing FOC-10 before FOC-11
-// starts recording completed focus sessions.
-const createPreviewSessionHistory = (now: Date): CompletedFocusSession[] =>
-  PREVIEW_SESSION_COUNTS.flatMap((sessionCount, dayOffset) =>
-    Array.from({ length: sessionCount }, (_, sessionIndex) => {
-      const completedAt = new Date(now)
-      completedAt.setDate(now.getDate() - dayOffset)
-      completedAt.setHours(8, sessionIndex * 30, 0, 0)
-
-      return {
-        id: `stats-preview-${dayOffset}-${sessionIndex}`,
-        completedAt: completedAt.toISOString(),
-        durationMs: 25 * MINUTE_MS,
-      }
-    }),
-  )
 
 type DailyStatsListItem = DailyFocusSessionSummary & {
   isToday: boolean
@@ -71,23 +50,13 @@ export function StatisticsScene({ onClose }: StatisticsSceneProps) {
   const completedFocusSessions = useSessionHistoryStore(
     (state) => state.completedFocusSessions,
   )
-  const sessionsForDisplay = useMemo(() => {
-    const shouldShowPreviewHistory =
-      __DEV__ &&
-      process.env.NODE_ENV !== "test" &&
-      completedFocusSessions.length === 0
-
-    return shouldShowPreviewHistory
-      ? createPreviewSessionHistory(new Date())
-      : completedFocusSessions
-  }, [completedFocusSessions])
   const dailyStats = useMemo<DailyStatsListItem[]>(() => {
-    if (sessionsForDisplay.length === 0) {
+    if (completedFocusSessions.length === 0) {
       return []
     }
 
     const todayDateKey = getLocalDateKey(new Date())
-    const summaries = getDailyFocusSessionSummaries(sessionsForDisplay)
+    const summaries = getDailyFocusSessionSummaries(completedFocusSessions)
     const hasTodaySummary = summaries.some(
       (summary) => summary.dateKey === todayDateKey,
     )
@@ -105,7 +74,7 @@ export function StatisticsScene({ onClose }: StatisticsSceneProps) {
       ...summary,
       isToday: summary.dateKey === todayDateKey,
     }))
-  }, [sessionsForDisplay])
+  }, [completedFocusSessions])
 
   return (
     <>

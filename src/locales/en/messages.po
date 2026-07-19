@@ -41,7 +41,7 @@ msgstr "{breakTimeMinutes} minute"
 msgid "{breakTimeMinutes} minutes"
 msgstr "{breakTimeMinutes} minutes"
 
-#: src/components/stats/DailyStatsRow.tsx:36
+#: src/components/stats/DailyStatsRow.tsx:64
 msgid "{dateLabel}, {sessionCountLabel}, {minutesLabel}"
 msgstr "{dateLabel}, {sessionCountLabel}, {minutesLabel}"
 
@@ -65,19 +65,19 @@ msgstr "{focusTimeMinutes} minute"
 msgid "{focusTimeMinutes} minutes"
 msgstr "{focusTimeMinutes} minutes"
 
-#: src/components/stats/DailyStatsRow.tsx:34
+#: src/components/stats/DailyStatsRow.tsx:62
 msgid "{formattedMinutes} minute"
 msgstr "{formattedMinutes} minute"
 
-#: src/components/stats/DailyStatsRow.tsx:35
+#: src/components/stats/DailyStatsRow.tsx:63
 msgid "{formattedMinutes} minutes"
 msgstr "{formattedMinutes} minutes"
 
-#: src/components/stats/DailyStatsRow.tsx:30
+#: src/components/stats/DailyStatsRow.tsx:58
 msgid "{formattedSessionCount} focus session"
 msgstr "{formattedSessionCount} focus session"
 
-#: src/components/stats/DailyStatsRow.tsx:31
+#: src/components/stats/DailyStatsRow.tsx:59
 msgid "{formattedSessionCount} focus sessions"
 msgstr "{formattedSessionCount} focus sessions"
 
@@ -98,13 +98,13 @@ msgid "{seconds} seconds"
 msgstr "{seconds} seconds"
 
 #: src/app/index.tsx:18
-#: src/components/home/TimerScene.tsx:52
+#: src/components/home/TimerScene.tsx:56
 #: src/components/settings/SettingsScene.tsx:162
 msgid "Break"
 msgstr "Break"
 
 #: src/components/home/TimerDoneScene.tsx:37
-#: src/components/home/TimerScene.tsx:50
+#: src/components/home/TimerScene.tsx:54
 #: src/components/settings/SettingsScene.tsx:128
 msgid "Cancel"
 msgstr "Cancel"
@@ -125,11 +125,11 @@ msgstr "Cheering"
 msgid "Choose the sound that plays when a focus or break timer finishes."
 msgstr "Choose the sound that plays when a focus or break timer finishes."
 
-#: src/components/stats/StatisticsScene.tsx:101
+#: src/components/stats/StatisticsScene.tsx:98
 msgid "Close"
 msgstr "Close"
 
-#: src/components/stats/StatisticsScene.tsx:43
+#: src/components/stats/StatisticsScene.tsx:38
 msgid "Complete a focus timer to see your statistics here."
 msgstr "Complete a focus timer to see your statistics here."
 
@@ -169,11 +169,11 @@ msgstr "Display"
 msgid "Enable Live Activities"
 msgstr "Enable Live Activities"
 
-#: src/components/home/TimerScene.tsx:154
+#: src/components/home/TimerScene.tsx:171
 msgid "End"
 msgstr "End"
 
-#: src/components/home/TimerScene.tsx:143
+#: src/components/home/TimerScene.tsx:160
 msgid "End focus session"
 msgstr "End focus session"
 
@@ -182,7 +182,7 @@ msgstr "End focus session"
 #~ msgstr "Ended"
 
 #: src/app/index.tsx:18
-#: src/components/home/TimerScene.tsx:51
+#: src/components/home/TimerScene.tsx:55
 #: src/components/settings/SettingsScene.tsx:148
 msgid "Focus"
 msgstr "Focus"
@@ -195,7 +195,7 @@ msgstr "Focus"
 msgid "Keep editing"
 msgstr "Keep editing"
 
-#: src/components/home/TimerScene.tsx:147
+#: src/components/home/TimerScene.tsx:164
 msgid "Keep going"
 msgstr "Keep going"
 
@@ -215,7 +215,7 @@ msgstr "Live Activities"
 msgid "Marimba"
 msgstr "Marimba"
 
-#: src/components/stats/StatisticsScene.tsx:40
+#: src/components/stats/StatisticsScene.tsx:35
 msgid "No focus sessions yet"
 msgstr "No focus sessions yet"
 
@@ -235,7 +235,7 @@ msgstr "Open statistics"
 msgid "Pause"
 msgstr "Pause"
 
-#: src/components/home/TimerScene.tsx:56
+#: src/components/home/TimerScene.tsx:60
 msgid "Paused"
 msgstr "Paused"
 
@@ -267,7 +267,7 @@ msgstr "Resume"
 msgid "Resumes the timer"
 msgstr "Resumes the timer"
 
-#: src/components/home/TimerScene.tsx:55
+#: src/components/home/TimerScene.tsx:59
 msgid "Running"
 msgstr "Running"
 
@@ -279,7 +279,7 @@ msgstr "Save"
 msgid "Screen dimming"
 msgstr "Screen dimming"
 
-#: src/components/home/TimerScene.tsx:58
+#: src/components/home/TimerScene.tsx:62
 msgid "Session paused"
 msgstr "Session paused"
 
@@ -340,7 +340,7 @@ msgstr "Start focus timer"
 #~ msgstr "Starts the timer"
 
 #: src/app/index.tsx:73
-#: src/components/stats/StatisticsScene.tsx:97
+#: src/components/stats/StatisticsScene.tsx:94
 msgid "Statistics"
 msgstr "Statistics"
 
@@ -348,11 +348,11 @@ msgstr "Statistics"
 msgid "Statistics unavailable while the timer is active"
 msgstr "Statistics unavailable while the timer is active"
 
-#: src/components/home/TimerScene.tsx:57
+#: src/components/home/TimerScene.tsx:61
 msgid "Stay focused"
 msgstr "Stay focused"
 
-#: src/components/home/TimerScene.tsx:50
+#: src/components/home/TimerScene.tsx:54
 msgid "Stop"
 msgstr "Stop"
 
@@ -376,7 +376,7 @@ msgstr "Switch to focus mode"
 #~ msgid "Timer mode"
 #~ msgstr "Timer mode"
 
-#: src/components/stats/DailyStatsRow.tsx:26
+#: src/components/stats/DailyStatsRow.tsx:55
 msgid "Today"
 msgstr "Today"
 
@@ -392,6 +392,6 @@ msgstr "Trumpets"
 msgid "You have unsaved changes. Are you sure you want to discard them?"
 msgstr "You have unsaved changes. Are you sure you want to discard them?"
 
-#: src/components/home/TimerScene.tsx:144
+#: src/components/home/TimerScene.tsx:161
 msgid "Your current focus timer will reset."
 msgstr "Your current focus timer will reset."
