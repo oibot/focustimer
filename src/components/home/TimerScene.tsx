@@ -15,6 +15,7 @@ import useTimerControls from "@/hooks/useTimerControls"
 import useTimerLiveActivity from "@/hooks/useTimerLiveActivity"
 import useTimerModeEdgeSwipe from "@/hooks/useTimerModeEdgeSwipe"
 import { completionSoundConfig } from "@/sounds"
+import { useSessionHistoryStore } from "@/state/sessionHistory"
 import { useSettingsStore } from "@/state/settings"
 import { isTimerMode, TimerMode, type TimerModeConfig } from "@/types/timer"
 
@@ -43,6 +44,9 @@ export default function TimerScene({
   )
   const screenDimmingEnabled = useSettingsStore(
     (state) => state.screenDimmingEnabled,
+  )
+  const addCompletedFocusSession = useSessionHistoryStore(
+    (state) => state.addCompletedFocusSession,
   )
   const selectedCompletionSound = completionSoundConfig[completionSound]
   const player = useAudioPlayer(selectedCompletionSound.audioSource)
@@ -112,6 +116,9 @@ export default function TimerScene({
   useEffect(() => {
     if (status === "done" && !hasShownDoneRef.current) {
       hasShownDoneRef.current = true
+      if (timerMode === "focus") {
+        addCompletedFocusSession({ durationMs: startingMs })
+      }
       void (async () => {
         if (
           selectedCompletionSound.audioSource !== null &&
@@ -134,7 +141,17 @@ export default function TimerScene({
     if (status !== "done") {
       hasShownDoneRef.current = false
     }
-  }, [cancelTimer, nextMode, onDone, player, selectedCompletionSound, status])
+  }, [
+    addCompletedFocusSession,
+    cancelTimer,
+    nextMode,
+    onDone,
+    player,
+    selectedCompletionSound,
+    startingMs,
+    status,
+    timerMode,
+  ])
 
   const handleCancel = () => {
     if (timerMode === "focus") {

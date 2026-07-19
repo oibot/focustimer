@@ -14,6 +14,7 @@ import useScreenReaderEnabled from "@/hooks/useScreenReaderEnabled"
 import { useTimer } from "@/hooks/useTimer"
 import * as useTimerControlsModule from "@/hooks/useTimerControls"
 import { messages as enMessages } from "@/locales/en/messages"
+import { useSessionHistoryStore } from "@/state/sessionHistory"
 import { useSettingsStore } from "@/state/settings"
 
 jest.mock("@/hooks/useTimer")
@@ -80,6 +81,7 @@ describe("TimerScene", () => {
 
   beforeEach(() => {
     appState = "active"
+    useSessionHistoryStore.setState({ completedFocusSessions: [] })
     useSettingsStore.setState({
       breakTimeMinutes: 5,
       completionSound: "cheering",
@@ -431,6 +433,67 @@ describe("TimerScene", () => {
     })
   })
 
+  it("records a completed focus session exactly once", async () => {
+    const configuredFocusDurationMs = 32 * 60 * 1000
+    const config = {
+      ...baseConfig,
+      focus: {
+        ...baseConfig.focus,
+        startingMs: configuredFocusDurationMs,
+      },
+    }
+    const onDone = jest.fn()
+    const onModeChange = jest.fn()
+
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "running",
+    })
+
+    const { rerender } = await renderWithI18n(
+      <TimerScene
+        config={config}
+        mode="focus"
+        onDone={onDone}
+        onModeChange={onModeChange}
+      />,
+    )
+
+    expect(useSessionHistoryStore.getState().completedFocusSessions).toEqual([])
+
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "done",
+    })
+
+    const doneScene = () => (
+      <I18nProvider i18n={i18n}>
+        <TimerScene
+          config={config}
+          mode="focus"
+          onDone={onDone}
+          onModeChange={onModeChange}
+        />
+      </I18nProvider>
+    )
+    await rerender(doneScene())
+
+    const recordedSession =
+      useSessionHistoryStore.getState().completedFocusSessions[0]
+
+    expect(recordedSession).toEqual({
+      id: expect.any(String),
+      completedAt: expect.stringMatching(/Z$/),
+      durationMs: configuredFocusDurationMs,
+    })
+
+    await rerender(doneScene())
+
+    expect(useSessionHistoryStore.getState().completedFocusSessions).toEqual([
+      recordedSession,
+    ])
+  })
+
   it("plays audio and notifies when done", async () => {
     const cancelTimer = jest.fn()
     const onDone = jest.fn()
@@ -645,10 +708,13 @@ describe("TimerScene", () => {
     expect(player.play).toHaveBeenCalledTimes(1)
     expect(cancelTimer).toHaveBeenCalledTimes(1)
     expect(onDone).toHaveBeenCalledWith("focus")
+    expect(useSessionHistoryStore.getState().completedFocusSessions).toEqual([])
   })
 
-  it("cancels the timer when canceling focus", async () => {
+  it("does not record a canceled focus timer after it resets", async () => {
     const cancelTimer = jest.fn()
+    const onDone = jest.fn()
+    const onModeChange = jest.fn()
     const useTimerControlsSpy = jest.spyOn(useTimerControlsModule, "default")
     useTimerControlsSpy.mockReturnValue({
       showControls: true,
@@ -662,12 +728,12 @@ describe("TimerScene", () => {
       cancelTimer,
     })
 
-    const { getByText } = await renderWithI18n(
+    const { getByText, rerender } = await renderWithI18n(
       <TimerScene
         config={baseConfig}
         mode="focus"
-        onDone={jest.fn()}
-        onModeChange={jest.fn()}
+        onDone={onDone}
+        onModeChange={onModeChange}
       />,
     )
 
@@ -692,6 +758,25 @@ describe("TimerScene", () => {
     })
 
     expect(cancelTimer).toHaveBeenCalledTimes(1)
+
+    mockUseTimer.mockReturnValue({
+      ...baseTimerState,
+      status: "idle",
+      cancelTimer,
+    })
+    await rerender(
+      <I18nProvider i18n={i18n}>
+        <TimerScene
+          config={baseConfig}
+          mode="focus"
+          onDone={onDone}
+          onModeChange={onModeChange}
+        />
+      </I18nProvider>,
+    )
+
+    expect(onDone).not.toHaveBeenCalled()
+    expect(useSessionHistoryStore.getState().completedFocusSessions).toEqual([])
   })
 
   it("cancels and finishes the timer when stopping short mode", async () => {
