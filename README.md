@@ -1,6 +1,15 @@
 # Focus Only
 
-Focus timer for iOS built with Expo and React Native.
+## Testflight build
+
+Bump the version in `app.config.ts`.  Create a commit with the tag of the new version.
+
+```sh
+   bunx eas-cli@latest build \
+     --platform ios \
+     --profile production \
+     --auto-submit
+ ```
 
 ## Maestro end-to-end tests
 
