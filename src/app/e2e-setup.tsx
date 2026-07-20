@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from "expo-router"
 import { useEffect } from "react"
 
-import { applyE2ESetupParams, isE2ESetupEnabled } from "@/utils/e2eSetup"
+import { applyE2ESetupParams } from "@/utils/e2eSetup"
 
 export default function E2ESetupPage() {
   const router = useRouter()
@@ -10,21 +10,20 @@ export default function E2ESetupPage() {
     completionSound?: string | string[]
     focusDurationMs?: string | string[]
     mode?: string | string[]
+    sessionHistoryFixture?: string | string[]
   }>()
 
   useEffect(() => {
-    if (isE2ESetupEnabled()) {
-      applyE2ESetupParams(params)
-    }
+    applyE2ESetupParams(params)
 
     const mode = Array.isArray(params.mode) ? params.mode[0] : params.mode
 
     if (mode === "short") {
-      router.replace({ pathname: "/", params: { mode: "short" } })
+      router.dismissTo({ pathname: "/", params: { mode: "short" } })
       return
     }
 
-    router.replace("/")
+    router.dismissTo("/")
   }, [params, router])
 
   return null

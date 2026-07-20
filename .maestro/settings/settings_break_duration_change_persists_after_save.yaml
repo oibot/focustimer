@@ -9,8 +9,8 @@ tags:
     file: ../common/open_settings.yaml
 - assertVisible: "5 minutes"
 - swipe:
-    start: "16%, 35%"
-    end: "73%, 35%"
+    start: "20%, 37%"
+    end: "68%, 37%"
     duration: 800
 - assertVisible: "20 minutes"
 - tapOn: "Save"

@@ -4,6 +4,7 @@ flows:
   - break-timer/*.yaml
   - mode-switching/*.yaml
   - timer-completion/*.yaml
+  - statistics/*.yaml
   - settings/*.yaml
 
 executionOrder:
@@ -36,6 +37,9 @@ executionOrder:
     - focus_timer_completion_cancel_returns_to_timer
     - focus_timer_completion_opens_start_break_sheet
     - focus_timer_completion_start_break_enters_break_mode
+    - statistics_navigation_and_empty_state
+    - statistics_completed_session_persists
+    - statistics_seeded_history
     - settings_break_duration_change_persists_after_save
     - settings_cancel_without_changes_returns_home
     - settings_completion_sound_picker_changes_and_persists

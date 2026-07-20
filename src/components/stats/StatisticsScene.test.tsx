@@ -90,7 +90,7 @@ describe("StatisticsScene", () => {
       ],
     })
 
-    const { getAllByTestId, getByLabelText, queryByTestId } =
+    const { getAllByTestId, getByLabelText, getByTestId, queryByTestId } =
       await renderWithI18n(<StatisticsScene onClose={jest.fn()} />)
     const rows = getAllByTestId(/^daily-stats-row-/)
 
@@ -100,6 +100,21 @@ describe("StatisticsScene", () => {
       "daily-stats-row-2026-07-15",
     ])
     expect(getByLabelText("Today, 0 focus sessions, 0 minutes")).toBeTruthy()
+    expect(getByTestId("statistics-list-item-0").props.accessibilityLabel).toBe(
+      "Today, 0 focus sessions, 0 minutes",
+    )
+    expect(
+      getByTestId("statistics-list-item-1").props.accessibilityLabel,
+    ).toContain("1 focus session, 15 minutes")
+    expect(
+      getByTestId("statistics-list-item-2").props.accessibilityLabel,
+    ).toContain("1 focus session, 25 minutes")
+    expect(
+      within(rows[1]).getByLabelText("15-minute focus session"),
+    ).toBeTruthy()
+    expect(
+      within(rows[2]).getByLabelText("25-minute focus session"),
+    ).toBeTruthy()
     expect(queryByTestId("session-dot-2026-07-17")).toBeNull()
   })
 })

@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: statistics_completed_session_persists
+tags:
+  - statistics
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/setup_short_focus_timer.yaml
+- tapOn:
+    id: "timer-toggle-button"
+- extendedWaitUntil:
+    visible:
+      id: "timer-done-start-button"
+      text: "Start Break"
+    timeout: 7000
+- tapOn:
+    id: "timer-done-cancel-button"
+- extendedWaitUntil:
+    visible:
+      id: "timer-toggle-button"
+    timeout: 10000
+- runFlow:
+    file: ../common/open_statistics.yaml
+- assertVisible: "Today, 1 focus session, 0 minutes"
+- assertVisible: "0-minute focus session"
+- killApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "timer-toggle-button"
+    timeout: 10000
+- runFlow:
+    file: ../common/open_statistics.yaml
+- assertVisible: "Today, 1 focus session, 0 minutes"
+- assertVisible: "0-minute focus session"

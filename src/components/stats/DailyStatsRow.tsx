@@ -11,6 +11,7 @@ const MINUTE_MS = 60 * 1000
 type DailyStatsRowProps = {
   isToday: boolean
   summary: DailyFocusSessionSummary
+  testID?: string
 }
 
 const getDateFromKey = (dateKey: string) => {
@@ -19,7 +20,11 @@ const getDateFromKey = (dateKey: string) => {
   return new Date(year, month - 1, day)
 }
 
-function DailyStatsRowComponent({ isToday, summary }: DailyStatsRowProps) {
+function DailyStatsRowComponent({
+  isToday,
+  summary,
+  testID,
+}: DailyStatsRowProps) {
   const { i18n, t } = useLingui()
   const numberFormatter = useMemo(
     () =>
@@ -74,6 +79,7 @@ function DailyStatsRowComponent({ isToday, summary }: DailyStatsRowProps) {
       <View
         accessible
         accessibilityLabel={accessibilityLabel}
+        testID={testID}
         style={styles.date}
       >
         <Text

@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+---
+- openLink: "focusonly://e2e-setup?sessionHistoryFixture=previous-days"
+- runFlow:
+    when:
+      visible: "^Open$"
+    commands:
+      - tapOn: "^Open$"
+- assertVisible:
+    id: "timer-mode-title"
+    text: "Focus"

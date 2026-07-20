@@ -1,0 +1,10 @@
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible: "Statistics"
+    timeout: 10000
+- tapOn: "Statistics"
+- extendedWaitUntil:
+    visible:
+      id: "statistics-list"
+    timeout: 10000

@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: statistics_seeded_history
+tags:
+  - statistics
+---
+- runFlow:
+    file: ../common/launch_app_allow_notifications.yaml
+- runFlow:
+    file: ../common/setup_previous_days_session_history.yaml
+- runFlow:
+    file: ../common/open_statistics.yaml
+- assertVisible:
+    id: "statistics-list-item-0"
+    text: "Today, 0 focus sessions, 0 minutes"
+- assertVisible:
+    id: "statistics-list-item-1"
+    text: ".*, 1 focus session, 15 minutes"
+- assertVisible:
+    id: "statistics-list-item-2"
+    text: ".*, 1 focus session, 25 minutes"
+- assertVisible: "15-minute focus session"
+- assertVisible: "25-minute focus session"

@@ -18,8 +18,12 @@ type DailyStatsListItem = DailyFocusSessionSummary & {
 
 const keyExtractor = (item: DailyStatsListItem) => item.dateKey
 
-const renderItem: ListRenderItem<DailyStatsListItem> = ({ item }) => (
-  <DailyStatsRow isToday={item.isToday} summary={item} />
+const renderItem: ListRenderItem<DailyStatsListItem> = ({ index, item }) => (
+  <DailyStatsRow
+    isToday={item.isToday}
+    summary={item}
+    testID={`statistics-list-item-${index}`}
+  />
 )
 
 function ItemSeparator() {
